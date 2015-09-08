@@ -1,0 +1,41 @@
+{
+  "name": "aurelia-grid",
+  "version": "0.1.0",
+  "description": "A data grid control for Aurelia with sorting and filtering capabilities.",
+  "keywords": [
+    "aurelia",
+    "grid",
+    "datagrid"
+  ],
+  "homepage": "http://donthedev.com",
+  "bugs": {
+    "url": "https://github.com/donnelljenkins/aurelia-grid/issues"
+  },
+  "license": "MIT",
+  "author": "Donnell Jenkins <djenkins@donthedev.com> (http://donthedev.com/)",
+  "main": "dist/aurelia-grid.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/donthedev/aurelia-grid"
+  },
+  "jspm": {
+    "main": "aurelia-grid",
+    "format": "amd",
+    "directories": {
+      "lib": "dist/amd"
+    },
+    "dependencies": {
+      
+    },
+    "devDependencies": {
+      
+      "core-js": "npm:core-js@^0.9.5"
+    }
+  },
+  "aurelia": {
+    "usedBy": [
+      "aurelia-bootstrapper"
+    ]
+  }
+}
+
