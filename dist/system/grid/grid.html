@@ -1,0 +1,51 @@
+<template>
+    <table class="${class}">
+        <thead>
+        <tr>
+            <th repeat.for="column of columns">
+                <span if.bind="!column.sortable">${column.heading}</span>
+                <div if.bind="column.sortable" class="${$parent.sortButtonGroupClass}" role="group">
+                    <a role="button" class="${$parent.sortButtonClass} grid-column-header" click.delegate="$parent.applySort(column.sort)">
+                        ${column.heading}
+                        <i class.bind="$parent.sortAvailableIconClass" if.bind="!column.sort.value"></i>
+                        <i class.bind="$parent.sortAscendingIconClass" if.bind="column.sort.value === 'ascending'"></i>
+                        <i class.bind="$parent.sortDescendingIconClass" if.bind="column.sort.value === 'descending'"></i>
+                    </a>
+                </div>
+            </th>
+        </tr>
+            <tr>
+                <td repeat.for="column of columns">
+                    <form class="${$parent.filterFormClass}">
+                        <div class="${$parent.filterFormFieldClass}">
+                            <div class="${$parent.filterInputGroupClass}" if.bind="column.filterable">
+                                <input type="text" class="${$parent.filterInputClass}" placeholder="Filter for ${column.filter.property}" value.bind="column.filter.value">
+
+                                <i if.bind="!$parent.filterSearchGroupClass" class="${$parent.filterSearchIconClass}"></i>
+
+                                <span if.bind="$parent.filterSearchGroupClass" class="${$parent.filterSearchGroupClass}">
+                                    <button class="${$parent.filterSearchButtonClass}" type="button" click.delegate="$parent.applyFilter(column.filter)"><i class="${$parent.filterSearchIconClass}"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </thead>
+
+        <tbody>
+        <tr repeat.for="row of items">
+            <template replaceable part="grid-template"></template>
+        </tr>
+        </tbody>
+
+        <tfoot>
+        <!--This is here to ensure the column information gets populated in cases-->
+        <!--where there are no items.  Without this, the grid will be completely blank.-->
+        <tr style="display: none;">
+            <template replaceable part="grid-template">
+            </template>
+        </tr>
+        </tfoot>
+    </table>
+</template>

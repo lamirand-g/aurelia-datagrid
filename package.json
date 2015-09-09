@@ -20,9 +20,9 @@
   },
   "jspm": {
     "main": "aurelia-grid",
-    "format": "amd",
+    "format": "system",
     "directories": {
-      "lib": "dist/amd"
+      "lib": "dist/system"
     },
     "dependencies": {
       
