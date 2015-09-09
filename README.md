@@ -3,11 +3,14 @@ A data grid control for Aurelia with sorting and filtering capabilities.
 
 Demo: http://donthedev.com/aurelia/#/grid
 
-> !!!!! Work-In-Progress (the import currently does not work) !!!!!
-
 ## Dependencies
 
 * [aurelia-framework](https://github.com/aurelia/framework)
+* [lodash](https://lodash.com/)
+* [**Bootstrap](http://getbootstrap.com/)
+* [**Semantic-UI](http://semantic-ui.com/)
+
+** The grid can be configured to use either Bootstrap or Semantic-UI.  One of these packages must be manually installed depending on which framework you wish to use.  By default, the grid is configured to use Bootstrap.
 
 ## Installation
 
@@ -49,5 +52,63 @@ export function configure(aurelia) {
   </grid>
 ```
 
-## Template
-TBD
+## Column Templates
+- heading
+- property
+
+### <grid-column>
+> TODO
+
+### <grid-column-button>
+- caption
+- button-click
+> TODO
+
+### <grid-column-checkbox>
+> TODO
+
+### <grid-column-edit>
+- hide-cancel
+> TODO
+
+### <td grid-column-template> - Custom column template
+> TODO
+
+## Filtering
+```html
+  <grid-column filterable property="name"></grid-column>
+```
+```javascript
+   applyFilter(filter){
+    this.items = this.items.filter(item => {
+      return item[filter.property].startsWith(filter.value);
+    });
+   }
+```
+
+## Sorting
+```html
+  <grid-column sortable property="abbreviation"></grid-column>
+```
+```javascript
+   applySort(sort){
+     this.items.sort((a,b) => {
+       if(a[sort.property] < b[sort.property]){
+        return -1;
+       }
+       
+       if(a[sort.property] > b[sort.property]){
+        return 1;
+       }
+       
+       return 0;
+     });
+   }
+```
+
+## Configure Grid to Use Semantic-UI
+```html
+  <grid configuration-name="semantic">
+  ...
+  </grid>
+```
