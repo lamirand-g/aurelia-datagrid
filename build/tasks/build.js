@@ -29,15 +29,12 @@ gulp.task('build-index', function(){
     .pipe(insert.transform(function(contents) {
       return tools.createImportBlock(importsToAdd) + contents;
     }))
-    .pipe(gulp.dest(paths.output))
-    .pipe(gulp.dest(paths.output + 'es6'))
-    .pipe(gulp.dest(paths.output + 'commonjs'))
-    .pipe(gulp.dest(paths.output + 'amd'))
-    .pipe(gulp.dest(paths.output + 'system'));
+    .pipe(gulp.dest(paths.output));
 });
 
 gulp.task('build-es6', function () {
   return gulp.src([
+      paths.output + jsName,
       paths.source,
       '!' + paths.root + indexName])
     .pipe(gulp.dest(paths.output + 'es6'));
@@ -45,6 +42,7 @@ gulp.task('build-es6', function () {
 
 gulp.task('build-commonjs', function () {
   return gulp.src([
+      paths.output + jsName,
       paths.source,
       '!' + paths.root + indexName])
     .pipe(to5(assign({}, compilerOptions, {modules:'common'})))
@@ -53,6 +51,7 @@ gulp.task('build-commonjs', function () {
 
 gulp.task('build-amd', function () {
   return gulp.src([
+      paths.output + jsName,
       paths.source,
       '!' + paths.root + indexName])
     .pipe(to5(assign({}, compilerOptions, {modules:'amd'})))
@@ -61,6 +60,7 @@ gulp.task('build-amd', function () {
 
 gulp.task('build-system', function () {
   return gulp.src([
+      paths.output + jsName,
       paths.source,
       '!' + paths.root + indexName])
     .pipe(to5(assign({}, compilerOptions, {modules:'system'})))
