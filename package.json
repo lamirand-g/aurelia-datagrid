@@ -28,14 +28,27 @@
       "core-js": "npm:core-js@^0.9.5",
       "lodash": "npm:lodash@^3.10.1"
     },
-    "devDependencies": {
-      
-    }
+    "devDependencies": {}
   },
   "aurelia": {
     "usedBy": [
       "aurelia-bootstrapper"
     ]
+  },
+  "devDependencies": {
+    "aurelia-tools": "^0.1.12",
+    "conventional-changelog": "^0.4.3",
+    "del": "^2.0.1",
+    "gulp-babel": "^5.2.1",
+    "gulp-bump": "^0.3.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-insert": "^0.5.0",
+    "gulp-rename": "^1.2.2",
+    "object.assign": "^4.0.1",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.2",
+    "through2": "^2.0.0",
+    "vinyl-paths": "^2.0.0",
+    "yargs": "^3.24.0"
   }
 }
-

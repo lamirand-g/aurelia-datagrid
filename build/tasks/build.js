@@ -11,13 +11,11 @@ var rename = require('gulp-rename');
 var tools = require('aurelia-tools');
 
 var jsName = paths.packageName + '.js';
-var configName = './grid/grid-configuration.js';
-var utilsName = './grid/grid-column-utils.js';
 var indexName = './index.js';
 
 gulp.task('build-index', function(){
   var importsToAdd = [];
-  var files = [configName, utilsName, indexName].map(function(file){
+  var files = [indexName].map(function(file){
     return paths.root + file;
   });
 
@@ -41,8 +39,6 @@ gulp.task('build-index', function(){
 gulp.task('build-es6', function () {
   return gulp.src([
       paths.source,
-      '!' + paths.root + configName,
-      '!' + paths.root + utilsName,
       '!' + paths.root + indexName])
     .pipe(gulp.dest(paths.output + 'es6'));
 });
@@ -50,8 +46,6 @@ gulp.task('build-es6', function () {
 gulp.task('build-commonjs', function () {
   return gulp.src([
       paths.source,
-      '!' + paths.root + configName,
-      '!' + paths.root + utilsName,
       '!' + paths.root + indexName])
     .pipe(to5(assign({}, compilerOptions, {modules:'common'})))
     .pipe(gulp.dest(paths.output + 'commonjs'));
@@ -60,8 +54,6 @@ gulp.task('build-commonjs', function () {
 gulp.task('build-amd', function () {
   return gulp.src([
       paths.source,
-      '!' + paths.root + configName,
-      '!' + paths.root + utilsName,
       '!' + paths.root + indexName])
     .pipe(to5(assign({}, compilerOptions, {modules:'amd'})))
     .pipe(gulp.dest(paths.output + 'amd'));
@@ -70,8 +62,6 @@ gulp.task('build-amd', function () {
 gulp.task('build-system', function () {
   return gulp.src([
       paths.source,
-      '!' + paths.root + configName,
-      '!' + paths.root + utilsName,
       '!' + paths.root + indexName])
     .pipe(to5(assign({}, compilerOptions, {modules:'system'})))
     .pipe(gulp.dest(paths.output + 'system'));
