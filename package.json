@@ -30,11 +30,6 @@
     },
     "devDependencies": {}
   },
-  "aurelia": {
-    "usedBy": [
-      "aurelia-bootstrapper"
-    ]
-  },
   "devDependencies": {
     "aurelia-tools": "^0.1.12",
     "conventional-changelog": "^0.4.3",
