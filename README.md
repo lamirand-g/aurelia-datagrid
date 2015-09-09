@@ -7,8 +7,8 @@ Demo: http://donthedev.com/aurelia/#/grid
 
 * [aurelia-framework](https://github.com/aurelia/framework)
 * [lodash](https://lodash.com/)
-* [**Bootstrap](http://getbootstrap.com/)
-* [**Semantic-UI](http://semantic-ui.com/)
+* [Bootstrap**](http://getbootstrap.com/)
+* [Semantic-UI**](http://semantic-ui.com/)
 
 ** The grid can be configured to use either Bootstrap or Semantic-UI.  One of these packages must be manually installed depending on which framework you wish to use.  By default, the grid is configured to use Bootstrap.
 
