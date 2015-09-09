@@ -20,7 +20,6 @@
   },
   "jspm": {
     "main": "aurelia-grid",
-    "format": "es6",
     "directories": {
       "lib": "dist/system"
     },
