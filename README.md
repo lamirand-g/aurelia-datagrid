@@ -56,22 +56,22 @@ export function configure(aurelia) {
 - heading
 - property
 
-&ltgrid-column&gt
+&lt;grid-column&gt;
 > TODO
 
-<grid-column-button>
+&lt;grid-column-button&gt;
 - caption
 - button-click
 > TODO
 
-<grid-column-checkbox>
+&lt;grid-column-checkbox&gt;
 > TODO
 
-<grid-column-edit>
+&lt;grid-column-edit&gt;
 - hide-cancel
 > TODO
 
-<td grid-column-template> - Custom column template
+&lt;td grid-column-template&gt; - Custom column template
 > TODO
 
 ## Filtering
