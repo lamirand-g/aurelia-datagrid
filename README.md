@@ -56,7 +56,7 @@ export function configure(aurelia) {
 - heading
 - property
 
-&lt;grid-column&gt;
+### &lt;grid-column&gt;
 > TODO
 
 &lt;grid-column-button&gt;
