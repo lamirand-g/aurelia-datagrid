@@ -25,11 +25,10 @@
       "lib": "dist/system"
     },
     "dependencies": {
-      
+      "lodash": "npm:lodash@^3.10.1"
     },
     "devDependencies": {
-      
-      "core-js": "npm:core-js@^0.9.5"
+      "core-js": "npm:core-js@^0.9.5",
     }
   },
   "aurelia": {
