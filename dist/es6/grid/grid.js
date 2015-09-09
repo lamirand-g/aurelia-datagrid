@@ -1,4 +1,4 @@
-import {debounce} from "lodash/function/debounce";
+import debounce from "lodash/function/debounce";
 import {LoadConfiguration} from "./grid-configuration";
 import {
   bindable,

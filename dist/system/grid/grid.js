@@ -11,7 +11,7 @@ System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-fr
 
     return {
         setters: [function (_lodashFunctionDebounce) {
-            debounce = _lodashFunctionDebounce.debounce;
+            debounce = _lodashFunctionDebounce["default"];
         }, function (_gridConfiguration) {
             LoadConfiguration = _gridConfiguration.LoadConfiguration;
         }, function (_aureliaFramework) {
