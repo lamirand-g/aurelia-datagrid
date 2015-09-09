@@ -1,0 +1,16 @@
+<template>
+    <td>
+        <div class="${containerClass}">
+            <div if.bind="!bindingContext.editing">
+                <i if.bind="row[property]" class="${checkedIconClass}"></i>
+                <i if.bind="!row[property]" class="${uncheckedIconClass}"></i>
+            </div>
+
+            <div class="${class}" if.bind="bindingContext.editing">
+                <label>
+                    <input type="checkbox" checked.bind="row[property]" tabindex="0" />
+                </label>
+            </div>
+        </div>
+    </td>
+</template>
