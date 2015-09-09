@@ -59,19 +59,19 @@ export function configure(aurelia) {
 ### &lt;grid-column&gt;
 > TODO
 
-&lt;grid-column-button&gt;
+### &lt;grid-column-button&gt;
 - caption
 - button-click
 > TODO
 
-&lt;grid-column-checkbox&gt;
+### &lt;grid-column-checkbox&gt;
 > TODO
 
-&lt;grid-column-edit&gt;
+### &lt;grid-column-edit&gt;
 - hide-cancel
 > TODO
 
-&lt;td grid-column-template&gt; - Custom column template
+### &lt;td grid-column-template&gt; - Custom column template
 > TODO
 
 ## Filtering
