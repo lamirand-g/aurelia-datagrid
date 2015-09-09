@@ -1,26 +1,29 @@
-import {Grid} from "./grid";
-import {RegisterColumn} from "./grid-column-utils";
-import {
-  bindable,
-  containerless,
-  inject
-} from "aurelia-framework";
+import { Grid } from "./grid";
+import { ColumnUtility } from "./grid-column-utility";
+import { bindable, containerless, inject } from "aurelia-framework";
 
 @containerless
-@inject(Grid)
+@inject(Grid, ColumnUtility)
 export class GridColumnButton {
 	@bindable caption;
 	@bindable class;
 	@bindable buttonClick;
 	@bindable heading;
 
-	constructor(grid){
+	constructor(grid, utility){
 	    this.grid = grid;
+	    this.utility = utility;
 	}
 
 	bind(bindingContext){
-	    RegisterColumn(bindingContext, this);
-	    this.loadConfigurationSettings();
+	    if(bindingContext === this.grid) {
+            this.utility.registerWithGrid(this.grid, this);
+        }
+        else {
+            this.utility.bindToRow(bindingContext, this);
+        }
+
+	    this.loadCssFrameworkSettings();
 	}
 
 	click(){
@@ -29,9 +32,9 @@ export class GridColumnButton {
 		}
 	}
 
-	loadConfigurationSettings() {
-	    if (this.grid.configuration) {
-	        let config = this.grid.configuration.buttonClass;
+	loadCssFrameworkSettings() {
+	    if (this.grid.cssFramework) {
+	        let config = this.grid.cssFramework.buttonClass;
 
 	        this.class = config;
 	    }

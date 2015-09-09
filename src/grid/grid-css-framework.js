@@ -1,15 +1,15 @@
-﻿export function LoadConfiguration(name) {
+﻿export function LoadCssFramework(name) {
     let configName = name ? name.toLowerCase(): '';
 
     switch(configName) {
         case 'semantic':
-            return getSemanticConfiguration();
+            return getSemanticCssFramework();
         default :
-            return getBootstrapConfiguration();
+            return getBootstrapCssFramework();
     }
 }
 
-function getBootstrapConfiguration() {
+function getBootstrapCssFramework() {
     return {
         name: 'bootstrap',
         buttonClass: 'btn btn-default',
@@ -30,9 +30,7 @@ function getBootstrapConfiguration() {
             filterFormField: '',
             filterInputGroup: 'input-group',
             filterInput: 'form-control',
-            filterSearchButton: 'btn btn-default',
             filterSearchIcon: 'glyphicon glyphicon-search',
-            filterSearchGroup: 'input-group-btn',
             sortAscendingIcon: 'glyphicon glyphicon-chevron-up',
             sortAvailableIcon: 'glyphicon glyphicon-sort',
             sortButtonGroup: 'btn-group btn-group-justified',
@@ -48,7 +46,7 @@ function getBootstrapConfiguration() {
     }
 }
 
-function getSemanticConfiguration() {
+function getSemanticCssFramework() {
     return {
         name: 'semantic-ui',
         buttonClass: 'ui button',
@@ -59,7 +57,7 @@ function getSemanticConfiguration() {
             uncheckedIcon: '',
         },
         editClasses: {
-            buttonGroup: 'ui buttons',
+            buttonGroup: 'buttons fluid ui',
             editButton: 'ui primary button',
             saveButton: 'ui positive button',
             cancelButton: 'ui negative button'
@@ -69,9 +67,7 @@ function getSemanticConfiguration() {
             filterFormField: 'field',
             filterInputGroup: 'ui icon input',
             filterInput: 'prompt',
-            filterSearchButton: 'button',
             filterSearchIcon: 'search icon',
-            filterSearchGroup: '',
             sortAscendingIcon: 'icon ascending sort',
             sortAvailableIcon: 'icon sort',
             sortButtonGroup: 'ui fluid buttons',

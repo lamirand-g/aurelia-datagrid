@@ -1,39 +1,41 @@
-import {Grid} from "./grid";
-import {RegisterColumn} from "./grid-column-utils";
-import {
-  bindable,
-  containerless,
-  inject
-} from 'aurelia-framework';
-
+import { Grid } from "./grid";
+import { ColumnUtility } from "./grid-column-utility";
+import { bindable, containerless, inject } from 'aurelia-framework';
 
 @containerless
-@inject(Grid)
+@inject(Grid, ColumnUtility)
 export class GridColumnCheckbox {
     @bindable class;
     @bindable checkedIconClass;
     @bindable containerClass;
-	@bindable heading;
+    @bindable heading;
     @bindable filterable;
     @bindable property;
     @bindable sortable;
     @bindable uncheckedIconClass;
     @bindable value;
 
-    constructor(grid){
+    constructor(grid, utility){
         this.bindingContext = {};
         this.grid = grid;
         this.row = {};
+        this.utility = utility;
     }
 
     bind(bindingContext) {
-        RegisterColumn(bindingContext, this);
-        this.loadConfigurationSettings();
+        if(bindingContext === this.grid) {
+            this.utility.registerWithGrid(this.grid, this);
+        }
+        else {
+            this.utility.bindToRow(bindingContext, this);
+        }
+
+        this.loadCssFrameworkSettings();
     }
 
-    loadConfigurationSettings() {
-        if (this.grid.configuration) {
-            let config = this.grid.configuration.checkboxClasses;
+    loadCssFrameworkSettings() {
+        if (this.grid.cssFramework) {
+            let config = this.grid.cssFramework.checkboxClasses;
 
             this.checkedIconClass = config.checkedIcon;
             this.class = config.editInput;

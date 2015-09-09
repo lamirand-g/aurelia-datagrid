@@ -1,36 +1,60 @@
-import {Grid} from "./grid";
-import {RegisterColumn} from "./grid-column-utils";
-import {
-  bindable,
-  containerless,
-  inject
-} from "aurelia-framework";
+import { Grid } from "./grid";
+import { ColumnUtility } from "./grid-column-utility";
+import { bindable, containerless, inject } from "aurelia-framework";
 
 @containerless
-@inject(Grid)
+@inject(Grid, ColumnUtility)
 export class GridColumnEdit {
     @bindable butttonGroupClass;
-    @bindable editButtonClass;
-    @bindable saveButtonClass;
     @bindable cancelButtonClass;
-	@bindable heading;
-	@bindable hideCancel;
+    @bindable cancelClick;
+    @bindable editButtonClass;
+    @bindable editClick;
+    @bindable heading;
+    @bindable saveButtonClass;
+    @bindable saveClick;
 
-	showCancel = true;
+    showCancel = true;
 
-	constructor(grid) {
-	    this.grid = grid;
+    constructor(grid, utility) {
+        this.grid = grid;
+        this.utility = utility;
     }
 
-	bind(bindingContext){
-		RegisterColumn(bindingContext, this);
-		this.hideCancel = this.hideCancel !== null;
-		this.loadConfigurationSettings();
-	}
+    bind(bindingContext){
+        if(bindingContext === this.grid) {
+            this.utility.registerWithGrid(this.grid, this);
+        }
+        else {
+            this.utility.bindToRow(bindingContext, this);
+        }
 
-	loadConfigurationSettings() {
-	    if (this.grid.configuration) {
-	        let config = this.grid.configuration.editClasses;
+        this.loadCssFrameworkSettings();
+     }
+
+	cancelButtonClick() {
+        if(this.cancelClick){
+        	this.cancelClick(this.bindingContext.row);
+        }
+
+        Object.assign(this.bindingContext.row, this.originalValue);
+        this.bindingContext.editing = false;
+    }
+
+	editButtonClick() {
+
+	    this.originalValue = Object.assign({}, this.bindingContext.row); 
+
+        if(this.editClick){
+        	this.editClick(this.bindingContext.row);
+        }
+
+        this.bindingContext.editing = true;
+    }
+
+    loadCssFrameworkSettings() {
+	    if (this.grid.cssFramework) {
+	        let config = this.grid.cssFramework.editClasses;
 
 	        this.butttonGroupClass = config.buttonGroup;
 	        this.editButtonClass = config.editButton;
@@ -38,4 +62,12 @@ export class GridColumnEdit {
 	        this.cancelButtonClass = config.cancelButton;
 	    }
 	}
+
+	saveButtonClick() {
+        if(this.saveClick){
+        	this.saveClick(this.bindingContext.row);
+        }
+
+        this.bindingContext.editing = false;
+    }
 }
