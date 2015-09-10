@@ -1,7 +1,7 @@
-System.register(["./grid", "./grid-column-utils", "aurelia-framework"], function (_export) {
+System.register(["./grid", "./grid-column-utility", "aurelia-framework"], function (_export) {
 	"use strict";
 
-	var Grid, RegisterColumn, bindable, containerless, inject, GridColumnButton;
+	var Grid, ColumnUtility, bindable, containerless, inject, GridColumnButton;
 
 	var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -12,8 +12,8 @@ System.register(["./grid", "./grid-column-utils", "aurelia-framework"], function
 	return {
 		setters: [function (_grid) {
 			Grid = _grid.Grid;
-		}, function (_gridColumnUtils) {
-			RegisterColumn = _gridColumnUtils.RegisterColumn;
+		}, function (_gridColumnUtility) {
+			ColumnUtility = _gridColumnUtility.ColumnUtility;
 		}, function (_aureliaFramework) {
 			bindable = _aureliaFramework.bindable;
 			containerless = _aureliaFramework.containerless;
@@ -46,7 +46,7 @@ System.register(["./grid", "./grid-column-utils", "aurelia-framework"], function
 					enumerable: true
 				}], null, _instanceInitializers);
 
-				function GridColumnButton(grid) {
+				function GridColumnButton(grid, utility) {
 					_classCallCheck(this, _GridColumnButton);
 
 					_defineDecoratedPropertyDescriptor(this, "caption", _instanceInitializers);
@@ -58,13 +58,19 @@ System.register(["./grid", "./grid-column-utils", "aurelia-framework"], function
 					_defineDecoratedPropertyDescriptor(this, "heading", _instanceInitializers);
 
 					this.grid = grid;
+					this.utility = utility;
 				}
 
 				_createDecoratedClass(GridColumnButton, [{
 					key: "bind",
 					value: function bind(bindingContext) {
-						RegisterColumn(bindingContext, this);
-						this.loadConfigurationSettings();
+						if (bindingContext === this.grid) {
+							this.utility.registerWithGrid(this.grid, this);
+						} else {
+							this.utility.bindToRow(bindingContext, this);
+						}
+
+						this.loadCssFrameworkSettings();
 					}
 				}, {
 					key: "click",
@@ -74,10 +80,10 @@ System.register(["./grid", "./grid-column-utils", "aurelia-framework"], function
 						}
 					}
 				}, {
-					key: "loadConfigurationSettings",
-					value: function loadConfigurationSettings() {
-						if (this.grid.configuration) {
-							var config = this.grid.configuration.buttonClass;
+					key: "loadCssFrameworkSettings",
+					value: function loadCssFrameworkSettings() {
+						if (this.grid.cssFramework) {
+							var config = this.grid.cssFramework.buttonClass;
 
 							this["class"] = config;
 						}
@@ -85,7 +91,7 @@ System.register(["./grid", "./grid-column-utils", "aurelia-framework"], function
 				}], null, _instanceInitializers);
 
 				var _GridColumnButton = GridColumnButton;
-				GridColumnButton = inject(Grid)(GridColumnButton) || GridColumnButton;
+				GridColumnButton = inject(Grid, ColumnUtility)(GridColumnButton) || GridColumnButton;
 				GridColumnButton = containerless(GridColumnButton) || GridColumnButton;
 				return GridColumnButton;
 			})();

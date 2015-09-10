@@ -18,7 +18,17 @@
                 <form class.bind="$parent.filterFormClass" if.bind="column.filterable">
                     <div class.bind="$parent.filterFormFieldClass">
                         <div class.bind="$parent.filterInputGroupClass">
-                            <input type="text" class.bind="$parent.filterInputClass" placeholder="Filter for ${column.heading}" value.bind="column.filter.value">
+                            <input if.bind="column.inputType !== 'checkbox'"
+                                   type.bind="column.inputType"
+                                   class.bind="$parent.filterInputClass"
+                                   placeholder="Filter for ${column.heading}"
+                                   value.bind="column.filter.value">
+
+                            <input if.bind="column.inputType === 'checkbox'"
+                                   type="checkbox"
+                                   class.bind="$parent.filterInputClass"
+                                   placeholder="Filter for ${column.heading}"
+                                   checked.bind="column.filter.value">
 
                             <i class.bind="$parent.filterSearchIconClass"></i>
                         </div>

@@ -11,7 +11,9 @@ export class GridColumnEdit {
     @bindable editButtonClass;
     @bindable editClick;
     @bindable heading;
+    @bindable orDivClass;
     @bindable saveButtonClass;
+    @bindable saveCancelButtonGroupClass;
     @bindable saveClick;
 
     showCancel = true;
@@ -57,9 +59,11 @@ export class GridColumnEdit {
 	        let config = this.grid.cssFramework.editClasses;
 
 	        this.butttonGroupClass = config.buttonGroup;
-	        this.editButtonClass = config.editButton;
-	        this.saveButtonClass = config.saveButton;
 	        this.cancelButtonClass = config.cancelButton;
+            this.editButtonClass = config.editButton;
+            this.orDivClass =  config.orDiv;
+	        this.saveButtonClass = config.saveButton;
+            this.saveCancelButtonGroupClass = config.saveCancelButtonGroup;
 	    }
 	}
 

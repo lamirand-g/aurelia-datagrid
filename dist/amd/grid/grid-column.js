@@ -1,4 +1,4 @@
-define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], function (exports, _grid, _gridColumnUtils, _aureliaFramework) {
+define(["exports", "./grid", "./grid-column-utility", "aurelia-framework"], function (exports, _grid, _gridColumnUtility, _aureliaFramework) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -50,14 +50,9 @@ define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], functi
             decorators: [_aureliaFramework.bindable],
             initializer: null,
             enumerable: true
-        }, {
-            key: "value",
-            decorators: [_aureliaFramework.bindable],
-            initializer: null,
-            enumerable: true
         }], null, _instanceInitializers);
 
-        function GridColumn(grid) {
+        function GridColumn(grid, utility) {
             _classCallCheck(this, _GridColumn);
 
             _defineDecoratedPropertyDescriptor(this, "heading", _instanceInitializers);
@@ -74,33 +69,37 @@ define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], functi
 
             _defineDecoratedPropertyDescriptor(this, "sortable", _instanceInitializers);
 
-            _defineDecoratedPropertyDescriptor(this, "value", _instanceInitializers);
-
             this.grid = grid;
             this.row = {};
+            this.utility = utility;
         }
 
         _createDecoratedClass(GridColumn, [{
             key: "bind",
             value: function bind(bindingContext) {
-                (0, _gridColumnUtils.RegisterColumn)(bindingContext, this);
-                this.loadConfigurationSettings();
+                if (bindingContext === this.grid) {
+                    this.utility.registerWithGrid(this.grid, this);
+                } else {
+                    this.utility.bindToRow(bindingContext, this);
+                }
+
+                this.loadCssFrameworkSettings();
             }
         }, {
-            key: "loadConfigurationSettings",
-            value: function loadConfigurationSettings() {
-                if (this.grid.configuration) {
-                    var config = this.grid.configuration.textClasses;
+            key: "loadCssFrameworkSettings",
+            value: function loadCssFrameworkSettings() {
+                if (this.grid.cssFramework) {
+                    var settings = this.grid.cssFramework.textClasses;
 
-                    this.editInputClass = config.editInput;
-                    this.editFieldClass = config.editField;
-                    this.editFormClass = config.editForm;
+                    this.editInputClass = settings.editInput;
+                    this.editFieldClass = settings.editField;
+                    this.editFormClass = settings.editForm;
                 }
             }
         }], null, _instanceInitializers);
 
         var _GridColumn = GridColumn;
-        GridColumn = (0, _aureliaFramework.inject)(_grid.Grid)(GridColumn) || GridColumn;
+        GridColumn = (0, _aureliaFramework.inject)(_grid.Grid, _gridColumnUtility.ColumnUtility)(GridColumn) || GridColumn;
         GridColumn = (0, _aureliaFramework.containerless)(GridColumn) || GridColumn;
         return GridColumn;
     })();

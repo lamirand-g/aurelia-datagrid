@@ -15,6 +15,8 @@ export class GridColumnCheckbox {
     @bindable uncheckedIconClass;
     @bindable value;
 
+    inputType = 'checkbox';
+
     constructor(grid, utility){
         this.bindingContext = {};
         this.grid = grid;

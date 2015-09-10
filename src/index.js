@@ -1,4 +1,6 @@
-﻿export function configure(aurelia) {
+﻿import configuration from "./grid/grid-configuration";
+
+export function configure(aurelia, config) {
     aurelia.globalResources(
         "./grid/grid"
         ,"./grid/grid-column"
@@ -7,4 +9,8 @@
         ,"./grid/grid-column-edit"
         ,"./grid/grid-column-template"
         );
+
+    if(config){
+    	config(configuration);
+    }
 } 

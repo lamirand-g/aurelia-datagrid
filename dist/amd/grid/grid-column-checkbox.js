@@ -1,4 +1,4 @@
-define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], function (exports, _grid, _gridColumnUtils, _aureliaFramework) {
+define(["exports", "./grid", "./grid-column-utility", "aurelia-framework"], function (exports, _grid, _gridColumnUtility, _aureliaFramework) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -62,7 +62,7 @@ define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], functi
             enumerable: true
         }], null, _instanceInitializers);
 
-        function GridColumnCheckbox(grid) {
+        function GridColumnCheckbox(grid, utility) {
             _classCallCheck(this, _GridColumnCheckbox);
 
             _defineDecoratedPropertyDescriptor(this, "class", _instanceInitializers);
@@ -83,22 +83,30 @@ define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], functi
 
             _defineDecoratedPropertyDescriptor(this, "value", _instanceInitializers);
 
+            this.inputType = 'checkbox';
+
             this.bindingContext = {};
             this.grid = grid;
             this.row = {};
+            this.utility = utility;
         }
 
         _createDecoratedClass(GridColumnCheckbox, [{
             key: "bind",
             value: function bind(bindingContext) {
-                (0, _gridColumnUtils.RegisterColumn)(bindingContext, this);
-                this.loadConfigurationSettings();
+                if (bindingContext === this.grid) {
+                    this.utility.registerWithGrid(this.grid, this);
+                } else {
+                    this.utility.bindToRow(bindingContext, this);
+                }
+
+                this.loadCssFrameworkSettings();
             }
         }, {
-            key: "loadConfigurationSettings",
-            value: function loadConfigurationSettings() {
-                if (this.grid.configuration) {
-                    var config = this.grid.configuration.checkboxClasses;
+            key: "loadCssFrameworkSettings",
+            value: function loadCssFrameworkSettings() {
+                if (this.grid.cssFramework) {
+                    var config = this.grid.cssFramework.checkboxClasses;
 
                     this.checkedIconClass = config.checkedIcon;
                     this["class"] = config.editInput;
@@ -109,7 +117,7 @@ define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], functi
         }], null, _instanceInitializers);
 
         var _GridColumnCheckbox = GridColumnCheckbox;
-        GridColumnCheckbox = (0, _aureliaFramework.inject)(_grid.Grid)(GridColumnCheckbox) || GridColumnCheckbox;
+        GridColumnCheckbox = (0, _aureliaFramework.inject)(_grid.Grid, _gridColumnUtility.ColumnUtility)(GridColumnCheckbox) || GridColumnCheckbox;
         GridColumnCheckbox = (0, _aureliaFramework.containerless)(GridColumnCheckbox) || GridColumnCheckbox;
         return GridColumnCheckbox;
     })();

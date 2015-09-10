@@ -1,7 +1,7 @@
-System.register(["./grid", "./grid-column-utils", "aurelia-framework"], function (_export) {
+System.register(["./grid", "./grid-column-utility", "aurelia-framework"], function (_export) {
     "use strict";
 
-    var Grid, RegisterColumn, bindable, containerless, inject, GridColumn;
+    var Grid, ColumnUtility, bindable, containerless, inject, GridColumn;
 
     var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -12,8 +12,8 @@ System.register(["./grid", "./grid-column-utils", "aurelia-framework"], function
     return {
         setters: [function (_grid) {
             Grid = _grid.Grid;
-        }, function (_gridColumnUtils) {
-            RegisterColumn = _gridColumnUtils.RegisterColumn;
+        }, function (_gridColumnUtility) {
+            ColumnUtility = _gridColumnUtility.ColumnUtility;
         }, function (_aureliaFramework) {
             bindable = _aureliaFramework.bindable;
             containerless = _aureliaFramework.containerless;
@@ -59,14 +59,9 @@ System.register(["./grid", "./grid-column-utils", "aurelia-framework"], function
                     decorators: [bindable],
                     initializer: null,
                     enumerable: true
-                }, {
-                    key: "value",
-                    decorators: [bindable],
-                    initializer: null,
-                    enumerable: true
                 }], null, _instanceInitializers);
 
-                function GridColumn(grid) {
+                function GridColumn(grid, utility) {
                     _classCallCheck(this, _GridColumn);
 
                     _defineDecoratedPropertyDescriptor(this, "heading", _instanceInitializers);
@@ -83,33 +78,37 @@ System.register(["./grid", "./grid-column-utils", "aurelia-framework"], function
 
                     _defineDecoratedPropertyDescriptor(this, "sortable", _instanceInitializers);
 
-                    _defineDecoratedPropertyDescriptor(this, "value", _instanceInitializers);
-
                     this.grid = grid;
                     this.row = {};
+                    this.utility = utility;
                 }
 
                 _createDecoratedClass(GridColumn, [{
                     key: "bind",
                     value: function bind(bindingContext) {
-                        RegisterColumn(bindingContext, this);
-                        this.loadConfigurationSettings();
+                        if (bindingContext === this.grid) {
+                            this.utility.registerWithGrid(this.grid, this);
+                        } else {
+                            this.utility.bindToRow(bindingContext, this);
+                        }
+
+                        this.loadCssFrameworkSettings();
                     }
                 }, {
-                    key: "loadConfigurationSettings",
-                    value: function loadConfigurationSettings() {
-                        if (this.grid.configuration) {
-                            var config = this.grid.configuration.textClasses;
+                    key: "loadCssFrameworkSettings",
+                    value: function loadCssFrameworkSettings() {
+                        if (this.grid.cssFramework) {
+                            var settings = this.grid.cssFramework.textClasses;
 
-                            this.editInputClass = config.editInput;
-                            this.editFieldClass = config.editField;
-                            this.editFormClass = config.editForm;
+                            this.editInputClass = settings.editInput;
+                            this.editFieldClass = settings.editField;
+                            this.editFormClass = settings.editForm;
                         }
                     }
                 }], null, _instanceInitializers);
 
                 var _GridColumn = GridColumn;
-                GridColumn = inject(Grid)(GridColumn) || GridColumn;
+                GridColumn = inject(Grid, ColumnUtility)(GridColumn) || GridColumn;
                 GridColumn = containerless(GridColumn) || GridColumn;
                 return GridColumn;
             })();

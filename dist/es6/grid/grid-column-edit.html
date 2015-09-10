@@ -1,15 +1,21 @@
 <template>
     <td>
         <div class.bind="butttonGroupClass" role="group">
-            <a if.bind="!bindingContext.editing" role="button" class.bind="editButtonClass" click.delegate="bindingContext.editing = true">
+            <a if.bind="!bindingContext.editing" role="button" class.bind="editButtonClass" click.delegate="editButtonClick()">
                 Edit
             </a>
-            <a if.bind="bindingContext.editing" role="button" class.bind="saveButtonClass" click.delegate="bindingContext.editing = false">
-                Save
-            </a>
-            <a if.bind="!hideCancel && bindingContext.editing" role="button" class.bind="cancelButtonClass" click.delegate="bindingContext.editing = false">
-                Cancel
-            </a>
+
+            <div if.bind="bindingContext.editing" class.bind="saveCancelButtonGroupClass">
+                <a role="button" class.bind="saveButtonClass" click.delegate="saveButtonClick()">
+                    Save
+                </a>
+
+                <div class.bind="orDivClass"></div>
+
+                <a role="button" class.bind="cancelButtonClass" click.delegate="cancelButtonClick()">
+                    Cancel
+                </a>
+            </div>
         </div>
     </td>
 </template>

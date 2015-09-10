@@ -1,34 +1,33 @@
 import debounce from "lodash/function/debounce";
-import {LoadConfiguration} from "./grid-configuration";
-import {
-  bindable,
-  inject,
-  ObserverLocator
-} from "aurelia-framework";
+import GridConstants  from "./grid-constants";
+import { GridCssFrameworkRepository } from "./css-frameworks/repository";
+import { bindable, inject, ObserverLocator } from "aurelia-framework";
 
+export function configure(config){
+    console.log('conf');
+}
 
-@inject(ObserverLocator)
+@inject(ObserverLocator, GridCssFrameworkRepository)
 export class Grid {
     
     @bindable class;
-    @bindable configurationName;
+    @bindable cssFrameworkName;
     @bindable items;
     @bindable filterFormClass;
     @bindable filterFormFieldClass;
     @bindable filterInputGroupClass;
     @bindable filterInputClass;
-    @bindable filterSearchButtonClass;
     @bindable filterSearchIconClass;
-    @bindable filterSearchGroupClass;
     @bindable sortAscendingIconClass;
     @bindable sortAvailableIconClass;
     @bindable sortButtonGroupClass;
     @bindable sortButtonClass;
     @bindable sortDescendingIconClass;
 
-    constructor(observerLocator) {
+    constructor(observerLocator, repository) {
         this.columns = [];
         this.observerLocator = observerLocator;
+        this.repository = repository;
     }
 
     addColumn(column) {
@@ -50,37 +49,38 @@ export class Grid {
     }
 
     bind(bindingContext) {
-        this.$parent = this.$parent || bindingContext;
-        this.items = this.items || bindingContext.items || [];
-        
-        this.configuration = LoadConfiguration(this.configurationName);
-        this.loadConfigurationSettings(this.configuration);
+        this.$parent = bindingContext;
+        this.items = bindingContext.items || [];
+        this.cssFramework = this.repository.get(this.cssFrameworkName);
 
+        this.loadCssFrameworkSettings();
         this.observeFilters();
     }
 
-    loadConfigurationSettings(configuration) {
-        this.class = configuration.gridClasses.table;
-        this.loadFilterConfigurationSettings(configuration);
-        this.loadSortConfigurationSettings(configuration);
+    loadCssFrameworkSettings() {
+        this.class = this.cssFramework.gridClasses.table;
+        this.loadFilterCssFrameworkSettings();
+        this.loadSortCssFrameworkSettings();
     }
 
-    loadFilterConfigurationSettings(configuration) {
-        this.filterFormClass = configuration.gridClasses.filterForm;
-        this.filterFormFieldClass = configuration.gridClasses.filterFormField;
-        this.filterInputGroupClass = configuration.gridClasses.filterInputGroup;
-        this.filterInputClass = configuration.gridClasses.filterInput;
-        this.filterSearchButtonClass = configuration.gridClasses.filterSearchButton;
-        this.filterSearchIconClass = configuration.gridClasses.filterSearchIcon;
-        this.filterSearchGroupClass = configuration.gridClasses.filterSearchGroup;
+    loadFilterCssFrameworkSettings() {
+        let settings = this.cssFramework.gridClasses;
+
+        this.filterFormClass = settings.filterForm;
+        this.filterFormFieldClass = settings.filterFormField;
+        this.filterInputGroupClass = settings.filterInputGroup;
+        this.filterInputClass = settings.filterInput;
+        this.filterSearchIconClass = settings.filterSearchIcon;
     }
 
-    loadSortConfigurationSettings(configuration) {
-        this.sortAscendingIconClass = configuration.gridClasses.sortAscendingIcon;
-        this.sortAvailableIconClass = configuration.gridClasses.sortAvailableIcon;
-        this.sortButtonGroupClass = configuration.gridClasses.sortButtonGroup;
-        this.sortButtonClass = configuration.gridClasses.sortButton;
-        this.sortDescendingIconClass = configuration.gridClasses.sortDescendingIcon;
+    loadSortCssFrameworkSettings() {
+        let settings = this.cssFramework.gridClasses;
+
+        this.sortAscendingIconClass = settings.sortAscendingIcon;
+        this.sortAvailableIconClass = settings.sortAvailableIcon;
+        this.sortButtonGroupClass = settings.sortButtonGroup;
+        this.sortButtonClass = settings.sortButton;
+        this.sortDescendingIconClass = settings.sortDescendingIcon;
     }
 
     observeFilters() {
@@ -93,25 +93,30 @@ export class Grid {
         }
     }
 
+    setDefaultCssFramework(framework){
+        this.repository.setGlobalDefault(framework);
+    }
+
     updateSort(sort) {
-        let oldValue = sort.value;
+        let oldValue = sort.direction;
 
         // clear all other sorts
         for (let column of this.columns) {
             if (column.sort) {
-                column.sort.value = null;
+                column.sort.direction = null;
             }
         }
 
         switch(oldValue) {
-            case 'ascending':
-                sort.value = 'descending';
+            
+            case GridConstants.sortAscending:
+                sort.direction = GridConstants.sortDescending;
                 break;
-            case 'descending':
-                sort.value = null;
+            case GridConstants.sortDescending:
+                sort.direction = null;
                 break;
             default:
-                sort.value = 'ascending';
+                sort.direction = GridConstants.sortAscending;
                 break;
         }
     }

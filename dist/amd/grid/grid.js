@@ -1,4 +1,4 @@
-define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-framework"], function (exports, _lodashFunctionDebounce, _gridConfiguration, _aureliaFramework) {
+define(["exports", "lodash/function/debounce", "./grid-constants", "./css-frameworks/repository", "aurelia-framework"], function (exports, _lodashFunctionDebounce, _gridConstants, _cssFrameworksRepository, _aureliaFramework) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -7,6 +7,8 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
 
     var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
+    exports.configure = configure;
+
     function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -14,6 +16,12 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
     function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer ? descriptor.initializer.call(target) : undefined; Object.defineProperty(target, key, descriptor); }
 
     var _debounce = _interopRequireDefault(_lodashFunctionDebounce);
+
+    var _GridConstants = _interopRequireDefault(_gridConstants);
+
+    function configure(config) {
+        console.log('conf');
+    }
 
     var Grid = (function () {
         var _instanceInitializers = {};
@@ -25,7 +33,7 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
             initializer: null,
             enumerable: true
         }, {
-            key: "configurationName",
+            key: "cssFrameworkName",
             decorators: [_aureliaFramework.bindable],
             initializer: null,
             enumerable: true
@@ -55,17 +63,7 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
             initializer: null,
             enumerable: true
         }, {
-            key: "filterSearchButtonClass",
-            decorators: [_aureliaFramework.bindable],
-            initializer: null,
-            enumerable: true
-        }, {
             key: "filterSearchIconClass",
-            decorators: [_aureliaFramework.bindable],
-            initializer: null,
-            enumerable: true
-        }, {
-            key: "filterSearchGroupClass",
             decorators: [_aureliaFramework.bindable],
             initializer: null,
             enumerable: true
@@ -96,12 +94,12 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
             enumerable: true
         }], null, _instanceInitializers);
 
-        function Grid(observerLocator) {
+        function Grid(observerLocator, repository) {
             _classCallCheck(this, _Grid);
 
             _defineDecoratedPropertyDescriptor(this, "class", _instanceInitializers);
 
-            _defineDecoratedPropertyDescriptor(this, "configurationName", _instanceInitializers);
+            _defineDecoratedPropertyDescriptor(this, "cssFrameworkName", _instanceInitializers);
 
             _defineDecoratedPropertyDescriptor(this, "items", _instanceInitializers);
 
@@ -113,11 +111,7 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
 
             _defineDecoratedPropertyDescriptor(this, "filterInputClass", _instanceInitializers);
 
-            _defineDecoratedPropertyDescriptor(this, "filterSearchButtonClass", _instanceInitializers);
-
             _defineDecoratedPropertyDescriptor(this, "filterSearchIconClass", _instanceInitializers);
-
-            _defineDecoratedPropertyDescriptor(this, "filterSearchGroupClass", _instanceInitializers);
 
             _defineDecoratedPropertyDescriptor(this, "sortAscendingIconClass", _instanceInitializers);
 
@@ -131,6 +125,7 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
 
             this.columns = [];
             this.observerLocator = observerLocator;
+            this.repository = repository;
         }
 
         _createDecoratedClass(Grid, [{
@@ -157,40 +152,41 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
         }, {
             key: "bind",
             value: function bind(bindingContext) {
-                this.$parent = this.$parent || bindingContext;
-                this.items = this.items || bindingContext.items || [];
+                this.$parent = bindingContext;
+                this.items = bindingContext.items || [];
+                this.cssFramework = this.repository.get(this.cssFrameworkName);
 
-                this.configuration = (0, _gridConfiguration.LoadConfiguration)(this.configurationName);
-                this.loadConfigurationSettings(this.configuration);
-
+                this.loadCssFrameworkSettings();
                 this.observeFilters();
             }
         }, {
-            key: "loadConfigurationSettings",
-            value: function loadConfigurationSettings(configuration) {
-                this["class"] = configuration.gridClasses.table;
-                this.loadFilterConfigurationSettings(configuration);
-                this.loadSortConfigurationSettings(configuration);
+            key: "loadCssFrameworkSettings",
+            value: function loadCssFrameworkSettings() {
+                this["class"] = this.cssFramework.gridClasses.table;
+                this.loadFilterCssFrameworkSettings();
+                this.loadSortCssFrameworkSettings();
             }
         }, {
-            key: "loadFilterConfigurationSettings",
-            value: function loadFilterConfigurationSettings(configuration) {
-                this.filterFormClass = configuration.gridClasses.filterForm;
-                this.filterFormFieldClass = configuration.gridClasses.filterFormField;
-                this.filterInputGroupClass = configuration.gridClasses.filterInputGroup;
-                this.filterInputClass = configuration.gridClasses.filterInput;
-                this.filterSearchButtonClass = configuration.gridClasses.filterSearchButton;
-                this.filterSearchIconClass = configuration.gridClasses.filterSearchIcon;
-                this.filterSearchGroupClass = configuration.gridClasses.filterSearchGroup;
+            key: "loadFilterCssFrameworkSettings",
+            value: function loadFilterCssFrameworkSettings() {
+                var settings = this.cssFramework.gridClasses;
+
+                this.filterFormClass = settings.filterForm;
+                this.filterFormFieldClass = settings.filterFormField;
+                this.filterInputGroupClass = settings.filterInputGroup;
+                this.filterInputClass = settings.filterInput;
+                this.filterSearchIconClass = settings.filterSearchIcon;
             }
         }, {
-            key: "loadSortConfigurationSettings",
-            value: function loadSortConfigurationSettings(configuration) {
-                this.sortAscendingIconClass = configuration.gridClasses.sortAscendingIcon;
-                this.sortAvailableIconClass = configuration.gridClasses.sortAvailableIcon;
-                this.sortButtonGroupClass = configuration.gridClasses.sortButtonGroup;
-                this.sortButtonClass = configuration.gridClasses.sortButton;
-                this.sortDescendingIconClass = configuration.gridClasses.sortDescendingIcon;
+            key: "loadSortCssFrameworkSettings",
+            value: function loadSortCssFrameworkSettings() {
+                var settings = this.cssFramework.gridClasses;
+
+                this.sortAscendingIconClass = settings.sortAscendingIcon;
+                this.sortAvailableIconClass = settings.sortAvailableIcon;
+                this.sortButtonGroupClass = settings.sortButtonGroup;
+                this.sortButtonClass = settings.sortButton;
+                this.sortDescendingIconClass = settings.sortDescendingIcon;
             }
         }, {
             key: "observeFilters",
@@ -231,9 +227,14 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
                 }
             }
         }, {
+            key: "setDefaultCssFramework",
+            value: function setDefaultCssFramework(framework) {
+                this.repository.setGlobalDefault(framework);
+            }
+        }, {
             key: "updateSort",
             value: function updateSort(sort) {
-                var oldValue = sort.value;
+                var oldValue = sort.direction;
 
                 var _iteratorNormalCompletion2 = true;
                 var _didIteratorError2 = false;
@@ -244,7 +245,7 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
                         var column = _step2.value;
 
                         if (column.sort) {
-                            column.sort.value = null;
+                            column.sort.direction = null;
                         }
                     }
                 } catch (err) {
@@ -263,21 +264,22 @@ define(["exports", "lodash/function/debounce", "./grid-configuration", "aurelia-
                 }
 
                 switch (oldValue) {
-                    case 'ascending':
-                        sort.value = 'descending';
+
+                    case _GridConstants["default"].sortAscending:
+                        sort.direction = _GridConstants["default"].sortDescending;
                         break;
-                    case 'descending':
-                        sort.value = null;
+                    case _GridConstants["default"].sortDescending:
+                        sort.direction = null;
                         break;
                     default:
-                        sort.value = 'ascending';
+                        sort.direction = _GridConstants["default"].sortAscending;
                         break;
                 }
             }
         }], null, _instanceInitializers);
 
         var _Grid = Grid;
-        Grid = (0, _aureliaFramework.inject)(_aureliaFramework.ObserverLocator)(Grid) || Grid;
+        Grid = (0, _aureliaFramework.inject)(_aureliaFramework.ObserverLocator, _cssFrameworksRepository.GridCssFrameworkRepository)(Grid) || Grid;
         return Grid;
     })();
 

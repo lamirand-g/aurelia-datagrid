@@ -12,7 +12,7 @@ function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _des
 
 var _grid = require("./grid");
 
-var _gridColumnUtils = require("./grid-column-utils");
+var _gridColumnUtility = require("./grid-column-utility");
 
 var _aureliaFramework = require('aurelia-framework');
 
@@ -67,7 +67,7 @@ var GridColumnCheckbox = (function () {
         enumerable: true
     }], null, _instanceInitializers);
 
-    function GridColumnCheckbox(grid) {
+    function GridColumnCheckbox(grid, utility) {
         _classCallCheck(this, _GridColumnCheckbox);
 
         _defineDecoratedPropertyDescriptor(this, "class", _instanceInitializers);
@@ -88,22 +88,30 @@ var GridColumnCheckbox = (function () {
 
         _defineDecoratedPropertyDescriptor(this, "value", _instanceInitializers);
 
+        this.inputType = 'checkbox';
+
         this.bindingContext = {};
         this.grid = grid;
         this.row = {};
+        this.utility = utility;
     }
 
     _createDecoratedClass(GridColumnCheckbox, [{
         key: "bind",
         value: function bind(bindingContext) {
-            (0, _gridColumnUtils.RegisterColumn)(bindingContext, this);
-            this.loadConfigurationSettings();
+            if (bindingContext === this.grid) {
+                this.utility.registerWithGrid(this.grid, this);
+            } else {
+                this.utility.bindToRow(bindingContext, this);
+            }
+
+            this.loadCssFrameworkSettings();
         }
     }, {
-        key: "loadConfigurationSettings",
-        value: function loadConfigurationSettings() {
-            if (this.grid.configuration) {
-                var config = this.grid.configuration.checkboxClasses;
+        key: "loadCssFrameworkSettings",
+        value: function loadCssFrameworkSettings() {
+            if (this.grid.cssFramework) {
+                var config = this.grid.cssFramework.checkboxClasses;
 
                 this.checkedIconClass = config.checkedIcon;
                 this["class"] = config.editInput;
@@ -114,7 +122,7 @@ var GridColumnCheckbox = (function () {
     }], null, _instanceInitializers);
 
     var _GridColumnCheckbox = GridColumnCheckbox;
-    GridColumnCheckbox = (0, _aureliaFramework.inject)(_grid.Grid)(GridColumnCheckbox) || GridColumnCheckbox;
+    GridColumnCheckbox = (0, _aureliaFramework.inject)(_grid.Grid, _gridColumnUtility.ColumnUtility)(GridColumnCheckbox) || GridColumnCheckbox;
     GridColumnCheckbox = (0, _aureliaFramework.containerless)(GridColumnCheckbox) || GridColumnCheckbox;
     return GridColumnCheckbox;
 })();

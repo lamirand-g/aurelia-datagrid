@@ -1,9 +1,13 @@
 ﻿import debounce from "lodash/function/debounce";
-import { LoadCssFramework } from "./grid-css-framework";
 import GridConstants  from "./grid-constants";
+import { GridCssFrameworkRepository } from "./css-frameworks/repository";
 import { bindable, inject, ObserverLocator } from "aurelia-framework";
 
-@inject(ObserverLocator)
+export function configure(config){
+    console.log('conf');
+}
+
+@inject(ObserverLocator, GridCssFrameworkRepository)
 export class Grid {
     
     @bindable class;
@@ -20,9 +24,10 @@ export class Grid {
     @bindable sortButtonClass;
     @bindable sortDescendingIconClass;
 
-    constructor(observerLocator, gridConstants) {
+    constructor(observerLocator, repository) {
         this.columns = [];
         this.observerLocator = observerLocator;
+        this.repository = repository;
     }
 
     addColumn(column) {
@@ -46,7 +51,7 @@ export class Grid {
     bind(bindingContext) {
         this.$parent = bindingContext;
         this.items = bindingContext.items || [];
-        this.cssFramework = LoadCssFramework(this.cssFrameworkName);
+        this.cssFramework = this.repository.get(this.cssFrameworkName);
 
         this.loadCssFrameworkSettings();
         this.observeFilters();
@@ -86,6 +91,10 @@ export class Grid {
                     .subscribe(debounce(() => this.applyFilter(column.filter), 300));
             }
         }
+    }
+
+    setDefaultCssFramework(framework){
+        this.repository.setGlobalDefault(framework);
     }
 
     updateSort(sort) {

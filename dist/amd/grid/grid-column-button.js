@@ -1,4 +1,4 @@
-define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], function (exports, _grid, _gridColumnUtils, _aureliaFramework) {
+define(["exports", "./grid", "./grid-column-utility", "aurelia-framework"], function (exports, _grid, _gridColumnUtility, _aureliaFramework) {
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
@@ -37,7 +37,7 @@ define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], functi
 			enumerable: true
 		}], null, _instanceInitializers);
 
-		function GridColumnButton(grid) {
+		function GridColumnButton(grid, utility) {
 			_classCallCheck(this, _GridColumnButton);
 
 			_defineDecoratedPropertyDescriptor(this, "caption", _instanceInitializers);
@@ -49,13 +49,19 @@ define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], functi
 			_defineDecoratedPropertyDescriptor(this, "heading", _instanceInitializers);
 
 			this.grid = grid;
+			this.utility = utility;
 		}
 
 		_createDecoratedClass(GridColumnButton, [{
 			key: "bind",
 			value: function bind(bindingContext) {
-				(0, _gridColumnUtils.RegisterColumn)(bindingContext, this);
-				this.loadConfigurationSettings();
+				if (bindingContext === this.grid) {
+					this.utility.registerWithGrid(this.grid, this);
+				} else {
+					this.utility.bindToRow(bindingContext, this);
+				}
+
+				this.loadCssFrameworkSettings();
 			}
 		}, {
 			key: "click",
@@ -65,10 +71,10 @@ define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], functi
 				}
 			}
 		}, {
-			key: "loadConfigurationSettings",
-			value: function loadConfigurationSettings() {
-				if (this.grid.configuration) {
-					var config = this.grid.configuration.buttonClass;
+			key: "loadCssFrameworkSettings",
+			value: function loadCssFrameworkSettings() {
+				if (this.grid.cssFramework) {
+					var config = this.grid.cssFramework.buttonClass;
 
 					this["class"] = config;
 				}
@@ -76,7 +82,7 @@ define(["exports", "./grid", "./grid-column-utils", "aurelia-framework"], functi
 		}], null, _instanceInitializers);
 
 		var _GridColumnButton = GridColumnButton;
-		GridColumnButton = (0, _aureliaFramework.inject)(_grid.Grid)(GridColumnButton) || GridColumnButton;
+		GridColumnButton = (0, _aureliaFramework.inject)(_grid.Grid, _gridColumnUtility.ColumnUtility)(GridColumnButton) || GridColumnButton;
 		GridColumnButton = (0, _aureliaFramework.containerless)(GridColumnButton) || GridColumnButton;
 		return GridColumnButton;
 	})();

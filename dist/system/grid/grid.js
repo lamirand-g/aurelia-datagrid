@@ -1,19 +1,27 @@
-System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-framework"], function (_export) {
+System.register(["lodash/function/debounce", "./grid-constants", "./css-frameworks/repository", "aurelia-framework"], function (_export) {
     "use strict";
 
-    var debounce, LoadConfiguration, bindable, inject, ObserverLocator, Grid;
+    var debounce, GridConstants, GridCssFrameworkRepository, bindable, inject, ObserverLocator, Grid;
 
     var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
+
+    _export("configure", configure);
 
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
     function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer ? descriptor.initializer.call(target) : undefined; Object.defineProperty(target, key, descriptor); }
 
+    function configure(config) {
+        console.log('conf');
+    }
+
     return {
         setters: [function (_lodashFunctionDebounce) {
             debounce = _lodashFunctionDebounce["default"];
-        }, function (_gridConfiguration) {
-            LoadConfiguration = _gridConfiguration.LoadConfiguration;
+        }, function (_gridConstants) {
+            GridConstants = _gridConstants["default"];
+        }, function (_cssFrameworksRepository) {
+            GridCssFrameworkRepository = _cssFrameworksRepository.GridCssFrameworkRepository;
         }, function (_aureliaFramework) {
             bindable = _aureliaFramework.bindable;
             inject = _aureliaFramework.inject;
@@ -30,7 +38,7 @@ System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-fr
                     initializer: null,
                     enumerable: true
                 }, {
-                    key: "configurationName",
+                    key: "cssFrameworkName",
                     decorators: [bindable],
                     initializer: null,
                     enumerable: true
@@ -60,17 +68,7 @@ System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-fr
                     initializer: null,
                     enumerable: true
                 }, {
-                    key: "filterSearchButtonClass",
-                    decorators: [bindable],
-                    initializer: null,
-                    enumerable: true
-                }, {
                     key: "filterSearchIconClass",
-                    decorators: [bindable],
-                    initializer: null,
-                    enumerable: true
-                }, {
-                    key: "filterSearchGroupClass",
                     decorators: [bindable],
                     initializer: null,
                     enumerable: true
@@ -101,12 +99,12 @@ System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-fr
                     enumerable: true
                 }], null, _instanceInitializers);
 
-                function Grid(observerLocator) {
+                function Grid(observerLocator, repository) {
                     _classCallCheck(this, _Grid);
 
                     _defineDecoratedPropertyDescriptor(this, "class", _instanceInitializers);
 
-                    _defineDecoratedPropertyDescriptor(this, "configurationName", _instanceInitializers);
+                    _defineDecoratedPropertyDescriptor(this, "cssFrameworkName", _instanceInitializers);
 
                     _defineDecoratedPropertyDescriptor(this, "items", _instanceInitializers);
 
@@ -118,11 +116,7 @@ System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-fr
 
                     _defineDecoratedPropertyDescriptor(this, "filterInputClass", _instanceInitializers);
 
-                    _defineDecoratedPropertyDescriptor(this, "filterSearchButtonClass", _instanceInitializers);
-
                     _defineDecoratedPropertyDescriptor(this, "filterSearchIconClass", _instanceInitializers);
-
-                    _defineDecoratedPropertyDescriptor(this, "filterSearchGroupClass", _instanceInitializers);
 
                     _defineDecoratedPropertyDescriptor(this, "sortAscendingIconClass", _instanceInitializers);
 
@@ -136,6 +130,7 @@ System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-fr
 
                     this.columns = [];
                     this.observerLocator = observerLocator;
+                    this.repository = repository;
                 }
 
                 _createDecoratedClass(Grid, [{
@@ -162,40 +157,41 @@ System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-fr
                 }, {
                     key: "bind",
                     value: function bind(bindingContext) {
-                        this.$parent = this.$parent || bindingContext;
-                        this.items = this.items || bindingContext.items || [];
+                        this.$parent = bindingContext;
+                        this.items = bindingContext.items || [];
+                        this.cssFramework = this.repository.get(this.cssFrameworkName);
 
-                        this.configuration = LoadConfiguration(this.configurationName);
-                        this.loadConfigurationSettings(this.configuration);
-
+                        this.loadCssFrameworkSettings();
                         this.observeFilters();
                     }
                 }, {
-                    key: "loadConfigurationSettings",
-                    value: function loadConfigurationSettings(configuration) {
-                        this["class"] = configuration.gridClasses.table;
-                        this.loadFilterConfigurationSettings(configuration);
-                        this.loadSortConfigurationSettings(configuration);
+                    key: "loadCssFrameworkSettings",
+                    value: function loadCssFrameworkSettings() {
+                        this["class"] = this.cssFramework.gridClasses.table;
+                        this.loadFilterCssFrameworkSettings();
+                        this.loadSortCssFrameworkSettings();
                     }
                 }, {
-                    key: "loadFilterConfigurationSettings",
-                    value: function loadFilterConfigurationSettings(configuration) {
-                        this.filterFormClass = configuration.gridClasses.filterForm;
-                        this.filterFormFieldClass = configuration.gridClasses.filterFormField;
-                        this.filterInputGroupClass = configuration.gridClasses.filterInputGroup;
-                        this.filterInputClass = configuration.gridClasses.filterInput;
-                        this.filterSearchButtonClass = configuration.gridClasses.filterSearchButton;
-                        this.filterSearchIconClass = configuration.gridClasses.filterSearchIcon;
-                        this.filterSearchGroupClass = configuration.gridClasses.filterSearchGroup;
+                    key: "loadFilterCssFrameworkSettings",
+                    value: function loadFilterCssFrameworkSettings() {
+                        var settings = this.cssFramework.gridClasses;
+
+                        this.filterFormClass = settings.filterForm;
+                        this.filterFormFieldClass = settings.filterFormField;
+                        this.filterInputGroupClass = settings.filterInputGroup;
+                        this.filterInputClass = settings.filterInput;
+                        this.filterSearchIconClass = settings.filterSearchIcon;
                     }
                 }, {
-                    key: "loadSortConfigurationSettings",
-                    value: function loadSortConfigurationSettings(configuration) {
-                        this.sortAscendingIconClass = configuration.gridClasses.sortAscendingIcon;
-                        this.sortAvailableIconClass = configuration.gridClasses.sortAvailableIcon;
-                        this.sortButtonGroupClass = configuration.gridClasses.sortButtonGroup;
-                        this.sortButtonClass = configuration.gridClasses.sortButton;
-                        this.sortDescendingIconClass = configuration.gridClasses.sortDescendingIcon;
+                    key: "loadSortCssFrameworkSettings",
+                    value: function loadSortCssFrameworkSettings() {
+                        var settings = this.cssFramework.gridClasses;
+
+                        this.sortAscendingIconClass = settings.sortAscendingIcon;
+                        this.sortAvailableIconClass = settings.sortAvailableIcon;
+                        this.sortButtonGroupClass = settings.sortButtonGroup;
+                        this.sortButtonClass = settings.sortButton;
+                        this.sortDescendingIconClass = settings.sortDescendingIcon;
                     }
                 }, {
                     key: "observeFilters",
@@ -236,9 +232,14 @@ System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-fr
                         }
                     }
                 }, {
+                    key: "setDefaultCssFramework",
+                    value: function setDefaultCssFramework(framework) {
+                        this.repository.setGlobalDefault(framework);
+                    }
+                }, {
                     key: "updateSort",
                     value: function updateSort(sort) {
-                        var oldValue = sort.value;
+                        var oldValue = sort.direction;
 
                         var _iteratorNormalCompletion2 = true;
                         var _didIteratorError2 = false;
@@ -249,7 +250,7 @@ System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-fr
                                 var column = _step2.value;
 
                                 if (column.sort) {
-                                    column.sort.value = null;
+                                    column.sort.direction = null;
                                 }
                             }
                         } catch (err) {
@@ -268,21 +269,22 @@ System.register(["lodash/function/debounce", "./grid-configuration", "aurelia-fr
                         }
 
                         switch (oldValue) {
-                            case 'ascending':
-                                sort.value = 'descending';
+
+                            case GridConstants.sortAscending:
+                                sort.direction = GridConstants.sortDescending;
                                 break;
-                            case 'descending':
-                                sort.value = null;
+                            case GridConstants.sortDescending:
+                                sort.direction = null;
                                 break;
                             default:
-                                sort.value = 'ascending';
+                                sort.direction = GridConstants.sortAscending;
                                 break;
                         }
                     }
                 }], null, _instanceInitializers);
 
                 var _Grid = Grid;
-                Grid = inject(ObserverLocator)(Grid) || Grid;
+                Grid = inject(ObserverLocator, GridCssFrameworkRepository)(Grid) || Grid;
                 return Grid;
             })();
 
