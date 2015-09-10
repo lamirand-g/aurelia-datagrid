@@ -114,7 +114,7 @@ export function configure(aurelia) {
 1. In the `main.js` file, set the second parameter to the function:
 ```javascript
     ...
-    // configure the 
+    // configure the default css framework
     config => config.defaultCssFramework = 'semantic');
     ...
 ```
@@ -124,7 +124,7 @@ export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
-    // configure the 
+    // install plugin and configure the default css framework
     .plugin('donnelljenkins/aurelia-grid', config => {
         config.defaultCssFramework = 'semantic';
     });
@@ -138,7 +138,7 @@ export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
-    // configure the 
+    // install plugin and configure the default css framework
     .plugin('donnelljenkins/aurelia-grid', config => {
         config.defaultCssFramework = {
            name: 'test',
@@ -151,7 +151,7 @@ export function configure(aurelia) {
 
 ### Overriding the CSS framework for a grid
 ```html
-  <grid configuration-name="bootstrap">
+  <grid css-framework-name="bootstrap">
   ...
   </grid>
 ```
