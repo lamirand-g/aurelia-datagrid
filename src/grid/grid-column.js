@@ -3,7 +3,7 @@ import { ColumnUtility } from "./grid-column-utility";
 import { bindable, containerless, inject } from "aurelia-framework";
 
 @containerless
-@inject(Grid, ColumnUtility)
+@inject(Grid, ColumnUtility, Element)
 export class GridColumn {
     @bindable heading;
     @bindable editInputClass;
@@ -13,7 +13,8 @@ export class GridColumn {
     @bindable property;
     @bindable sortable;
 
-    constructor(grid, utility) {
+    constructor(grid, utility, element) {
+        this.element = element;
         this.grid = grid;
         this.row = {};
         this.utility = utility;
@@ -25,6 +26,7 @@ export class GridColumn {
         }
         else {
             this.utility.bindToRow(bindingContext, this);
+            this.utility.bindToValidation(this, this.element);
         }
 
         this.loadCssFrameworkSettings();

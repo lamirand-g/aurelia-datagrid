@@ -48,7 +48,7 @@ export class GridColumnEdit {
 	    this.originalValue = Object.assign({}, this.bindingContext.row); 
 
         if(this.editClick){
-        	this.editClick(this.bindingContext.row);
+        	this.editClick(this.bindingContext);
         }
 
         this.bindingContext.editing = true;
@@ -72,6 +72,7 @@ export class GridColumnEdit {
         	this.saveClick(this.bindingContext.row);
         }
 
-        this.bindingContext.editing = false;
+        // TODO: Check for promise on  this.saveClick
+        //this.bindingContext.editing = false;
     }
 }

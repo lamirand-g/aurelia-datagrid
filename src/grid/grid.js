@@ -13,6 +13,11 @@ export class Grid {
     @bindable class;
     @bindable cssFrameworkName;
     @bindable items;
+    @bindable filterCheckboxButtonClass;
+    @bindable filterCheckboxCheckedIconClass;
+    @bindable filterCheckboxClearIconClass;
+    @bindable filterCheckboxGroupClass;
+    @bindable filterCheckboxUncheckedIconClass;
     @bindable filterFormClass;
     @bindable filterFormFieldClass;
     @bindable filterInputGroupClass;
@@ -66,6 +71,11 @@ export class Grid {
     loadFilterCssFrameworkSettings() {
         let settings = this.cssFramework.gridClasses;
 
+        this.filterCheckboxButtonClass = settings.filterCheckboxButton;
+        this.filterCheckboxCheckedIconClass = settings.filterCheckboxCheckedIcon;
+        this.filterCheckboxClearIconClass = settings.filterCheckboxClearIcon;
+        this.filterCheckboxGroupClass = settings.filterCheckboxGroup;
+        this.filterCheckboxUncheckedIconClass = settings.filterCheckboxUncheckedIcon;
         this.filterFormClass = settings.filterForm;
         this.filterFormFieldClass = settings.filterFormField;
         this.filterInputGroupClass = settings.filterInputGroup;
@@ -91,10 +101,6 @@ export class Grid {
                     .subscribe(debounce(() => this.applyFilter(column.filter), 300));
             }
         }
-    }
-
-    setDefaultCssFramework(framework){
-        this.repository.setGlobalDefault(framework);
     }
 
     updateSort(sort) {

@@ -1,5 +1,6 @@
 let gridConfiguration = {
-	defaultCssFramework: 'default'
+	defaultCssFramework: 'default',
+     setDefaultCssFramework(framework){ this.defaultCssFramework = framework; }
 };
 
 export default gridConfiguration;

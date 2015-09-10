@@ -5,7 +5,7 @@ const semanticCssFramework = {
             checkedIcon: 'green checkmark icon',
             container: 'aligned center ui',
             input: 'checkbox ui',
-            uncheckedIcon: '',
+            uncheckedIcon: 'red remove icon',
         },
         editClasses: {
             buttonGroup: 'buttons fluid ui',
@@ -16,6 +16,11 @@ const semanticCssFramework = {
             saveCancelButtonGroup: 'ui fluid buttons'
         },
         gridClasses: {
+            filterCheckboxButton: 'ui button',
+            filterCheckboxClearIcon: 'ban icon',
+            filterCheckboxCheckedIcon: 'green checkmark icon',
+            filterCheckboxGroup: 'ui center aligned small basic icon buttons',
+            filterCheckboxUncheckedIcon: 'red remove icon',
             filterForm: 'ui form aligned center',
             filterFormField: 'field',
             filterInputGroup: 'ui icon input',

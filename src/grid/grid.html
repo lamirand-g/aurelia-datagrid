@@ -15,25 +15,37 @@
             </th>
         <tr>
             <th repeat.for="column of columns">
-                <form class.bind="$parent.filterFormClass" if.bind="column.filterable">
+                <form class.bind="$parent.filterFormClass" if.bind="column.filterable && column.inputType !== 'checkbox'">
                     <div class.bind="$parent.filterFormFieldClass">
                         <div class.bind="$parent.filterInputGroupClass">
-                            <input if.bind="column.inputType !== 'checkbox'"
-                                   type.bind="column.inputType"
+                            <input type.bind="column.inputType"
                                    class.bind="$parent.filterInputClass"
                                    placeholder="Filter for ${column.heading}"
                                    value.bind="column.filter.value">
-
-                            <input if.bind="column.inputType === 'checkbox'"
-                                   type="checkbox"
-                                   class.bind="$parent.filterInputClass"
-                                   placeholder="Filter for ${column.heading}"
-                                   checked.bind="column.filter.value">
-
                             <i class.bind="$parent.filterSearchIconClass"></i>
                         </div>
                     </div>
                 </form>
+
+                <div class.bind="$parent.filterFormClass" if.bind="column.filterable && column.inputType === 'checkbox'">
+                    <div class.bind="$parent.filterCheckboxGroupClass">
+                        <button type="button"
+                                class.bind="$parent.filterCheckboxButtonClass + (column.filter.value === null ? ' active' : '')"
+                                click.delegate="column.filter.value = null">
+                            <i class.bind="$parent.filterCheckboxClearIconClass"></i>
+                        </button>
+                        <button type="button"
+                                class.bind="$parent.filterCheckboxButtonClass + (column.filter.value === true ? ' active' : '')"
+                                click.delegate="column.filter.value = true">
+                            <i class.bind="$parent.filterCheckboxCheckedIconClass"></i>
+                        </button>
+                        <button type="button"
+                                class.bind="$parent.filterCheckboxButtonClass + (column.filter.value === false ? ' active' : '')"
+                                click.delegate="column.filter.value = false">
+                            <i class.bind="$parent.filterCheckboxUncheckedIconClass"></i>
+                        </button>
+                    </div>
+                </div>
             </th>
         </tr>
         </thead>
