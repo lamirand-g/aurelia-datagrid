@@ -106,9 +106,52 @@ export function configure(aurelia) {
    }
 ```
 
-## Configure Grid to Use Semantic-UI
+## Configuration
+
+### Set a CSS Framework as the default framework for all grids
+> Every grid in your app will use the specified CSS framework.
+
+1. In the `main.js` file, set the second parameter to the function:
+```javascript
+    ...
+    // configure the 
+    config => config.defaultCssFramework = 'semantic');
+    ...
+```
+
+```javascript
+export function configure(aurelia) {
+  aurelia.use
+    .standardConfiguration()
+    .developmentLogging()
+    // configure the 
+    .plugin('donnelljenkins/aurelia-grid', config => {
+        config.defaultCssFramework = 'semantic';
+    });
+
+  aurelia.start().then(a => a.setRoot());
+```
+
+### Creating a custom CSS Framework and using it as the default framework for all grids
+```javascript
+export function configure(aurelia) {
+  aurelia.use
+    .standardConfiguration()
+    .developmentLogging()
+    // configure the 
+    .plugin('donnelljenkins/aurelia-grid', config => {
+        config.defaultCssFramework = {
+           name: 'test',
+           buttonClass: 'ui orange button', // custom class using Semantic-UI
+        };
+    });
+
+  aurelia.start().then(a => a.setRoot());
+```
+
+### Overriding the CSS framework for a grid
 ```html
-  <grid configuration-name="semantic">
+  <grid configuration-name="bootstrap">
   ...
   </grid>
 ```
