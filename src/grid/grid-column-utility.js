@@ -1,12 +1,16 @@
 import startCase from "lodash/string/startCase";
-import { ElementsToPropertyDictionary } from "./validation/elements-to-property-dictionary";
-import { inject } from "aurelia-framework";
+import { ElementsToPropertyDictionarySingleton } from "./validation/elements-to-property-dictionary";
+//import { inject } from "aurelia-framework";
 
-@inject(ElementsToPropertyDictionary)
+//@inject(ElementsToPropertyDictionary)
 export class ColumnUtility{
 
-    constructor(propertyDictionary){
-        this.propertyDictionary = propertyDictionary;
+    // constructor(propertyDictionary){
+    //     //this.propertyDictionary = propertyDictionary;
+    // }
+
+    constructor(){
+        this.propertyDictionary = ElementsToPropertyDictionarySingleton.Instance;
     }
 
     bindToRow(bindingRowContext, column) {

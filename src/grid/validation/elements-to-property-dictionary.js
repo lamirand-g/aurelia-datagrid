@@ -1,4 +1,6 @@
-﻿export class ElementsToPropertyDictionary {
+﻿import { singleton } from "aurelia-framework";
+
+export class ElementsToPropertyDictionary {
     
     constructor() {
         this.dictionary = [];
@@ -23,6 +25,16 @@
         });
     }
 
+    findPropertyWithElementId(elementId){
+        for(let property of this.dictionary){
+            if(this.hasElement(property, elementId)){
+                return property;
+            }
+        }
+
+        return null;
+    }
+
     hasElement(propertyName, elementId) {
         let property = this.findProperty(propertyName);
 
@@ -37,3 +49,7 @@
         return false;
     }
 }
+
+export class ElementsToPropertyDictionarySingleton { }
+
+ElementsToPropertyDictionarySingleton.Instance = new ElementsToPropertyDictionary();

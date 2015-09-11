@@ -1,9 +1,10 @@
 import { Grid } from "./grid";
 import { ColumnUtility } from "./grid-column-utility";
 import { bindable, containerless, inject } from "aurelia-framework";
+import { ObserverLocator } from 'aurelia-binding';
 
 @containerless
-@inject(Grid, ColumnUtility, Element)
+@inject(Grid, ColumnUtility, Element, ObserverLocator)
 export class GridColumn {
     @bindable heading;
     @bindable editInputClass;
@@ -13,9 +14,10 @@ export class GridColumn {
     @bindable property;
     @bindable sortable;
 
-    constructor(grid, utility, element) {
+    constructor(grid, utility, element, observerLocator) {
         this.element = element;
         this.grid = grid;
+        this.observerLocator = observerLocator;
         this.row = {};
         this.utility = utility;
     }
@@ -27,6 +29,12 @@ export class GridColumn {
         else {
             this.utility.bindToRow(bindingContext, this);
             this.utility.bindToValidation(this, this.element);
+
+            this.observerLocator
+                .getObserver(bindingContext.row, 'validation')
+                .subscribe(newValue => {
+                    this.validation = Object.assign({}, newValue, { property: this.property });
+                });
         }
 
         this.loadCssFrameworkSettings();

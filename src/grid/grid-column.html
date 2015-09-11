@@ -1,7 +1,7 @@
 <template>
     <td if.bind="!bindingContext.editing">${row[property]}</td>
     <td if.bind="bindingContext.editing">
-        <form class="${editFormClass}" role="form" validate.bind="row.validation">
+        <form class="${editFormClass}" role="form" validate.bind="validation">
             <div class="${editFieldClass}">
                 <label class="aurelia-validation-message"></label>
                 <input class="${editInputClass}" type="text" value.bind="row[property]" />
