@@ -1,31 +1,11 @@
 import startCase from "lodash/string/startCase";
-import { ElementsToPropertyDictionarySingleton } from "./validation/elements-to-property-dictionary";
-//import { inject } from "aurelia-framework";
 
-//@inject(ElementsToPropertyDictionary)
 export class ColumnUtility{
-
-    // constructor(propertyDictionary){
-    //     //this.propertyDictionary = propertyDictionary;
-    // }
-
-    constructor(){
-        this.propertyDictionary = ElementsToPropertyDictionarySingleton.Instance;
-    }
 
     bindToRow(bindingRowContext, column) {
         column.bindingContext = bindingRowContext;
         column.bindingContext.editing = column.bindingContext.editing || false;
         column.row = bindingRowContext.row;
-    }
-
-    bindToValidation(template, element){
-        let elementId = element.getAttribute('au-target-id');
-        let hasElement = this.propertyDictionary.hasElement(template.property, elementId);
-
-        if(!hasElement) {
-            this.propertyDictionary.add(template.property, elementId);
-        }
     }
 
     registerWithGrid(grid, template) {
@@ -49,7 +29,7 @@ export class ColumnUtility{
           
             sort: {
                 property: template.property,
-                value: null
+                direction: null
             }
         };
 

@@ -28,7 +28,6 @@ export class GridColumn {
         }
         else {
             this.utility.bindToRow(bindingContext, this);
-            this.utility.bindToValidation(this, this.element);
 
             this.observerLocator
                 .getObserver(bindingContext.row, 'validation')

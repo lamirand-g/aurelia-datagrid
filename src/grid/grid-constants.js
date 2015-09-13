@@ -1,6 +1,6 @@
 ﻿const gridConstants = {
-    sortAscending: "ascending",
-    sortDescending: "descending"
+    sortAscending: "asc",
+    sortDescending: "desc"
 };
 
 export default gridConstants;

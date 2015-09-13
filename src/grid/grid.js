@@ -1,11 +1,7 @@
-﻿import debounce from "lodash/function/debounce";
-import GridConstants  from "./grid-constants";
+﻿import Sorter from "./sorting/sorter";
+import Filterer from "./filtering/filterer";
 import { GridCssFrameworkRepository } from "./css-frameworks/repository";
 import { bindable, inject, ObserverLocator } from "aurelia-framework";
-
-export function configure(config){
-    console.log('conf');
-}
 
 @inject(ObserverLocator, GridCssFrameworkRepository)
 export class Grid {
@@ -33,24 +29,11 @@ export class Grid {
         this.columns = [];
         this.observerLocator = observerLocator;
         this.repository = repository;
+        this.sorter = new Sorter(this);
     }
 
     addColumn(column) {
         this.columns.push(column);
-    }
-
-    applyFilter(filter) {
-        if (this.$parent.applyFilter) {
-            this.$parent.applyFilter(filter);
-        }
-    }
-
-    applySort(sort) {
-        this.updateSort(sort);
-
-        if (this.$parent.applySort) {
-            this.$parent.applySort(sort);
-        }
     }
 
     bind(bindingContext) {
@@ -59,7 +42,7 @@ export class Grid {
         this.cssFramework = this.repository.get(this.cssFrameworkName);
 
         this.loadCssFrameworkSettings();
-        this.observeFilters();
+        this.filterer = new Filterer(this, this.$parent, this.observerLocator);
     }
 
     loadCssFrameworkSettings() {
@@ -91,39 +74,5 @@ export class Grid {
         this.sortButtonGroupClass = settings.sortButtonGroup;
         this.sortButtonClass = settings.sortButton;
         this.sortDescendingIconClass = settings.sortDescendingIcon;
-    }
-
-    observeFilters() {
-        for (let column of this.columns) {
-            if (column.filter) {
-                this.observerLocator
-                    .getObserver(column.filter, 'value')
-                    .subscribe(debounce(() => this.applyFilter(column.filter), 300));
-            }
-        }
-    }
-
-    updateSort(sort) {
-        let oldValue = sort.direction;
-
-        // clear all other sorts
-        for (let column of this.columns) {
-            if (column.sort) {
-                column.sort.direction = null;
-            }
-        }
-
-        switch(oldValue) {
-            
-            case GridConstants.sortAscending:
-                sort.direction = GridConstants.sortDescending;
-                break;
-            case GridConstants.sortDescending:
-                sort.direction = null;
-                break;
-            default:
-                sort.direction = GridConstants.sortAscending;
-                break;
-        }
     }
 }
