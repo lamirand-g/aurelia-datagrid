@@ -33,8 +33,8 @@ export class GridColumnButton {
 	}
 
 	loadCssFrameworkSettings() {
-	    if (this.grid.cssFramework) {
-	        let config = this.grid.cssFramework.buttonClass;
+	    if (this.grid.cssFrameworkConfiguration) {
+	        let config = this.grid.cssFrameworkConfiguration.buttonClass;
 
 	        this.class = config;
 	    }

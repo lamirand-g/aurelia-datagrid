@@ -34,7 +34,7 @@ var Grid = (function () {
         initializer: null,
         enumerable: true
     }, {
-        key: "cssFrameworkName",
+        key: "cssFramework",
         decorators: [_aureliaFramework.bindable],
         initializer: null,
         enumerable: true
@@ -127,7 +127,7 @@ var Grid = (function () {
 
         _defineDecoratedPropertyDescriptor(this, "class", _instanceInitializers);
 
-        _defineDecoratedPropertyDescriptor(this, "cssFrameworkName", _instanceInitializers);
+        _defineDecoratedPropertyDescriptor(this, "cssFramework", _instanceInitializers);
 
         _defineDecoratedPropertyDescriptor(this, "items", _instanceInitializers);
 
@@ -194,7 +194,7 @@ var Grid = (function () {
         value: function bind(bindingContext) {
             this.$parent = bindingContext;
             this.items = bindingContext.items || [];
-            this.cssFramework = this.repository.get(this.cssFrameworkName);
+            this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
             this.loadCssFrameworkSettings();
             this.filterer = new _filteringFilterer2["default"](this, this.$parent, this.observerLocator);
@@ -202,18 +202,20 @@ var Grid = (function () {
     }, {
         key: "loadCssFrameworkSettings",
         value: function loadCssFrameworkSettings() {
-            this["class"] = this.cssFramework.gridClasses.table;
+            this.cssFramework = this.cssFrameworkConfiguration.name;
+            this["class"] = this.cssFrameworkConfiguration.gridClasses.table;
             this.loadFilterCssFrameworkSettings();
             this.loadSortCssFrameworkSettings();
         }
     }, {
         key: "loadFilterCssFrameworkSettings",
         value: function loadFilterCssFrameworkSettings() {
-            var settings = this.cssFramework.gridClasses;
+            var settings = this.cssFrameworkConfiguration.gridClasses;
 
             this.filterCheckboxButtonClass = settings.filterCheckboxButton;
             this.filterCheckboxCheckedIconClass = settings.filterCheckboxCheckedIcon;
             this.filterCheckboxClearIconClass = settings.filterCheckboxClearIcon;
+            this.filterCheckboxFormFieldGroupClass = settings.filterCheckboxFormFieldGroup;
             this.filterCheckboxGroupClass = settings.filterCheckboxGroup;
             this.filterCheckboxUncheckedIconClass = settings.filterCheckboxUncheckedIcon;
             this.filterFormClass = settings.filterForm;
@@ -225,7 +227,7 @@ var Grid = (function () {
     }, {
         key: "loadSortCssFrameworkSettings",
         value: function loadSortCssFrameworkSettings() {
-            var settings = this.cssFramework.gridClasses;
+            var settings = this.cssFrameworkConfiguration.gridClasses;
 
             this.sortAscendingIconClass = settings.sortAscendingIcon;
             this.sortAvailableIconClass = settings.sortAvailableIcon;

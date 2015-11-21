@@ -27,7 +27,7 @@ define(["exports", "./sorting/sorter", "./filtering/filterer", "./css-frameworks
             initializer: null,
             enumerable: true
         }, {
-            key: "cssFrameworkName",
+            key: "cssFramework",
             decorators: [_aureliaFramework.bindable],
             initializer: null,
             enumerable: true
@@ -120,7 +120,7 @@ define(["exports", "./sorting/sorter", "./filtering/filterer", "./css-frameworks
 
             _defineDecoratedPropertyDescriptor(this, "class", _instanceInitializers);
 
-            _defineDecoratedPropertyDescriptor(this, "cssFrameworkName", _instanceInitializers);
+            _defineDecoratedPropertyDescriptor(this, "cssFramework", _instanceInitializers);
 
             _defineDecoratedPropertyDescriptor(this, "items", _instanceInitializers);
 
@@ -187,7 +187,7 @@ define(["exports", "./sorting/sorter", "./filtering/filterer", "./css-frameworks
             value: function bind(bindingContext) {
                 this.$parent = bindingContext;
                 this.items = bindingContext.items || [];
-                this.cssFramework = this.repository.get(this.cssFrameworkName);
+                this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
                 this.loadCssFrameworkSettings();
                 this.filterer = new _Filterer["default"](this, this.$parent, this.observerLocator);
@@ -195,18 +195,20 @@ define(["exports", "./sorting/sorter", "./filtering/filterer", "./css-frameworks
         }, {
             key: "loadCssFrameworkSettings",
             value: function loadCssFrameworkSettings() {
-                this["class"] = this.cssFramework.gridClasses.table;
+                this.cssFramework = this.cssFrameworkConfiguration.name;
+                this["class"] = this.cssFrameworkConfiguration.gridClasses.table;
                 this.loadFilterCssFrameworkSettings();
                 this.loadSortCssFrameworkSettings();
             }
         }, {
             key: "loadFilterCssFrameworkSettings",
             value: function loadFilterCssFrameworkSettings() {
-                var settings = this.cssFramework.gridClasses;
+                var settings = this.cssFrameworkConfiguration.gridClasses;
 
                 this.filterCheckboxButtonClass = settings.filterCheckboxButton;
                 this.filterCheckboxCheckedIconClass = settings.filterCheckboxCheckedIcon;
                 this.filterCheckboxClearIconClass = settings.filterCheckboxClearIcon;
+                this.filterCheckboxFormFieldGroupClass = settings.filterCheckboxFormFieldGroup;
                 this.filterCheckboxGroupClass = settings.filterCheckboxGroup;
                 this.filterCheckboxUncheckedIconClass = settings.filterCheckboxUncheckedIcon;
                 this.filterFormClass = settings.filterForm;
@@ -218,7 +220,7 @@ define(["exports", "./sorting/sorter", "./filtering/filterer", "./css-frameworks
         }, {
             key: "loadSortCssFrameworkSettings",
             value: function loadSortCssFrameworkSettings() {
-                var settings = this.cssFramework.gridClasses;
+                var settings = this.cssFrameworkConfiguration.gridClasses;
 
                 this.sortAscendingIconClass = settings.sortAscendingIcon;
                 this.sortAvailableIconClass = settings.sortAvailableIcon;

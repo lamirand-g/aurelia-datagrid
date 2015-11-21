@@ -111,8 +111,8 @@ var GridColumn = (function () {
     }, {
         key: "loadCssFrameworkSettings",
         value: function loadCssFrameworkSettings() {
-            if (this.grid.cssFramework) {
-                var settings = this.grid.cssFramework.textClasses;
+            if (this.grid.cssFrameworkConfiguration) {
+                var settings = this.grid.cssFrameworkConfiguration.textClasses;
 
                 this.editInputClass = settings.editInput;
                 this.editFieldClass = settings.editField;

@@ -16,24 +16,25 @@ define(['exports', 'module'], function (exports, module) {
             editButton: 'btn btn-primary',
             orDiv: '',
             saveButton: 'btn btn-success',
-            saveCancelButtonGroup: ''
+            saveCancelButtonGroup: 'btn-group-vertical'
         },
         gridClasses: {
             filterCheckboxButton: 'btn btn-default',
             filterCheckboxClearIcon: 'glyphicon glyphicon-ban-circle',
             filterCheckboxCheckedIcon: 'glyphicon glyphicon-ok',
+            filterCheckboxFormFieldGroup: 'text-center',
             filterCheckboxGroup: 'btn-group',
             filterCheckboxUncheckedIcon: 'glyphicon glyphicon-remove',
-            filterForm: 'form',
+            filterForm: '',
             filterFormField: '',
             filterInputGroup: 'input-group',
             filterInput: 'form-control',
             filterSearchIcon: 'glyphicon glyphicon-search',
-            sortAscendingIcon: 'glyphicon glyphicon-chevron-up',
+            sortAscendingIcon: 'glyphicon glyphicon-arrow-up',
             sortAvailableIcon: 'glyphicon glyphicon-sort',
             sortButtonGroup: 'btn-group btn-group-justified',
             sortButton: 'btn btn-default',
-            sortDescendingIcon: 'glyphicon glyphicon-chevron-down',
+            sortDescendingIcon: 'glyphicon glyphicon-arrow-down',
             table: 'table table-striped table-condensed table-bordered'
         },
         textClasses: {

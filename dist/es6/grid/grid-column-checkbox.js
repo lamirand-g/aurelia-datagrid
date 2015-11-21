@@ -42,8 +42,8 @@ export class GridColumnCheckbox {
     }
 
     loadCssFrameworkSettings() {
-        if (this.grid.cssFramework) {
-            let config = this.grid.cssFramework.checkboxClasses;
+        if (this.grid.cssFrameworkConfiguration) {
+            let config = this.grid.cssFrameworkConfiguration.checkboxClasses;
 
             this.checkedIconClass = config.checkedIcon;
             this.class = config.editInput;

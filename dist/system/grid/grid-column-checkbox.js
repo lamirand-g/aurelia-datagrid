@@ -121,8 +121,8 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
                 }, {
                     key: "loadCssFrameworkSettings",
                     value: function loadCssFrameworkSettings() {
-                        if (this.grid.cssFramework) {
-                            var config = this.grid.cssFramework.checkboxClasses;
+                        if (this.grid.cssFrameworkConfiguration) {
+                            var config = this.grid.cssFrameworkConfiguration.checkboxClasses;
 
                             this.checkedIconClass = config.checkedIcon;
                             this["class"] = config.editInput;

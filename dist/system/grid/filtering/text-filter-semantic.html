@@ -1,0 +1,13 @@
+<template>
+	<div class.bind="$parent.filterFormClass" if.bind="column.filterable && column.inputType !== 'checkbox'">
+        <div class.bind="$parent.filterFormFieldClass">
+            <div class.bind="$parent.filterInputGroupClass">
+                <input type.bind="column.inputType"
+                       class.bind="$parent.filterInputClass"
+                       placeholder="Filter for ${column.heading}"
+                       value.bind="column.filter.value">
+                <i class.bind="$parent.filterSearchIconClass"></i>
+            </div>
+        </div>
+    </div>
+</temlate>

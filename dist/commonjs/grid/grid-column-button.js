@@ -78,8 +78,8 @@ var GridColumnButton = (function () {
 	}, {
 		key: "loadCssFrameworkSettings",
 		value: function loadCssFrameworkSettings() {
-			if (this.grid.cssFramework) {
-				var config = this.grid.cssFramework.buttonClass;
+			if (this.grid.cssFrameworkConfiguration) {
+				var config = this.grid.cssFrameworkConfiguration.buttonClass;
 
 				this["class"] = config;
 			}

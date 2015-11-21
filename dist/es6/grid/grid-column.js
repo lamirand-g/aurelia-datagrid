@@ -47,8 +47,8 @@ export class GridColumn {
     }
 
     loadCssFrameworkSettings() {
-        if (this.grid.cssFramework) {
-            let settings = this.grid.cssFramework.textClasses;
+        if (this.grid.cssFrameworkConfiguration) {
+            let settings = this.grid.cssFrameworkConfiguration.textClasses;
 
             this.editInputClass = settings.editInput;
             this.editFieldClass = settings.editField;

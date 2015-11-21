@@ -147,8 +147,8 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
                 }, {
                     key: "loadCssFrameworkSettings",
                     value: function loadCssFrameworkSettings() {
-                        if (this.grid.cssFramework) {
-                            var config = this.grid.cssFramework.editClasses;
+                        if (this.grid.cssFrameworkConfiguration) {
+                            var config = this.grid.cssFrameworkConfiguration.editClasses;
 
                             this.butttonGroupClass = config.buttonGroup;
                             this.cancelButtonClass = config.cancelButton;

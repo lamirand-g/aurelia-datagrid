@@ -21,6 +21,7 @@ define(['exports', 'module'], function (exports, module) {
         gridClasses: {
             filterForm: '',
             filterFormField: '',
+            filterCheckboxFormFieldGroup: '',
             filterInputGroup: '',
             filterInput: '',
             filterSearchIcon: '',

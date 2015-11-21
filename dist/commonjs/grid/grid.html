@@ -1,72 +1,36 @@
 <template>
     <table class="${class}">
         <thead>
-        <tr>
-            <th repeat.for="column of columns">
-                <span if.bind="!column.sortable">${column.heading}</span>
-                <div if.bind="column.sortable" class.bind="$parent.sortButtonGroupClass" role="group">
-                    <a role="button" class.bind="$parent.sortButtonClass" click.delegate="$parent.sorter.applySort(column.sort)">
-                        ${column.heading}
-                        <i class.bind="$parent.sortAvailableIconClass" if.bind="!column.sort.direction"></i>
-                        <i class.bind="$parent.sortAscendingIconClass" if.bind="column.sort.direction === 'ascending'"></i>
-                        <i class.bind="$parent.sortDescendingIconClass" if.bind="column.sort.direction === 'descending'"></i>
-                    </a>
-                </div>
-            </th>
-        <tr>
-            <th repeat.for="column of columns">
-                <form class.bind="$parent.filterFormClass" if.bind="column.filterable && column.inputType !== 'checkbox'">
-                    <div class.bind="$parent.filterFormFieldClass">
-                        <div class.bind="$parent.filterInputGroupClass">
-                            <input type.bind="column.inputType"
-                                   class.bind="$parent.filterInputClass"
-                                   placeholder="Filter for ${column.heading}"
-                                   value.bind="column.filter.value">
-                            <i class.bind="$parent.filterSearchIconClass"></i>
-                        </div>
-                    </div>
-                </form>
-
-                <div class.bind="$parent.filterFormClass" if.bind="column.filterable && column.inputType === 'checkbox'">
-                    <div class.bind="$parent.filterCheckboxGroupClass">
-                        <button type="button"
-                                class.bind="$parent.filterCheckboxButtonClass + (column.filter.value === null ? ' active' : '')"
-                                click.delegate="column.filter.value = null">
-                            <i class.bind="$parent.filterCheckboxClearIconClass"></i>
-                        </button>
-                        <button type="button"
-                                class.bind="$parent.filterCheckboxButtonClass + (column.filter.value === true ? ' active' : '')"
-                                click.delegate="column.filter.value = true">
-                            <i class.bind="$parent.filterCheckboxCheckedIconClass"></i>
-                        </button>
-                        <button type="button"
-                                class.bind="$parent.filterCheckboxButtonClass + (column.filter.value === false ? ' active' : '')"
-                                click.delegate="column.filter.value = false">
-                            <i class.bind="$parent.filterCheckboxUncheckedIconClass"></i>
-                        </button>
-                    </div>
-                </div>
-            </th>
-        </tr>
+            <tr>
+                <th repeat.for="column of columns">
+                    <span if.bind="!column.sortable">${column.heading}</span>
+                    <compose view="./sorting/sorts.html" containerless></compose>
+                </th>
+            </tr>
+            <tr>
+                <th repeat.for="column of columns">
+                    <compose view="./filtering/filters.html" containerless></compose>
+                </th>
+            </tr>
         </thead>
 
         <tbody>
-        <tr repeat.for="row of items">
-            <template replaceable part="grid-template"></template>
-        </tr>
+            <tr repeat.for="row of items">
+                <template replaceable part="grid-template"></template>
+            </tr>
         </tbody>
 
         <tfoot>
-        <tr>
-            <template replaceable part="grid-footer-template"></template>
-        </tr>
+            <tr>
+                <template replaceable part="grid-footer-template"></template>
+            </tr>
 
-        <!--This is here to ensure the column information gets populated in cases-->
-        <!--where there are no items.  Without this, the grid will be completely blank.-->
-        <tr style="display: none;">
-            <template replaceable part="grid-template">
-            </template>
-        </tr>
+            <!--This is here to ensure the column information gets populated in cases-->
+            <!--where there are no items.  Without this, the grid will be completely blank.-->
+            <tr style="display: none;">
+                <template replaceable part="grid-template">
+                </template>
+            </tr>
         </tfoot>
     </table>
 </template>

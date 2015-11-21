@@ -60,8 +60,8 @@ export class GridColumnEdit {
     }
 
     loadCssFrameworkSettings() {
-	    if (this.grid.cssFramework) {
-	        let config = this.grid.cssFramework.editClasses;
+	    if (this.grid.cssFrameworkConfiguration) {
+	        let config = this.grid.cssFrameworkConfiguration.editClasses;
 
 	        this.butttonGroupClass = config.buttonGroup;
 	        this.cancelButtonClass = config.cancelButton;

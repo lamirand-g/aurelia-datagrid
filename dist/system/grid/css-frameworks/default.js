@@ -25,6 +25,7 @@ System.register([], function (_export) {
                 gridClasses: {
                     filterForm: '',
                     filterFormField: '',
+                    filterCheckboxFormFieldGroup: '',
                     filterInputGroup: '',
                     filterInput: '',
                     filterSearchIcon: '',

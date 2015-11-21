@@ -23,6 +23,7 @@ var defaultCssFramework = {
     gridClasses: {
         filterForm: '',
         filterFormField: '',
+        filterCheckboxFormFieldGroup: '',
         filterInputGroup: '',
         filterInput: '',
         filterSearchIcon: '',

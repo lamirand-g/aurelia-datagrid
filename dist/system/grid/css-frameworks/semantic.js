@@ -26,6 +26,7 @@ System.register([], function (_export) {
                     filterCheckboxButton: 'ui button',
                     filterCheckboxClearIcon: 'ui ban icon',
                     filterCheckboxCheckedIcon: 'ui green checkmark icon',
+                    filterCheckboxFormFieldGroup: 'field',
                     filterCheckboxGroup: 'ui center aligned small basic icon buttons',
                     filterCheckboxUncheckedIcon: 'red remove icon',
                     filterForm: 'ui center aligned form',
