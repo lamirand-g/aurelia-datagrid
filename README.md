@@ -1,7 +1,9 @@
 # aurelia-grid
 A data grid control for Aurelia with sorting and filtering capabilities.
 
-Demo: http://donthedev.com/aurelia/#/grid
+## Demo
+
+<a href="http://donthedev.com/aurelia/#grid-examples/" target="_blank">Aurelia Datagrid Demo</a>
 
 ## Dependencies
 
@@ -17,7 +19,7 @@ Demo: http://donthedev.com/aurelia/#/grid
 1.  Ensure that [JSPM](http://jspm.io/) is installed.
 2.  From your project folder, execute the following command:
 ```shell
-jspm install github:donnelljenkins/aurelia-grid
+jspm install github:donnelljenkins/aurelia-datagrid
 ```
 
 ## Import
@@ -30,29 +32,36 @@ export function configure(aurelia) {
     .standardConfiguration()
     .developmentLogging()
     // import the plugin
-    .plugin('donnelljenkins/aurelia-grid');
-
-  aurelia.start().then(a => a.setRoot());
+    .plugin('donnelljenkins/aurelia-datagrid');
+  ...
+}
 ```
 
 ## Usage
 ```html
-  <grid>
-    <!-- row template -->
-    <template replace-part="grid-template">
-      <!-- column templates -->
-      <td grid-column-template property="name" heading="Custom Template">${row.name}</td>
-      <grid-column property="name" filterable sortable></grid-column>
-      <grid-column-checkbox property="active"></grid-column-checkbox>
-      <grid-column-button caption="Greet" heading="List Function"
-                         button-click.bind="$parent.$parent.greet">
-      </grid-column-button>
-      <grid-column-edit heading="Inline" hide-cancel></grid-column-edit>
-    </template>
-  </grid>
+<grid>
+	<template replace-part="grid-template">
+		<grid-column property="name" filterable sortable></grid-column>
+		<grid-column property="title" filterable sortable></grid-column>
+		<grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
+		<grid-column-button heading="Actions" caption="Select" button-click.call="$parent.$parent.semanticGridButtonClick($event)"></grid-column-button>
+		<grid-column-template heading="Custom">
+			<template replace-part="custom-template">
+				<compose view="./demo-custom-column-template.html" containerless></compose>
+			</template>
+		</grid-column-template>
+		<grid-column property="id" alignment="right"></grid-column>
+		<grid-column-edit></grid-column-edit>
+	</template>
+
+	<template replace-part="grid-footer-template">
+		<td colspan.bind="columns.length">This is the Aurelia Semantic-UI grid!  We tried to make using it as simple as possible.</td>
+	</template>
+</grid>
 ```
 
 ## Column Templates
+
 - heading
 - property
 
@@ -129,7 +138,8 @@ export function configure(aurelia) {
         config.defaultCssFramework = 'semantic';
     });
 
-  aurelia.start().then(a => a.setRoot());
+  ...
+}
 ```
 
 ### Creating a custom CSS Framework and using it as the default framework for all grids
@@ -146,7 +156,8 @@ export function configure(aurelia) {
         };
     });
 
-  aurelia.start().then(a => a.setRoot());
+  ...
+}
 ```
 
 ### Overriding the CSS framework for a grid
