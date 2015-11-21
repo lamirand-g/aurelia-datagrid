@@ -23,7 +23,7 @@ A data grid control for Aurelia with sorting and filtering capabilities.
 
 ## Live Demo
 
-<a href="http://donthedev.com/aurelia/#grid-examples/" target="_blank">Aurelia DataGrid Demo</a>
+<a href="http://donthedev.com/aurelia/#datagrid-examples/" target="_blank">Aurelia-DataGrid Demo</a>
 
 ## Documentation
 
