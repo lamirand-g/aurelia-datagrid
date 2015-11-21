@@ -41,6 +41,7 @@ A data grid control for Aurelia with sorting and filtering capabilities.
   - [Grid level settings](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-level-settings)
   - [View model settings](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#view-model-overrides)
 
+
 ## Dependencies
 
 * [aurelia-framework](https://github.com/aurelia/framework)
