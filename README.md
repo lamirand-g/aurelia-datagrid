@@ -134,7 +134,7 @@ export function configure(aurelia) {
     .standardConfiguration()
     .developmentLogging()
     // install plugin and configure the default css framework
-    .plugin('donnelljenkins/aurelia-grid', config => {
+    .plugin('donnelljenkins/aurelia-datagrid', config => {
         config.defaultCssFramework = 'semantic';
     });
 
@@ -149,7 +149,7 @@ export function configure(aurelia) {
     .standardConfiguration()
     .developmentLogging()
     // install plugin and configure the default css framework
-    .plugin('donnelljenkins/aurelia-grid', config => {
+    .plugin('donnelljenkins/aurelia-datagrid', config => {
         config.defaultCssFramework = {
            name: 'test',
            buttonClass: 'ui orange button', // custom class using Semantic-UI
