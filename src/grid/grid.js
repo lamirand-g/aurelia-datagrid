@@ -27,6 +27,7 @@ export class Grid {
 
     constructor(observerLocator, repository) {
         this.columns = [];
+        this.itemsCurrentlyEditing = [];
         this.observerLocator = observerLocator;
         this.repository = repository;
         this.sorter = new Sorter(this);
@@ -34,6 +35,7 @@ export class Grid {
 
     addColumn(column) {
         this.columns.push(column);
+        this.filterer.observeColumn(column);
     }
 
     bind(bindingContext) {
@@ -74,5 +76,18 @@ export class Grid {
         this.sortButtonGroupClass = settings.sortButtonGroup;
         this.sortButtonClass = settings.sortButton;
         this.sortDescendingIconClass = settings.sortDescendingIcon;
+    }
+
+    beginEditingItem = (item) => {
+        this.itemsCurrentlyEditing.push(item);
+    }
+
+    isEditingItem  = (item) => {
+        return this.itemsCurrentlyEditing.some(editing => editing === item);
+    }
+
+    finishEditingItem = (item) => {
+        let index = this.itemsCurrentlyEditing.indexOf(item);
+        this.itemsCurrentlyEditing.splice(index, 1);
     }
 }

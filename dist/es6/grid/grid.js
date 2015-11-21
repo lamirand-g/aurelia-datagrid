@@ -1,11 +1,7 @@
-import debounce from "lodash/function/debounce";
-import GridConstants  from "./grid-constants";
+import Sorter from "./sorting/sorter";
+import Filterer from "./filtering/filterer";
 import { GridCssFrameworkRepository } from "./css-frameworks/repository";
 import { bindable, inject, ObserverLocator } from "aurelia-framework";
-
-export function configure(config){
-    console.log('conf');
-}
 
 @inject(ObserverLocator, GridCssFrameworkRepository)
 export class Grid {
@@ -13,6 +9,11 @@ export class Grid {
     @bindable class;
     @bindable cssFrameworkName;
     @bindable items;
+    @bindable filterCheckboxButtonClass;
+    @bindable filterCheckboxCheckedIconClass;
+    @bindable filterCheckboxClearIconClass;
+    @bindable filterCheckboxGroupClass;
+    @bindable filterCheckboxUncheckedIconClass;
     @bindable filterFormClass;
     @bindable filterFormFieldClass;
     @bindable filterInputGroupClass;
@@ -26,26 +27,15 @@ export class Grid {
 
     constructor(observerLocator, repository) {
         this.columns = [];
+        this.itemsCurrentlyEditing = [];
         this.observerLocator = observerLocator;
         this.repository = repository;
+        this.sorter = new Sorter(this);
     }
 
     addColumn(column) {
         this.columns.push(column);
-    }
-
-    applyFilter(filter) {
-        if (this.$parent.applyFilter) {
-            this.$parent.applyFilter(filter);
-        }
-    }
-
-    applySort(sort) {
-        this.updateSort(sort);
-
-        if (this.$parent.applySort) {
-            this.$parent.applySort(sort);
-        }
+        this.filterer.observeColumn(column);
     }
 
     bind(bindingContext) {
@@ -54,7 +44,7 @@ export class Grid {
         this.cssFramework = this.repository.get(this.cssFrameworkName);
 
         this.loadCssFrameworkSettings();
-        this.observeFilters();
+        this.filterer = new Filterer(this, this.$parent, this.observerLocator);
     }
 
     loadCssFrameworkSettings() {
@@ -66,6 +56,11 @@ export class Grid {
     loadFilterCssFrameworkSettings() {
         let settings = this.cssFramework.gridClasses;
 
+        this.filterCheckboxButtonClass = settings.filterCheckboxButton;
+        this.filterCheckboxCheckedIconClass = settings.filterCheckboxCheckedIcon;
+        this.filterCheckboxClearIconClass = settings.filterCheckboxClearIcon;
+        this.filterCheckboxGroupClass = settings.filterCheckboxGroup;
+        this.filterCheckboxUncheckedIconClass = settings.filterCheckboxUncheckedIcon;
         this.filterFormClass = settings.filterForm;
         this.filterFormFieldClass = settings.filterFormField;
         this.filterInputGroupClass = settings.filterInputGroup;
@@ -83,41 +78,16 @@ export class Grid {
         this.sortDescendingIconClass = settings.sortDescendingIcon;
     }
 
-    observeFilters() {
-        for (let column of this.columns) {
-            if (column.filter) {
-                this.observerLocator
-                    .getObserver(column.filter, 'value')
-                    .subscribe(debounce(() => this.applyFilter(column.filter), 300));
-            }
-        }
+    beginEditingItem = (item) => {
+        this.itemsCurrentlyEditing.push(item);
     }
 
-    setDefaultCssFramework(framework){
-        this.repository.setGlobalDefault(framework);
+    isEditingItem  = (item) => {
+        return this.itemsCurrentlyEditing.some(editing => editing === item);
     }
 
-    updateSort(sort) {
-        let oldValue = sort.direction;
-
-        // clear all other sorts
-        for (let column of this.columns) {
-            if (column.sort) {
-                column.sort.direction = null;
-            }
-        }
-
-        switch(oldValue) {
-            
-            case GridConstants.sortAscending:
-                sort.direction = GridConstants.sortDescending;
-                break;
-            case GridConstants.sortDescending:
-                sort.direction = null;
-                break;
-            default:
-                sort.direction = GridConstants.sortAscending;
-                break;
-        }
+    finishEditingItem = (item) => {
+        let index = this.itemsCurrentlyEditing.indexOf(item);
+        this.itemsCurrentlyEditing.splice(index, 1);
     }
 }

@@ -1,5 +1,5 @@
 let gridConfiguration = {
-	defaultCssFramework: 'default'
+	defaultCssFramework: 'default',
 };
 
 export default gridConfiguration;

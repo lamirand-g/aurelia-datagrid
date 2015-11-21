@@ -1,20 +1,20 @@
 <template>
     <td>
         <div class.bind="butttonGroupClass" role="group">
-            <a if.bind="!bindingContext.editing" role="button" class.bind="editButtonClass" click.delegate="editButtonClick()">
+            <button if.bind="!isEditing" role="button" class.bind="editButtonClass" click.delegate="editButtonClick()">
                 Edit
-            </a>
+            </button>
 
-            <div if.bind="bindingContext.editing" class.bind="saveCancelButtonGroupClass">
-                <a role="button" class.bind="saveButtonClass" click.delegate="saveButtonClick()">
+            <div if.bind="isEditing" class.bind="saveCancelButtonGroupClass">
+                <button role="button" class.bind="saveButtonClass" click.delegate="saveButtonClick()">
                     Save
-                </a>
+                </button>
 
                 <div class.bind="orDivClass"></div>
 
-                <a role="button" class.bind="cancelButtonClass" click.delegate="cancelButtonClick()">
+                <button role="button" class.bind="cancelButtonClass" click.delegate="cancelButtonClick()">
                     Cancel
-                </a>
+                </button>
             </div>
         </div>
     </td>

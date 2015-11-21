@@ -74,6 +74,14 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
                     decorators: [bindable],
                     initializer: null,
                     enumerable: true
+                }, {
+                    key: "isEditing",
+                    get: function get() {
+                        if (this.bindingContext) {
+                            return this.grid.isEditingItem(this.bindingContext.row);
+                        }
+                        return false;
+                    }
                 }], null, _instanceInitializers);
 
                 function GridColumnEdit(grid, utility) {
@@ -99,9 +107,8 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
 
                     _defineDecoratedPropertyDescriptor(this, "saveClick", _instanceInitializers);
 
-                    this.showCancel = true;
-
                     this.grid = grid;
+                    this.showCancel = true;
                     this.utility = utility;
                 }
 
@@ -124,19 +131,18 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
                         }
 
                         Object.assign(this.bindingContext.row, this.originalValue);
-                        this.bindingContext.editing = false;
+                        this.grid.finishEditingItem(this.bindingContext.row);
                     }
                 }, {
                     key: "editButtonClick",
                     value: function editButtonClick() {
-
                         this.originalValue = Object.assign({}, this.bindingContext.row);
 
                         if (this.editClick) {
-                            this.editClick(this.bindingContext.row);
+                            this.editClick(this.bindingContext);
                         }
 
-                        this.bindingContext.editing = true;
+                        this.grid.beginEditingItem(this.bindingContext.row);
                     }
                 }, {
                     key: "loadCssFrameworkSettings",
@@ -159,7 +165,7 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
                             this.saveClick(this.bindingContext.row);
                         }
 
-                        this.bindingContext.editing = false;
+                        this.grid.finishEditingItem(this.bindingContext.row);
                     }
                 }], null, _instanceInitializers);
 

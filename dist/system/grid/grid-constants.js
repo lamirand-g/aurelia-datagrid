@@ -6,8 +6,8 @@ System.register([], function (_export) {
         setters: [],
         execute: function () {
             gridConstants = {
-                sortAscending: "ascending",
-                sortDescending: "descending"
+                sortAscending: "asc",
+                sortDescending: "desc"
             };
 
             _export("default", gridConstants);

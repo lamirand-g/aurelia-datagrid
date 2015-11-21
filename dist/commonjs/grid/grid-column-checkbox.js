@@ -65,6 +65,14 @@ var GridColumnCheckbox = (function () {
         decorators: [_aureliaFramework.bindable],
         initializer: null,
         enumerable: true
+    }, {
+        key: "isEditing",
+        get: function get() {
+            if (this.bindingContext) {
+                return this.grid.isEditingItem(this.bindingContext.row);
+            }
+            return false;
+        }
     }], null, _instanceInitializers);
 
     function GridColumnCheckbox(grid, utility) {
@@ -88,10 +96,9 @@ var GridColumnCheckbox = (function () {
 
         _defineDecoratedPropertyDescriptor(this, "value", _instanceInitializers);
 
-        this.inputType = 'checkbox';
-
         this.bindingContext = {};
         this.grid = grid;
+        this.inputType = 'checkbox';
         this.row = {};
         this.utility = utility;
     }

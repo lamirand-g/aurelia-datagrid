@@ -2,13 +2,13 @@ const semanticCssFramework = {
         name: 'semantic',
         buttonClass: 'ui button',
         checkboxClasses: {
-            checkedIcon: 'green checkmark icon',
-            container: 'aligned center ui',
-            input: 'checkbox ui',
-            uncheckedIcon: '',
+            checkedIcon: 'ui green checkmark icon',
+            container: 'ui center aligned center',
+            input: 'ui checkbox',
+            uncheckedIcon: 'ui red remove icon',
         },
         editClasses: {
-            buttonGroup: 'buttons fluid ui',
+            buttonGroup: 'ui fluid buttons',
             cancelButton: 'ui button',
             editButton: 'ui primary button',
             orDiv: 'or',
@@ -16,20 +16,25 @@ const semanticCssFramework = {
             saveCancelButtonGroup: 'ui fluid buttons'
         },
         gridClasses: {
-            filterForm: 'ui form aligned center',
+            filterCheckboxButton: 'ui button',
+            filterCheckboxClearIcon: 'ui ban icon',
+            filterCheckboxCheckedIcon: 'ui green checkmark icon',
+            filterCheckboxGroup: 'ui center aligned small basic icon buttons',
+            filterCheckboxUncheckedIcon: 'red remove icon',
+            filterForm: 'ui center aligned form',
             filterFormField: 'field',
             filterInputGroup: 'ui icon input',
             filterInput: 'prompt',
-            filterSearchIcon: 'search icon',
-            sortAscendingIcon: 'icon ascending sort',
-            sortAvailableIcon: 'icon sort',
+            filterSearchIcon: 'ui search icon',
+            sortAscendingIcon: 'ui sort ascending icon',
+            sortAvailableIcon: 'ui sort icon',
             sortButtonGroup: 'ui fluid buttons',
             sortButton: 'ui basic button',
-            sortDescendingIcon: 'icon descending sort',
+            sortDescendingIcon: 'ui sort descending icon',
             table: 'ui celled compact striped table'
         },
         textClasses: {
-            editForm: 'form ui',
+            editForm: 'ui form',
             editField: 'field',
             editInput: ''
         }

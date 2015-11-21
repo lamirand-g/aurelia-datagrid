@@ -8,7 +8,7 @@ define(['exports', 'module'], function (exports, module) {
             checkedIcon: 'glyphicon glyphicon-ok',
             container: 'text-center',
             editInput: 'checkbox',
-            uncheckedIcon: ''
+            uncheckedIcon: 'glyphicon glyphicon-remove'
         },
         editClasses: {
             buttonGroup: 'btn-group',
@@ -19,6 +19,11 @@ define(['exports', 'module'], function (exports, module) {
             saveCancelButtonGroup: ''
         },
         gridClasses: {
+            filterCheckboxButton: 'btn btn-default',
+            filterCheckboxClearIcon: 'glyphicon glyphicon-ban-circle',
+            filterCheckboxCheckedIcon: 'glyphicon glyphicon-ok',
+            filterCheckboxGroup: 'btn-group',
+            filterCheckboxUncheckedIcon: 'glyphicon glyphicon-remove',
             filterForm: 'form',
             filterFormField: '',
             filterInputGroup: 'input-group',

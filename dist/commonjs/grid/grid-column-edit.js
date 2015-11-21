@@ -70,6 +70,14 @@ var GridColumnEdit = (function () {
         decorators: [_aureliaFramework.bindable],
         initializer: null,
         enumerable: true
+    }, {
+        key: "isEditing",
+        get: function get() {
+            if (this.bindingContext) {
+                return this.grid.isEditingItem(this.bindingContext.row);
+            }
+            return false;
+        }
     }], null, _instanceInitializers);
 
     function GridColumnEdit(grid, utility) {
@@ -95,9 +103,8 @@ var GridColumnEdit = (function () {
 
         _defineDecoratedPropertyDescriptor(this, "saveClick", _instanceInitializers);
 
-        this.showCancel = true;
-
         this.grid = grid;
+        this.showCancel = true;
         this.utility = utility;
     }
 
@@ -120,19 +127,18 @@ var GridColumnEdit = (function () {
             }
 
             Object.assign(this.bindingContext.row, this.originalValue);
-            this.bindingContext.editing = false;
+            this.grid.finishEditingItem(this.bindingContext.row);
         }
     }, {
         key: "editButtonClick",
         value: function editButtonClick() {
-
             this.originalValue = Object.assign({}, this.bindingContext.row);
 
             if (this.editClick) {
-                this.editClick(this.bindingContext.row);
+                this.editClick(this.bindingContext);
             }
 
-            this.bindingContext.editing = true;
+            this.grid.beginEditingItem(this.bindingContext.row);
         }
     }, {
         key: "loadCssFrameworkSettings",
@@ -155,7 +161,7 @@ var GridColumnEdit = (function () {
                 this.saveClick(this.bindingContext.row);
             }
 
-            this.bindingContext.editing = false;
+            this.grid.finishEditingItem(this.bindingContext.row);
         }
     }], null, _instanceInitializers);
 

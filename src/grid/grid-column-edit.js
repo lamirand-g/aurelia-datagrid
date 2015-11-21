@@ -16,10 +16,16 @@ export class GridColumnEdit {
     @bindable saveCancelButtonGroupClass;
     @bindable saveClick;
 
-    showCancel = true;
+    get isEditing() {
+        if(this.bindingContext) {
+            return this.grid.isEditingItem(this.bindingContext.row);
+        }
+        return false;
+    }
 
     constructor(grid, utility) {
         this.grid = grid;
+        this.showCancel = true;
         this.utility = utility;
     }
 
@@ -40,18 +46,17 @@ export class GridColumnEdit {
         }
 
         Object.assign(this.bindingContext.row, this.originalValue);
-        this.bindingContext.editing = false;
+        this.grid.finishEditingItem(this.bindingContext.row);
     }
 
 	editButtonClick() {
-
 	    this.originalValue = Object.assign({}, this.bindingContext.row); 
 
         if(this.editClick){
         	this.editClick(this.bindingContext);
         }
 
-        this.bindingContext.editing = true;
+        this.grid.beginEditingItem(this.bindingContext.row);
     }
 
     loadCssFrameworkSettings() {
@@ -72,7 +77,6 @@ export class GridColumnEdit {
         	this.saveClick(this.bindingContext.row);
         }
 
-        // TODO: Check for promise on  this.saveClick
-        //this.bindingContext.editing = false;
+        this.grid.finishEditingItem(this.bindingContext.row);
     }
 }

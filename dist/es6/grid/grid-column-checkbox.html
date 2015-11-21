@@ -1,12 +1,12 @@
 <template>
     <td>
         <div class="${containerClass}">
-            <div if.bind="!bindingContext.editing">
+            <div if.bind="!isEditing">
                 <i if.bind="row[property]" class="${checkedIconClass}"></i>
                 <i if.bind="!row[property]" class="${uncheckedIconClass}"></i>
             </div>
 
-            <div class="${class}" if.bind="bindingContext.editing">
+            <div class="${class}" if.bind="isEditing">
                 <label>
                     <input type="checkbox" checked.bind="row[property]" tabindex="0" />
                 </label>

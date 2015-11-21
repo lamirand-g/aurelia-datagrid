@@ -4,8 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var gridConstants = {
-    sortAscending: "ascending",
-    sortDescending: "descending"
+    sortAscending: "asc",
+    sortDescending: "desc"
 };
 
 exports["default"] = gridConstants;

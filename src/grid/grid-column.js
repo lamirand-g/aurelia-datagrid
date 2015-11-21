@@ -14,6 +14,13 @@ export class GridColumn {
     @bindable property;
     @bindable sortable;
 
+    get isEditing() {
+        if(this.bindingContext) {
+            return this.grid.isEditingItem(this.bindingContext.row);
+        }
+        return false;
+    }
+
     constructor(grid, utility, element, observerLocator) {
         this.element = element;
         this.grid = grid;

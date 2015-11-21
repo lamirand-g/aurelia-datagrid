@@ -15,11 +15,17 @@ export class GridColumnCheckbox {
     @bindable uncheckedIconClass;
     @bindable value;
 
-    inputType = 'checkbox';
+    get isEditing() {
+        if(this.bindingContext) {
+            return this.grid.isEditingItem(this.bindingContext.row);
+        }
+        return false;
+    }
 
     constructor(grid, utility){
         this.bindingContext = {};
         this.grid = grid;
+        this.inputType = 'checkbox';
         this.row = {};
         this.utility = utility;
     }

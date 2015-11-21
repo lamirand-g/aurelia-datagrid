@@ -1,94 +1,74 @@
-define(['exports', 'lodash/string/startCase', 'aurelia-framework'], function (exports, _lodashStringStartCase, _aureliaFramework) {
-    'use strict';
+define(["exports", "./grid", "./grid-column-utility", "aurelia-framework", "aurelia-binding"], function (exports, _grid, _gridColumnUtility, _aureliaFramework, _aureliaBinding) {
+    "use strict";
 
-    Object.defineProperty(exports, '__esModule', {
+    Object.defineProperty(exports, "__esModule", {
         value: true
     });
 
-    var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+    var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
-    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+    function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-    var _startCase = _interopRequireDefault(_lodashStringStartCase);
-
-    var propertyAttributeName = 'property';
-    var headingAttributeName = 'heading';
-    var filterableAttributeName = 'filterable';
-    var sortableAttributeName = 'sortable';
+    function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer ? descriptor.initializer.call(target) : undefined; Object.defineProperty(target, key, descriptor); }
 
     var GridColumnTemplate = (function () {
-        function GridColumnTemplate(element) {
+        var _instanceInitializers = {};
+        var _instanceInitializers = {};
+
+        _createDecoratedClass(GridColumnTemplate, [{
+            key: "heading",
+            decorators: [_aureliaFramework.bindable],
+            initializer: null,
+            enumerable: true
+        }, {
+            key: "filterable",
+            decorators: [_aureliaFramework.bindable],
+            initializer: null,
+            enumerable: true
+        }, {
+            key: "property",
+            decorators: [_aureliaFramework.bindable],
+            initializer: null,
+            enumerable: true
+        }, {
+            key: "sortable",
+            decorators: [_aureliaFramework.bindable],
+            initializer: null,
+            enumerable: true
+        }], null, _instanceInitializers);
+
+        function GridColumnTemplate(grid, utility, element, observerLocator) {
             _classCallCheck(this, _GridColumnTemplate);
 
-            this.column = {};
+            _defineDecoratedPropertyDescriptor(this, "heading", _instanceInitializers);
+
+            _defineDecoratedPropertyDescriptor(this, "filterable", _instanceInitializers);
+
+            _defineDecoratedPropertyDescriptor(this, "property", _instanceInitializers);
+
+            _defineDecoratedPropertyDescriptor(this, "sortable", _instanceInitializers);
+
             this.element = element;
+            this.grid = grid;
+            this.observerLocator = observerLocator;
+            this.row = {};
+            this.utility = utility;
         }
 
-        _createClass(GridColumnTemplate, [{
-            key: 'bind',
+        _createDecoratedClass(GridColumnTemplate, [{
+            key: "bind",
             value: function bind(bindingContext) {
-                if (bindingContext.addColumn) {
-                    this.fillColumnInformationFromAttributes();
-                    bindingContext.addColumn(this.column);
+                if (bindingContext === this.grid) {
+                    this.utility.registerWithGrid(this.grid, this);
+                } else {
+                    this.utility.bindToRow(bindingContext, this);
                 }
             }
-        }, {
-            key: 'fillColumnInformationFromAttributes',
-            value: function fillColumnInformationFromAttributes() {
-                this.getColumnProperty();
-                this.getColumnHeading();
-                this.getColumnFilter();
-                this.getColumnSort();
-            }
-        }, {
-            key: 'getColumnProperty',
-            value: function getColumnProperty() {
-                var property = this.element.attributes.getNamedItem(propertyAttributeName);
-                if (property) {
-                    this.column[propertyAttributeName] = property.value;
-                }
-            }
-        }, {
-            key: 'getColumnHeading',
-            value: function getColumnHeading() {
-                var attribute = this.element.attributes.getNamedItem(headingAttributeName);
-                if (attribute) {
-                    this.column[headingAttributeName] = attribute.value;
-                } else if (this.column[propertyAttributeName]) {
-                    this.column[headingAttributeName] = (0, _startCase['default'])(this.column[propertyAttributeName]);
-                }
-            }
-        }, {
-            key: 'getColumnFilter',
-            value: function getColumnFilter() {
-                var attribute = this.element.attributes.getNamedItem(filterableAttributeName);
-                if (attribute) {
-                    this.column[filterableAttributeName] = true;
-                    this.column.filter = {
-                        property: attribute.value || this.column[propertyAttributeName],
-                        value: undefined
-                    };
-                }
-            }
-        }, {
-            key: 'getColumnSort',
-            value: function getColumnSort() {
-                var attribute = this.element.attributes.getNamedItem(sortableAttributeName);
-                if (attribute) {
-                    this.column[sortableAttributeName] = true;
-                    this.column.sort = {
-                        property: attribute.value || this.column[propertyAttributeName],
-                        value: undefined
-                    };
-                }
-            }
-        }]);
+        }], null, _instanceInitializers);
 
         var _GridColumnTemplate = GridColumnTemplate;
-        GridColumnTemplate = (0, _aureliaFramework.inject)(Element)(GridColumnTemplate) || GridColumnTemplate;
-        GridColumnTemplate = (0, _aureliaFramework.customAttribute)('grid-column-template')(GridColumnTemplate) || GridColumnTemplate;
+        GridColumnTemplate = (0, _aureliaFramework.inject)(_grid.Grid, _gridColumnUtility.ColumnUtility, Element, _aureliaBinding.ObserverLocator)(GridColumnTemplate) || GridColumnTemplate;
+        GridColumnTemplate = (0, _aureliaFramework.containerless)(GridColumnTemplate) || GridColumnTemplate;
         return GridColumnTemplate;
     })();
 

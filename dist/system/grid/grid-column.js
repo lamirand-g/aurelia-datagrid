@@ -1,7 +1,7 @@
-System.register(["./grid", "./grid-column-utility", "aurelia-framework"], function (_export) {
+System.register(["./grid", "./grid-column-utility", "aurelia-framework", "aurelia-binding"], function (_export) {
     "use strict";
 
-    var Grid, ColumnUtility, bindable, containerless, inject, GridColumn;
+    var Grid, ColumnUtility, bindable, containerless, inject, ObserverLocator, GridColumn;
 
     var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -18,6 +18,8 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
             bindable = _aureliaFramework.bindable;
             containerless = _aureliaFramework.containerless;
             inject = _aureliaFramework.inject;
+        }, function (_aureliaBinding) {
+            ObserverLocator = _aureliaBinding.ObserverLocator;
         }],
         execute: function () {
             GridColumn = (function () {
@@ -59,9 +61,17 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
                     decorators: [bindable],
                     initializer: null,
                     enumerable: true
+                }, {
+                    key: "isEditing",
+                    get: function get() {
+                        if (this.bindingContext) {
+                            return this.grid.isEditingItem(this.bindingContext.row);
+                        }
+                        return false;
+                    }
                 }], null, _instanceInitializers);
 
-                function GridColumn(grid, utility) {
+                function GridColumn(grid, utility, element, observerLocator) {
                     _classCallCheck(this, _GridColumn);
 
                     _defineDecoratedPropertyDescriptor(this, "heading", _instanceInitializers);
@@ -78,7 +88,9 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
 
                     _defineDecoratedPropertyDescriptor(this, "sortable", _instanceInitializers);
 
+                    this.element = element;
                     this.grid = grid;
+                    this.observerLocator = observerLocator;
                     this.row = {};
                     this.utility = utility;
                 }
@@ -86,10 +98,16 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
                 _createDecoratedClass(GridColumn, [{
                     key: "bind",
                     value: function bind(bindingContext) {
+                        var _this = this;
+
                         if (bindingContext === this.grid) {
                             this.utility.registerWithGrid(this.grid, this);
                         } else {
                             this.utility.bindToRow(bindingContext, this);
+
+                            this.observerLocator.getObserver(bindingContext.row, 'validation').subscribe(function (newValue) {
+                                _this.validation = Object.assign({}, newValue, { property: _this.property });
+                            });
                         }
 
                         this.loadCssFrameworkSettings();
@@ -108,7 +126,7 @@ System.register(["./grid", "./grid-column-utility", "aurelia-framework"], functi
                 }], null, _instanceInitializers);
 
                 var _GridColumn = GridColumn;
-                GridColumn = inject(Grid, ColumnUtility)(GridColumn) || GridColumn;
+                GridColumn = inject(Grid, ColumnUtility, Element, ObserverLocator)(GridColumn) || GridColumn;
                 GridColumn = containerless(GridColumn) || GridColumn;
                 return GridColumn;
             })();

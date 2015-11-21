@@ -1,25 +1,19 @@
-System.register(["lodash/function/debounce", "./grid-constants", "./css-frameworks/repository", "aurelia-framework"], function (_export) {
+System.register(["./sorting/sorter", "./filtering/filterer", "./css-frameworks/repository", "aurelia-framework"], function (_export) {
     "use strict";
 
-    var debounce, GridConstants, GridCssFrameworkRepository, bindable, inject, ObserverLocator, Grid;
+    var Sorter, Filterer, GridCssFrameworkRepository, bindable, inject, ObserverLocator, Grid;
 
     var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === "function") { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError("The decorator for method " + descriptor.key + " is of the invalid type " + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
-
-    _export("configure", configure);
 
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
     function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer ? descriptor.initializer.call(target) : undefined; Object.defineProperty(target, key, descriptor); }
 
-    function configure(config) {
-        console.log('conf');
-    }
-
     return {
-        setters: [function (_lodashFunctionDebounce) {
-            debounce = _lodashFunctionDebounce["default"];
-        }, function (_gridConstants) {
-            GridConstants = _gridConstants["default"];
+        setters: [function (_sortingSorter) {
+            Sorter = _sortingSorter["default"];
+        }, function (_filteringFilterer) {
+            Filterer = _filteringFilterer["default"];
         }, function (_cssFrameworksRepository) {
             GridCssFrameworkRepository = _cssFrameworksRepository.GridCssFrameworkRepository;
         }, function (_aureliaFramework) {
@@ -44,6 +38,31 @@ System.register(["lodash/function/debounce", "./grid-constants", "./css-framewor
                     enumerable: true
                 }, {
                     key: "items",
+                    decorators: [bindable],
+                    initializer: null,
+                    enumerable: true
+                }, {
+                    key: "filterCheckboxButtonClass",
+                    decorators: [bindable],
+                    initializer: null,
+                    enumerable: true
+                }, {
+                    key: "filterCheckboxCheckedIconClass",
+                    decorators: [bindable],
+                    initializer: null,
+                    enumerable: true
+                }, {
+                    key: "filterCheckboxClearIconClass",
+                    decorators: [bindable],
+                    initializer: null,
+                    enumerable: true
+                }, {
+                    key: "filterCheckboxGroupClass",
+                    decorators: [bindable],
+                    initializer: null,
+                    enumerable: true
+                }, {
+                    key: "filterCheckboxUncheckedIconClass",
                     decorators: [bindable],
                     initializer: null,
                     enumerable: true
@@ -100,6 +119,8 @@ System.register(["lodash/function/debounce", "./grid-constants", "./css-framewor
                 }], null, _instanceInitializers);
 
                 function Grid(observerLocator, repository) {
+                    var _this = this;
+
                     _classCallCheck(this, _Grid);
 
                     _defineDecoratedPropertyDescriptor(this, "class", _instanceInitializers);
@@ -107,6 +128,16 @@ System.register(["lodash/function/debounce", "./grid-constants", "./css-framewor
                     _defineDecoratedPropertyDescriptor(this, "cssFrameworkName", _instanceInitializers);
 
                     _defineDecoratedPropertyDescriptor(this, "items", _instanceInitializers);
+
+                    _defineDecoratedPropertyDescriptor(this, "filterCheckboxButtonClass", _instanceInitializers);
+
+                    _defineDecoratedPropertyDescriptor(this, "filterCheckboxCheckedIconClass", _instanceInitializers);
+
+                    _defineDecoratedPropertyDescriptor(this, "filterCheckboxClearIconClass", _instanceInitializers);
+
+                    _defineDecoratedPropertyDescriptor(this, "filterCheckboxGroupClass", _instanceInitializers);
+
+                    _defineDecoratedPropertyDescriptor(this, "filterCheckboxUncheckedIconClass", _instanceInitializers);
 
                     _defineDecoratedPropertyDescriptor(this, "filterFormClass", _instanceInitializers);
 
@@ -128,31 +159,33 @@ System.register(["lodash/function/debounce", "./grid-constants", "./css-framewor
 
                     _defineDecoratedPropertyDescriptor(this, "sortDescendingIconClass", _instanceInitializers);
 
+                    this.beginEditingItem = function (item) {
+                        _this.itemsCurrentlyEditing.push(item);
+                    };
+
+                    this.isEditingItem = function (item) {
+                        return _this.itemsCurrentlyEditing.some(function (editing) {
+                            return editing === item;
+                        });
+                    };
+
+                    this.finishEditingItem = function (item) {
+                        var index = _this.itemsCurrentlyEditing.indexOf(item);
+                        _this.itemsCurrentlyEditing.splice(index, 1);
+                    };
+
                     this.columns = [];
+                    this.itemsCurrentlyEditing = [];
                     this.observerLocator = observerLocator;
                     this.repository = repository;
+                    this.sorter = new Sorter(this);
                 }
 
                 _createDecoratedClass(Grid, [{
                     key: "addColumn",
                     value: function addColumn(column) {
                         this.columns.push(column);
-                    }
-                }, {
-                    key: "applyFilter",
-                    value: function applyFilter(filter) {
-                        if (this.$parent.applyFilter) {
-                            this.$parent.applyFilter(filter);
-                        }
-                    }
-                }, {
-                    key: "applySort",
-                    value: function applySort(sort) {
-                        this.updateSort(sort);
-
-                        if (this.$parent.applySort) {
-                            this.$parent.applySort(sort);
-                        }
+                        this.filterer.observeColumn(column);
                     }
                 }, {
                     key: "bind",
@@ -162,7 +195,7 @@ System.register(["lodash/function/debounce", "./grid-constants", "./css-framewor
                         this.cssFramework = this.repository.get(this.cssFrameworkName);
 
                         this.loadCssFrameworkSettings();
-                        this.observeFilters();
+                        this.filterer = new Filterer(this, this.$parent, this.observerLocator);
                     }
                 }, {
                     key: "loadCssFrameworkSettings",
@@ -176,6 +209,11 @@ System.register(["lodash/function/debounce", "./grid-constants", "./css-framewor
                     value: function loadFilterCssFrameworkSettings() {
                         var settings = this.cssFramework.gridClasses;
 
+                        this.filterCheckboxButtonClass = settings.filterCheckboxButton;
+                        this.filterCheckboxCheckedIconClass = settings.filterCheckboxCheckedIcon;
+                        this.filterCheckboxClearIconClass = settings.filterCheckboxClearIcon;
+                        this.filterCheckboxGroupClass = settings.filterCheckboxGroup;
+                        this.filterCheckboxUncheckedIconClass = settings.filterCheckboxUncheckedIcon;
                         this.filterFormClass = settings.filterForm;
                         this.filterFormFieldClass = settings.filterFormField;
                         this.filterInputGroupClass = settings.filterInputGroup;
@@ -192,94 +230,6 @@ System.register(["lodash/function/debounce", "./grid-constants", "./css-framewor
                         this.sortButtonGroupClass = settings.sortButtonGroup;
                         this.sortButtonClass = settings.sortButton;
                         this.sortDescendingIconClass = settings.sortDescendingIcon;
-                    }
-                }, {
-                    key: "observeFilters",
-                    value: function observeFilters() {
-                        var _this = this;
-
-                        var _iteratorNormalCompletion = true;
-                        var _didIteratorError = false;
-                        var _iteratorError = undefined;
-
-                        try {
-                            var _loop = function () {
-                                var column = _step.value;
-
-                                if (column.filter) {
-                                    _this.observerLocator.getObserver(column.filter, 'value').subscribe(debounce(function () {
-                                        return _this.applyFilter(column.filter);
-                                    }, 300));
-                                }
-                            };
-
-                            for (var _iterator = this.columns[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                                _loop();
-                            }
-                        } catch (err) {
-                            _didIteratorError = true;
-                            _iteratorError = err;
-                        } finally {
-                            try {
-                                if (!_iteratorNormalCompletion && _iterator["return"]) {
-                                    _iterator["return"]();
-                                }
-                            } finally {
-                                if (_didIteratorError) {
-                                    throw _iteratorError;
-                                }
-                            }
-                        }
-                    }
-                }, {
-                    key: "setDefaultCssFramework",
-                    value: function setDefaultCssFramework(framework) {
-                        this.repository.setGlobalDefault(framework);
-                    }
-                }, {
-                    key: "updateSort",
-                    value: function updateSort(sort) {
-                        var oldValue = sort.direction;
-
-                        var _iteratorNormalCompletion2 = true;
-                        var _didIteratorError2 = false;
-                        var _iteratorError2 = undefined;
-
-                        try {
-                            for (var _iterator2 = this.columns[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                                var column = _step2.value;
-
-                                if (column.sort) {
-                                    column.sort.direction = null;
-                                }
-                            }
-                        } catch (err) {
-                            _didIteratorError2 = true;
-                            _iteratorError2 = err;
-                        } finally {
-                            try {
-                                if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
-                                    _iterator2["return"]();
-                                }
-                            } finally {
-                                if (_didIteratorError2) {
-                                    throw _iteratorError2;
-                                }
-                            }
-                        }
-
-                        switch (oldValue) {
-
-                            case GridConstants.sortAscending:
-                                sort.direction = GridConstants.sortDescending;
-                                break;
-                            case GridConstants.sortDescending:
-                                sort.direction = null;
-                                break;
-                            default:
-                                sort.direction = GridConstants.sortAscending;
-                                break;
-                        }
                     }
                 }], null, _instanceInitializers);
 

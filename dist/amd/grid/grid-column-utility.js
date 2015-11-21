@@ -39,11 +39,17 @@ define(["exports", "lodash/string/startCase"], function (exports, _lodashStringS
 
                     filterable: template.filterable !== null && template.filterable !== undefined,
 
-                    filter: { property: template.property },
+                    filter: {
+                        property: template.property,
+                        value: null
+                    },
 
                     sortable: template.sortable !== null && template.sortable !== undefined,
 
-                    sort: { property: template.property }
+                    sort: {
+                        property: template.property,
+                        direction: null
+                    }
                 };
 
                 grid.addColumn(column);

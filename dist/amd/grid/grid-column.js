@@ -1,4 +1,4 @@
-define(["exports", "./grid", "./grid-column-utility", "aurelia-framework"], function (exports, _grid, _gridColumnUtility, _aureliaFramework) {
+define(["exports", "./grid", "./grid-column-utility", "aurelia-framework", "aurelia-binding"], function (exports, _grid, _gridColumnUtility, _aureliaFramework, _aureliaBinding) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -50,9 +50,17 @@ define(["exports", "./grid", "./grid-column-utility", "aurelia-framework"], func
             decorators: [_aureliaFramework.bindable],
             initializer: null,
             enumerable: true
+        }, {
+            key: "isEditing",
+            get: function get() {
+                if (this.bindingContext) {
+                    return this.grid.isEditingItem(this.bindingContext.row);
+                }
+                return false;
+            }
         }], null, _instanceInitializers);
 
-        function GridColumn(grid, utility) {
+        function GridColumn(grid, utility, element, observerLocator) {
             _classCallCheck(this, _GridColumn);
 
             _defineDecoratedPropertyDescriptor(this, "heading", _instanceInitializers);
@@ -69,7 +77,9 @@ define(["exports", "./grid", "./grid-column-utility", "aurelia-framework"], func
 
             _defineDecoratedPropertyDescriptor(this, "sortable", _instanceInitializers);
 
+            this.element = element;
             this.grid = grid;
+            this.observerLocator = observerLocator;
             this.row = {};
             this.utility = utility;
         }
@@ -77,10 +87,16 @@ define(["exports", "./grid", "./grid-column-utility", "aurelia-framework"], func
         _createDecoratedClass(GridColumn, [{
             key: "bind",
             value: function bind(bindingContext) {
+                var _this = this;
+
                 if (bindingContext === this.grid) {
                     this.utility.registerWithGrid(this.grid, this);
                 } else {
                     this.utility.bindToRow(bindingContext, this);
+
+                    this.observerLocator.getObserver(bindingContext.row, 'validation').subscribe(function (newValue) {
+                        _this.validation = Object.assign({}, newValue, { property: _this.property });
+                    });
                 }
 
                 this.loadCssFrameworkSettings();
@@ -99,7 +115,7 @@ define(["exports", "./grid", "./grid-column-utility", "aurelia-framework"], func
         }], null, _instanceInitializers);
 
         var _GridColumn = GridColumn;
-        GridColumn = (0, _aureliaFramework.inject)(_grid.Grid, _gridColumnUtility.ColumnUtility)(GridColumn) || GridColumn;
+        GridColumn = (0, _aureliaFramework.inject)(_grid.Grid, _gridColumnUtility.ColumnUtility, Element, _aureliaBinding.ObserverLocator)(GridColumn) || GridColumn;
         GridColumn = (0, _aureliaFramework.containerless)(GridColumn) || GridColumn;
         return GridColumn;
     })();

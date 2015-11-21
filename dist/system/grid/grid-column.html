@@ -1,9 +1,9 @@
 <template>
-    <td if.bind="!bindingContext.editing">${row[property]}</td>
-    <td if.bind="bindingContext.editing">
-        <form class="${editFormClass}">
+    <td if.bind="!isEditing">${row[property]}</td>
+    <td if.bind="isEditing">
+        <form class="${editFormClass}" role="form">
             <div class="${editFieldClass}">
-                <input class="${editInputClass}" type="text" value.bind="row[property]"/>
+                <input class="${editInputClass}" type="text" value.bind="row[property]" />
             </div>
         </form>
     </td>

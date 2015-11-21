@@ -10,7 +10,7 @@ var bootstrapCssFramework = {
         checkedIcon: 'glyphicon glyphicon-ok',
         container: 'text-center',
         editInput: 'checkbox',
-        uncheckedIcon: ''
+        uncheckedIcon: 'glyphicon glyphicon-remove'
     },
     editClasses: {
         buttonGroup: 'btn-group',
@@ -21,6 +21,11 @@ var bootstrapCssFramework = {
         saveCancelButtonGroup: ''
     },
     gridClasses: {
+        filterCheckboxButton: 'btn btn-default',
+        filterCheckboxClearIcon: 'glyphicon glyphicon-ban-circle',
+        filterCheckboxCheckedIcon: 'glyphicon glyphicon-ok',
+        filterCheckboxGroup: 'btn-group',
+        filterCheckboxUncheckedIcon: 'glyphicon glyphicon-remove',
         filterForm: 'form',
         filterFormField: '',
         filterInputGroup: 'input-group',
