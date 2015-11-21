@@ -1,0 +1,23 @@
+<template>
+	<div class.bind="$parent.filterFormClass" if.bind="column.filterable && column.inputType === 'checkbox'">
+        <div class.bind="$parent.filterCheckboxFormFieldGroupClass">
+            <div class.bind="$parent.filterCheckboxGroupClass">
+                <button type="button"
+                        class.bind="$parent.filterCheckboxButtonClass + (column.filter.value === null ? ' active' : '')"
+                        click.delegate="column.filter.value = null">
+                    <i class.bind="$parent.filterCheckboxClearIconClass"></i>
+                </button>
+                <button type="button"
+                        class.bind="$parent.filterCheckboxButtonClass + (column.filter.value === true ? ' active' : '')"
+                        click.delegate="column.filter.value = true">
+                    <i class.bind="$parent.filterCheckboxCheckedIconClass"></i>
+                </button>
+                <button type="button"
+                        class.bind="$parent.filterCheckboxButtonClass + (column.filter.value === false ? ' active' : '')"
+                        click.delegate="column.filter.value = false">
+                    <i class.bind="$parent.filterCheckboxUncheckedIconClass"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</template>

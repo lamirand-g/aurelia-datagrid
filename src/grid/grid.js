@@ -7,7 +7,7 @@ import { bindable, inject, ObserverLocator } from "aurelia-framework";
 export class Grid {
     
     @bindable class;
-    @bindable cssFrameworkName;
+    @bindable cssFramework;
     @bindable items;
     @bindable filterCheckboxButtonClass;
     @bindable filterCheckboxCheckedIconClass;
@@ -41,24 +41,26 @@ export class Grid {
     bind(bindingContext) {
         this.$parent = bindingContext;
         this.items = bindingContext.items || [];
-        this.cssFramework = this.repository.get(this.cssFrameworkName);
+        this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
         this.loadCssFrameworkSettings();
         this.filterer = new Filterer(this, this.$parent, this.observerLocator);
     }
 
     loadCssFrameworkSettings() {
-        this.class = this.cssFramework.gridClasses.table;
+        this.cssFramework = this.cssFrameworkConfiguration.name;
+        this.class = this.cssFrameworkConfiguration.gridClasses.table;
         this.loadFilterCssFrameworkSettings();
         this.loadSortCssFrameworkSettings();
     }
 
     loadFilterCssFrameworkSettings() {
-        let settings = this.cssFramework.gridClasses;
+        let settings = this.cssFrameworkConfiguration.gridClasses;
 
         this.filterCheckboxButtonClass = settings.filterCheckboxButton;
         this.filterCheckboxCheckedIconClass = settings.filterCheckboxCheckedIcon;
         this.filterCheckboxClearIconClass = settings.filterCheckboxClearIcon;
+        this.filterCheckboxFormFieldGroupClass = settings.filterCheckboxFormFieldGroup;
         this.filterCheckboxGroupClass = settings.filterCheckboxGroup;
         this.filterCheckboxUncheckedIconClass = settings.filterCheckboxUncheckedIcon;
         this.filterFormClass = settings.filterForm;
@@ -69,7 +71,7 @@ export class Grid {
     }
 
     loadSortCssFrameworkSettings() {
-        let settings = this.cssFramework.gridClasses;
+        let settings = this.cssFrameworkConfiguration.gridClasses;
 
         this.sortAscendingIconClass = settings.sortAscendingIcon;
         this.sortAvailableIconClass = settings.sortAvailableIcon;
