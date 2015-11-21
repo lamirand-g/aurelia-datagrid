@@ -6,7 +6,7 @@ A data grid control for Aurelia with sorting and filtering capabilities.
   <template replace-part="grid-template">
     <grid-column property="name" filterable sortable></grid-column>
     <grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
-    <grid-column-button heading="Actions" caption="Select" button-click.call="$parent.$parent.semanticGridButtonClick($event)"></grid-column-button>
+    <grid-column-button caption="Select" button-click.call="$parent.$parent.select($event)"></grid-column-button>
     <grid-column-template heading="Custom">
       <template replace-part="custom-template">
         <compose view="./demo-custom-column-template.html" containerless></compose>
