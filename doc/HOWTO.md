@@ -196,6 +196,25 @@ export function configure(aurelia) {
 }
 ```
 
+#### Available CSS Frameworks
+- bootstrap (<a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>)
+
+```javascript
+...
+.plugin('donnelljenkins/aurelia-datagrid', config => {
+     config.defaultCssFramework = 'bootstrap';
+});
+``` 
+
+- semantic (<a href="http://semantic-ui.com/" target="_blank">Semantic-UI</a>)
+
+```javascript
+...
+.plugin('donnelljenkins/aurelia-datagrid', config => {
+     config.defaultCssFramework = 'semantic';
+});
+```
+
 ### How to create a custom CSS Framework and use it as the default framework for all grids
 
 ```javascript
