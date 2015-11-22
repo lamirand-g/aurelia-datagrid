@@ -5,11 +5,17 @@
 	<template replace-part="grid-template">
 		<grid-column property="name" filterable sortable></grid-column>
 		<grid-column property="title" filterable sortable></grid-column>
-		<grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
-		<grid-column-button heading="Actions" caption="Select" button-click.call="$parent.$parent.semanticGridButtonClick($event)"></grid-column-button>
+		<grid-column-checkbox property="active" filterable></grid-column-checkbox>
+		<grid-column-button 
+		     heading="Actions"
+		     caption="Select"
+		     button-click.call="$parent.$parent.buttonClick($event)">
+		</grid-column-button>
 		<grid-column-template heading="Custom">
 			<template replace-part="custom-template">
-				<compose view="./demo-custom-column-template.html" containerless></compose>
+				<compose view="./demo-custom-column-template.html"
+				         containerless>
+				</compose>
 			</template>
 		</grid-column-template>
 		<grid-column property="id" alignment="right"></grid-column>
@@ -17,7 +23,7 @@
 	</template>
 
 	<template replace-part="grid-footer-template">
-		<td colspan.bind="columns.length">This is the Aurelia Semantic-UI grid!  We tried to make using it as simple as possible.</td>
+		<td colspan.bind="columns.length">Total items: ${items.length}</td>
 	</template>
 </grid>
 ```
@@ -78,10 +84,50 @@ export function configure(aurelia) {
 # Getting started
 > TODO
 
-# Templates
+# Grid
+- By default, the grid looks for an array property named **items** on your view model. In an upcoming release, a **datasource** attribute will be available to override this.
+```javascript
+export class ViewModel {
+  items = [
+    { name: 'Hammer', active: true, price: 5.99 },
+    { name: 'Jackhammer', active: false, price: 599.99 },
+    { name: 'Wench', active: true, price: 2.99 }
+  ];
+}
 
-## &lt;grid-column&gt;
+```
 
+## Attributes
+
+### class (future release)
+```html
+<grid class="table-striped table-condensed
+  ...
+</grid>
+```
+HTML class attribute to apply to the generated **&lt;table&gt;** element.
+
+### css-framework
+```html
+<grid css-framework="bootstrap">
+  ...
+</grid>
+```
+Specifies the CSS framework to use for styling the grid.  Currently, there are two available options:
+- bootstrap (<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>)
+- semantic (<a href="http://semantic-ui.com/" target="_blank">Semantic-UI</a>)
+
+### data-source (future release)
+```html
+<grid data-source="products">
+  ...
+</grid>
+```
+Specifies which property to use to populate the grid.
+
+# Column Templates
+
+## grid-column
 ```html
 <grid-column property="propertyName" heading="Alternate Heading" filterable sortable></grid-column>
 ```
@@ -91,48 +137,52 @@ export function configure(aurelia) {
 #### Required
 
 ##### property
-- Provides the name of the property to display for each item in the backing list.
+Provides the name of the property to display for each item in the backing list.
 
 #### Optional
 
 ##### filterable
-- Indicates the content in this column can be filtered.  An *input* element is displayed in the column's header.  The value entered is used for the filter.
+Indicates the content in this column can be filtered.  An *input* element is displayed in the column's header.  The value entered is used for the filter.
 
 ##### heading
-- Provides an alternate heading for this column.  By default, the text entered into the *property* attribute is used for the heading.
+Provides an alternate heading for this column.  By default, the text entered into the *property* attribute is used for the heading.
 
 ##### sortable
-- Indicates the content in this column can be sorted.  The column heading is converted to button.  When the button is clicked, the grid toggles through the sorting.
+Indicates the content in this column can be sorted.  The column heading is converted to button.  When the button is clicked, the grid toggles through the sorting.
 
-## &lt;grid-column-button&gt;
-
+## grid-column-button
 ```html
-<grid-column-button heading="Column Heading" caption="Button Text" button-click.call="$parent.$parent.buttonClick($event)"></grid-column-button>
+<grid-column-button 
+    heading="Column Heading"
+    caption="Button Text"
+    button-click.call="$parent.$parent.buttonClick($event)">
+</grid-column-button>
 ```
 
 #### Required
 
 ##### caption
-- Provides the button caption.
+Provides the button text.
 
 #### Optional
 
 ##### property
-- Provides the name of the property that is used for filtering and/or sorting.  The property value will not be displayed in the grid.
+Provides the name of the property that is used for filtering and/or sorting.  The property value will not be displayed in the grid.
 
-##### filterable
-- Indicates the content in this column can be filtered.  An *input* element is displayed in the column's header.  The value entered is used for the filter.
-- *Note: The property attribute is required in order to use this attribute.
+##### filterable*
+Indicates the content in this column can be filtered.  An *input* element is displayed in the column's header.  The value entered is used for the filter.
+
+*Note: The property attribute is required in order to use this attribute.
 
 ##### heading
-- Provides an alternate heading for this column.  By default, the text entered into the *property* attribute is used for the heading.
+Provides an alternate heading for this column.  By default, the text entered into the *property* attribute is used for the heading.
 
-##### sortable
-- Indicates the content in this column can be sorted.  The column heading is converted to button.  When the button is clicked, the grid toggles through the sorting.
-- *Note: The property attribute is required in order to use this attribute.
+##### sortable*
+Indicates the content in this column can be sorted.  The column heading is converted to a button.  When the button is clicked, the grid toggles through the sorting.
 
-## &lt;grid-column-checkbox&gt;
+*Note: The property attribute is required in order to use this attribute.
 
+## grid-column-checkbox
 ```html
 <grid-column-checkbox property="propertyName" heading="Alternate Heading" filterable sortable></grid-column-checkbox>
 ```
@@ -142,21 +192,24 @@ export function configure(aurelia) {
 #### Required
 
 ##### property
-- Provides the name of the property to display for each item in the backing list.
+Provides the name of the property to display for each item in the backing list.
 
 #### Optional
 
-##### filterable
-- Indicates the content in this column can be filtered.  An *input* element is displayed in the column's header.  The value entered is used for the filter.
+##### filterable*
+Indicates the content in this column can be filtered.  An *input* element is displayed in the column's header.  The value entered is used for the filter.
+
+*Note: The property attribute is required in order to use this attribute.
 
 ##### heading
-- Provides an alternate heading for this column.  By default, the text entered into the *property* attribute is used for the heading.
+Provides an alternate heading for this column.  By default, the text entered into the *property* attribute is used for the heading.
 
-##### sortable
-- Indicates the content in this column can be sorted.  The column heading is converted to button.  When the button is clicked, the grid toggles through the sorting.
+##### sortable*
+Indicates the content in this column can be sorted.  The column heading is converted to a button.  When the button is clicked, the grid toggles through the sorting.
 
-## &lt;grid-column-edit&gt;
+*Note: The property attribute is required in order to use this attribute.
 
+## grid-column-edit
 ```html
 <grid-column-edit hide-cancel></grid-column-edit>
 ```
@@ -166,10 +219,9 @@ export function configure(aurelia) {
 #### Optional
 
 ##### hide-cancel
-- Hides the *cancel* button when a row is in edit mode.  Only the *save* button will be dislayed.
+Hides the *cancel* button when a row is in edit mode.  Only the *save* button will be dislayed.
 
-## &lt;td grid-column-template&gt; - Custom column template
-
+## grid-column-template - Custom column template
 ```html
 <grid-column-template heading="Custom">
   <template replace-part="custom-template">
@@ -180,7 +232,6 @@ export function configure(aurelia) {
 ```
 
 ## Footer template
-
 ```html
 <template replace-part="grid-footer-template">
   <td>${totalAmount}</td>
@@ -267,14 +318,11 @@ export function configure(aurelia) {
   </grid>
 ```
 
-## View model overrides
-
-### How to provide custom filtering
-
+# How to provide custom filtering
 ```html
   <grid-column filterable property="name"></grid-column>
 ```
-
+The grid looks for an **applyFilter(filter)** function on the view model. Add the function to your view model in order to override the grid's default filtering to provide your own.
 ```javascript
    applyFilter(filter){
     this.items = this.items.filter(item => {
@@ -283,12 +331,21 @@ export function configure(aurelia) {
    }
 ```
 
-### How to provide custom sorting
+## applyFilter(filter) method
 
+### filter Parameter
+
+#### property
+The name of the property the filter applies to.
+
+#### value
+The value to filter by.
+
+# How to provide custom sorting
 ```html
   <grid-column sortable property="abbreviation"></grid-column>
 ```
-
+The grid looks for an **applySort(sort)** function on the view model. Add the function to your view model in order to override the grid's default sorting to provide your own.
 ```javascript
    applySort(sort){
      this.items.sort((a,b) => {
@@ -304,3 +361,18 @@ export function configure(aurelia) {
      });
    }
 ```
+
+## applySort(sort) method
+
+### sort Parameter
+
+#### property
+The name of the property the sort applies to.
+
+#### direction
+The direction to sort in.
+- Available directions:
+  - asc (Ascending)
+  - desc (Descending)
+  - null (No sorting)
+  
