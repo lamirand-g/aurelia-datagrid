@@ -1,10 +1,10 @@
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
-	value: true
+  value: true
 });
 var gridConfiguration = {
-	defaultCssFramework: 'default'
+  defaultCssFramework: 'default'
 };
 
 exports['default'] = gridConfiguration;

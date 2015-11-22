@@ -4,6 +4,8 @@ System.config({
   transpiler: "babel",
   babelOptions: {
     "optional": [
+      "es7.decorators",
+      "es7.classProperties",
       "runtime",
       "optimisation.modules.system"
     ]
@@ -14,7 +16,9 @@ System.config({
   },
 
   map: {
-    "aurelia-framework": "npm:aurelia-framework@1.0.0-beta.1.0.1",
+    "aurelia-binding": "npm:aurelia-binding@1.0.0-beta.1.0.1",
+    "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0-beta.1",
+    "aurelia-templating": "npm:aurelia-templating@1.0.0-beta.1",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
     "core-js": "npm:core-js@1.2.6",
@@ -44,18 +48,6 @@ System.config({
       "aurelia-logging": "npm:aurelia-logging@1.0.0-beta.1",
       "aurelia-metadata": "npm:aurelia-metadata@1.0.0-beta.1",
       "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1",
-      "core-js": "npm:core-js@1.2.6"
-    },
-    "npm:aurelia-framework@1.0.0-beta.1.0.1": {
-      "aurelia-binding": "npm:aurelia-binding@1.0.0-beta.1.0.1",
-      "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0-beta.1",
-      "aurelia-loader": "npm:aurelia-loader@1.0.0-beta.1",
-      "aurelia-logging": "npm:aurelia-logging@1.0.0-beta.1",
-      "aurelia-metadata": "npm:aurelia-metadata@1.0.0-beta.1",
-      "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1",
-      "aurelia-path": "npm:aurelia-path@1.0.0-beta.1",
-      "aurelia-task-queue": "npm:aurelia-task-queue@1.0.0-beta.1",
-      "aurelia-templating": "npm:aurelia-templating@1.0.0-beta.1",
       "core-js": "npm:core-js@1.2.6"
     },
     "npm:aurelia-loader@1.0.0-beta.1": {

@@ -1,5 +1,5 @@
-let gridConfiguration = {
-	defaultCssFramework: 'default',
+const gridConfiguration = {
+  defaultCssFramework: 'default'
 };
 
 export default gridConfiguration;

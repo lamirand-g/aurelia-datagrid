@@ -1,15 +1,15 @@
 System.register([], function (_export) {
-	'use strict';
+  'use strict';
 
-	var gridConfiguration;
-	return {
-		setters: [],
-		execute: function () {
-			gridConfiguration = {
-				defaultCssFramework: 'default'
-			};
+  var gridConfiguration;
+  return {
+    setters: [],
+    execute: function () {
+      gridConfiguration = {
+        defaultCssFramework: 'default'
+      };
 
-			_export('default', gridConfiguration);
-		}
-	};
+      _export('default', gridConfiguration);
+    }
+  };
 });
