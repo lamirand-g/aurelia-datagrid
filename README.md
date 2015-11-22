@@ -1,5 +1,5 @@
 # aurelia-grid
-A data grid control for Aurelia with sorting and filtering capabilities.
+A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> with sorting and filtering capabilities.
 
 ```html
 <grid>
@@ -44,9 +44,11 @@ A data grid control for Aurelia with sorting and filtering capabilities.
 
 ## Dependencies
 
-* [aurelia-framework](https://github.com/aurelia/framework)
+* [aurelia-binding](https://github.com/aurelia/binding)
+* [aurelia-dependency-injection](https://github.com/aurelia/dependency-injection)
+* [aurelia-templating](https://github.com/aurelia/templating)
 * [lodash](https://lodash.com/)
-* [Bootstrap**](http://getbootstrap.com/)
+* [bootstrap**](http://getbootstrap.com/)
 * [Semantic-UI**](http://semantic-ui.com/)
 
 ** The grid can be configured to use either Bootstrap or Semantic-UI.  One of these packages must be manually installed depending on which framework you wish to use.  By default, the grid is configured to use Bootstrap.
