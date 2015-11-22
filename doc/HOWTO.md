@@ -24,6 +24,9 @@
 
 # Installation
 
+## Prerequisite
+- [Aurelia](http://aurelia.io/) is installed.
+
 ## Install via JSPM
 
 1.  Ensure that [JSPM](http://jspm.io/) is installed.
@@ -33,12 +36,32 @@
 jspm install github:donnelljenkins/aurelia-datagrid
 ```
 
-## Load the plugin
+### Migrate from aurelia-app to aurelia-app="main"
+You'll need to register the plugin when your aurelia app is bootstrapping. If you have an aurelia app because you cloned a sample, there's a good chance that the app is bootstrapping based on default conventions. In that case, open your **index.html** file and look at the *body* tag.
 
-During Aurelia's bootstrapping phase, include the data grid plugin.
+``` html
+<body aurelia-app>
+```
+Change the *aurelia-app* attribute to *aurelia-app="main"*.
 
-1.  Create a `main.js` file in your src directory.
-2.  Import the plugin using the `aurelia` configuration object:
+``` html
+<body aurelia-app="main">
+```
+The aurelia framework will now bootstrap the application by looking for your **main.js** file and executing the exported *configure* method. Go ahead and add a new **main.js** file with these contents:
+
+``` javascript
+export function configure(aurelia) {
+  aurelia.use
+    .standardConfiguration()
+    .developmentLogging();
+
+  aurelia.start().then(a => a.setRoot('app', document.body));
+}
+
+```
+
+### Load the plugin
+During bootstrapping phase, you can now include the data grid plugin:
 
 ```javascript
 export function configure(aurelia) {
