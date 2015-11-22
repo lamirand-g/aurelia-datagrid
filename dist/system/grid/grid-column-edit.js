@@ -1,4 +1,4 @@
-System.register(['aurelia-dependency-injection', 'aurelia-templating', './grid', '/grid-column-utility'], function (_export) {
+System.register(['aurelia-dependency-injection', 'aurelia-templating', './grid', './grid-column-utility'], function (_export) {
   'use strict';
 
   var inject, bindable, containerless, Grid, ColumnUtility, GridColumnEdit;

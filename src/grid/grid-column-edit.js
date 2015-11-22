@@ -1,7 +1,7 @@
 import { inject } from 'aurelia-dependency-injection';
 import { bindable, containerless } from 'aurelia-templating';
 import { Grid } from './grid';
-import { ColumnUtility } from '/grid-column-utility';
+import { ColumnUtility } from './grid-column-utility';
 
 @containerless
 @inject(Grid, ColumnUtility)

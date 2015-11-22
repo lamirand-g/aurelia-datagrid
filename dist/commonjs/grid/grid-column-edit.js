@@ -16,7 +16,7 @@ var _aureliaTemplating = require('aurelia-templating');
 
 var _grid = require('./grid');
 
-var _gridColumnUtility = require('/grid-column-utility');
+var _gridColumnUtility = require('./grid-column-utility');
 
 var GridColumnEdit = (function () {
   var _instanceInitializers = {};

@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', './grid', '/grid-column-utility'], function (exports, _aureliaDependencyInjection, _aureliaTemplating, _grid, _gridColumnUtility) {
+define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', './grid', './grid-column-utility'], function (exports, _aureliaDependencyInjection, _aureliaTemplating, _grid, _gridColumnUtility) {
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
