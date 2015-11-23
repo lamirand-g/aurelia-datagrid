@@ -6,10 +6,15 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
   <template replace-part="grid-template">
     <grid-column property="name" filterable sortable></grid-column>
     <grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
-    <grid-column-button caption="Select" button-click.call="$parent.$parent.select($event)"></grid-column-button>
+    <grid-column-button 
+         caption="Select"
+         button-click.call="$parent.$parent.select($event)">
+    </grid-column-button>
     <grid-column-template heading="Custom">
       <template replace-part="custom-template">
-        <compose view="./demo-custom-column-template.html" containerless></compose>
+        <compose view="./demo-custom-column-template.html" 
+                 containerless>
+        </compose>
       </template>
     </grid-column-template>
     <grid-column-edit></grid-column-edit>
@@ -29,17 +34,21 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
 
 - [Installation](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#installation)
 - [Getting started](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#getting-started)
-- [Templates](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#templates)
-  - [&lt;grid-column&gt; (column)](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#&lt;grid-column&gt;)
-  - [&lt;grid-column-button&gt; (button column)](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#&lt;grid-column-button&gt;)
-  - [&lt;grid-column-checkbox&gt; (checkbox column)](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#&lt;grid-column-checkbox&gt;)
-  - [&lt;grid-column-edit&gt; (column with edit/save/cancel buttons)](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#&lt;grid-column-edit&gt;)
-  - [&lt;grid-column-template&gt; (configurable column template)](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#&lt;grid-column-template&gt;)
-  - [Footer template](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#footer-template)
+- [Grid](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid)
+- [Column Templates](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#column-templates)
+  - [grid-column](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column)
+  - [grid-column-button](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column-button)
+  - [grid-column-checkbox](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column-checkbox)
+  - [grid-column-edit](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column-edit)
+  - [grid-column-template](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column-template)
+- [Footer template](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#footer-template)
 - [Configuration](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#configuration)
   - [Global settings](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#global-settings)
   - [Grid level settings](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-level-settings)
-  - [View model settings](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#view-model-overrides)
+- [Custom filtering](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#how-to-provide-custom-filtering)
+  - [applyFilter(filter) method](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#applyfilterfilter-method)
+  - [applySort(sort) method](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#applysortsort-method)
+- [Custom sorting](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#how-to-provide-custom-sorting)
 
 
 ## Dependencies
