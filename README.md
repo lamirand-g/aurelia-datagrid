@@ -40,16 +40,15 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
   - [grid-column-button](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column-button)
   - [grid-column-checkbox](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column-checkbox)
   - [grid-column-edit](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column-edit)
-  - [grid-column-template](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column-template)
+  - [grid-column-template](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column-template---custom-column-template)
 - [Footer template](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#footer-template)
 - [Configuration](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#configuration)
   - [Global settings](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#global-settings)
   - [Grid level settings](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-level-settings)
 - [Custom filtering](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#how-to-provide-custom-filtering)
   - [applyFilter(filter) method](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#applyfilterfilter-method)
-  - [applySort(sort) method](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#applysortsort-method)
 - [Custom sorting](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#how-to-provide-custom-sorting)
-
+  - [applySort(sort) method](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#applysortsort-method)
 
 ## Dependencies
 
