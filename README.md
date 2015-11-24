@@ -34,6 +34,8 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
 
 - [Installation](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#installation)
 - [Getting started](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#getting-started)
+  - [Bootstrap](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#bootstrap)
+  - [Semantic-UI](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#semantic-ui)
 - [Grid](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid)
 - [Column Templates](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#column-templates)
   - [grid-column](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column)
