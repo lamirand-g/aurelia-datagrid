@@ -39,7 +39,7 @@ System.register(['aurelia-templating', 'aurelia-binding', 'aurelia-dependency-in
           initializer: null,
           enumerable: true
         }, {
-          key: 'items',
+          key: 'dataSource',
           decorators: [bindable],
           initializer: null,
           enumerable: true
@@ -129,7 +129,7 @@ System.register(['aurelia-templating', 'aurelia-binding', 'aurelia-dependency-in
 
           _defineDecoratedPropertyDescriptor(this, 'cssFramework', _instanceInitializers);
 
-          _defineDecoratedPropertyDescriptor(this, 'items', _instanceInitializers);
+          _defineDecoratedPropertyDescriptor(this, 'dataSource', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'filterCheckboxButtonClass', _instanceInitializers);
 
@@ -187,13 +187,12 @@ System.register(['aurelia-templating', 'aurelia-binding', 'aurelia-dependency-in
           key: 'addColumn',
           value: function addColumn(column) {
             this.columns.push(column);
-            this.filterer.observeColumn(column);
           }
         }, {
           key: 'bind',
           value: function bind(bindingContext) {
             this.$parent = bindingContext;
-            this.items = bindingContext.items || [];
+            this.items = this.dataSource || bindingContext.items || [];
             this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
             this.loadCssFrameworkSettings();
@@ -203,7 +202,7 @@ System.register(['aurelia-templating', 'aurelia-binding', 'aurelia-dependency-in
           key: 'loadCssFrameworkSettings',
           value: function loadCssFrameworkSettings() {
             this.cssFramework = this.cssFrameworkConfiguration.name;
-            this['class'] = this.cssFrameworkConfiguration.gridClasses.table;
+            this['class'] = this['class'] || this.cssFrameworkConfiguration.gridClasses.table;
             this.loadFilterCssFrameworkSettings();
             this.loadSortCssFrameworkSettings();
           }
@@ -234,6 +233,11 @@ System.register(['aurelia-templating', 'aurelia-binding', 'aurelia-dependency-in
             this.sortButtonGroupClass = settings.sortButtonGroup;
             this.sortButtonClass = settings.sortButton;
             this.sortDescendingIconClass = settings.sortDescendingIcon;
+          }
+        }, {
+          key: 'dataSourceChanged',
+          value: function dataSourceChanged() {
+            this.items = this.datasource || bindingContext.items || [];
           }
         }], null, _instanceInitializers);
 

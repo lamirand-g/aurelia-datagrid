@@ -1,5 +1,5 @@
 <template>
-    <compose if.bind="$parent.cssFramework !== 'semantic'" view="./text-filter.html" containerless></compose>
-    <compose if.bind="$parent.cssFramework === 'semantic'" view="./text-filter-semantic.html" containerless></compose>
-    <compose view="./checkbox-filter.html" containerless></compose>
+  <compose if.bind="cssFramework !== 'semantic'" view="./text-filter.html" containerless></compose>
+  <compose if.bind="cssFramework === 'semantic'" view="./text-filter-semantic.html" containerless></compose>
+  <compose view="./checkbox-filter.html" containerless></compose>
 </template>

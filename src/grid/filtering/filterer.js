@@ -1,48 +1,55 @@
-import _ from 'lodash';
+import { InMemoryFilterStrategy } from './in-memory-filter-strategy';
 
 export default class Filterer {
-  constructor(grid, viewModel, observerLocator) {
+  constructor(grid, viewModel) {
     this.grid = grid;
+    this.filters = [];
+    this.strategy = new InMemoryFilterStrategy();
     this.viewModel = viewModel;
-    this.observerLocator = observerLocator;
+    this.values = {};
   }
 
-  observeColumn = (column) => {
-    if (column.filter) {
-      this.observerLocator.getObserver(column.filter, 'value')
-        .subscribe(_.debounce(() => this.applyFilter(column.filter), 300));
-    }
+  setFilter(column, newValue) {
+    this.values[column.property] = newValue;
+    this.onFilterChanged(column);
   }
 
-  applyFilter(filterInformation) {
-    if (this.viewModel.applyFilter) {
-      this.viewModel.applyFilter(filterInformation);
+  onFilterChanged(column) {
+    this.updateFilter(column);
+    this.pushFilters();
+  }
+
+  updateFilter(column) {
+    let existingFilter = this.filters.find(filter => {
+      return filter.property === column.property;
+    });
+
+    let filter;
+    if (existingFilter) {
+      filter = existingFilter;
     } else {
-      this.filterLocally(this.grid.items, filterInformation);
+      filter = { property: column.property };
+      this.filters.push(filter);
+    }
+
+    let value = this.values[column.property];
+    if (value || value === false) {
+      filter.value = value;
+    } else {
+      let index = this.filters.indexOf(filter);
+      this.filters.splice(index, 1);
     }
   }
 
-  filterLocally(items, filterInformation) {
+  pushFilters() {
     if (!this.unfilteredItems) {
-      this.unfilteredItems = items.slice(0);
+      this.unfilteredItems = this.grid.items.slice(0);
     }
 
-    let filteredItems;
-
-    if (filterInformation.value || filterInformation.value === false) {
-      filteredItems = _.filter(this.unfilteredItems, item => { return this.matchesFilter(item, filterInformation); });
+    if (this.viewModel.applyFilter) {
+      this.viewModel.applyFilter(this.filters);
     } else {
-      filteredItems = this.unfilteredItems;
+      this.grid.items = this.strategy.filter(this.unfilteredItems, this.filters);
     }
-
-    items.splice(0, items.length);
-    for (let item of filteredItems) {
-      items.push(item);
-    }
-  }
-
-  matchesFilter(item, filterInformation) {
-    let property = (item[filterInformation.property] + '').toString().toLowerCase();
-    return property.startsWith(filterInformation.value.toString().toLowerCase());
   }
 }

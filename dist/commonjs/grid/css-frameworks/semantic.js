@@ -29,7 +29,7 @@ var semanticCssFramework = {
     filterCheckboxUncheckedIcon: 'red remove icon',
     filterForm: 'ui center aligned form',
     filterFormField: 'field',
-    filterInputGroup: 'ui icon input',
+    filterInputGroup: 'ui fluid action input',
     filterInput: 'prompt',
     filterSearchIcon: 'ui search icon',
     sortAscendingIcon: 'ui sort ascending icon',

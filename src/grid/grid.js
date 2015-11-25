@@ -9,7 +9,7 @@ import Sorter from './sorting/sorter';
 export class Grid {
   @bindable class;
   @bindable cssFramework;
-  @bindable items;
+  @bindable dataSource;
   @bindable filterCheckboxButtonClass;
   @bindable filterCheckboxCheckedIconClass;
   @bindable filterCheckboxClearIconClass;
@@ -36,12 +36,11 @@ export class Grid {
 
   addColumn(column) {
     this.columns.push(column);
-    this.filterer.observeColumn(column);
   }
 
   bind(bindingContext) {
     this.$parent = bindingContext;
-    this.items = bindingContext.items || [];
+    this.items = this.dataSource || bindingContext.items || [];
     this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
     this.loadCssFrameworkSettings();
@@ -50,7 +49,7 @@ export class Grid {
 
   loadCssFrameworkSettings() {
     this.cssFramework = this.cssFrameworkConfiguration.name;
-    this.class = this.cssFrameworkConfiguration.gridClasses.table;
+    this.class = this.class || this.cssFrameworkConfiguration.gridClasses.table;
     this.loadFilterCssFrameworkSettings();
     this.loadSortCssFrameworkSettings();
   }
@@ -92,5 +91,9 @@ export class Grid {
   finishEditingItem = (item) => {
     let index = this.itemsCurrentlyEditing.indexOf(item);
     this.itemsCurrentlyEditing.splice(index, 1);
+  }
+
+  dataSourceChanged() {
+    this.items = this.datasource || bindingContext.items || [];
   }
 }

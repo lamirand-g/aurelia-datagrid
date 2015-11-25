@@ -7,6 +7,7 @@ import { ColumnUtility } from './grid-column-utility';
 @containerless
 @inject(Grid, ColumnUtility, Element, ObserverLocator)
 export class GridColumn {
+  alignment = 'left aligned';
   @bindable heading;
   @bindable editInputClass;
   @bindable editFieldClass;

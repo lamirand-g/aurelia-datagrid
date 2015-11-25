@@ -6,92 +6,68 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
+var _inMemoryFilterStrategy = require('./in-memory-filter-strategy');
 
 var Filterer = (function () {
-  function Filterer(grid, viewModel, observerLocator) {
-    var _this = this;
-
+  function Filterer(grid, viewModel) {
     _classCallCheck(this, Filterer);
 
-    this.observeColumn = function (column) {
-      if (column.filter) {
-        _this.observerLocator.getObserver(column.filter, 'value').subscribe(_lodash2['default'].debounce(function () {
-          return _this.applyFilter(column.filter);
-        }, 300));
-      }
-    };
-
     this.grid = grid;
+    this.filters = [];
+    this.strategy = new _inMemoryFilterStrategy.InMemoryFilterStrategy();
     this.viewModel = viewModel;
-    this.observerLocator = observerLocator;
+    this.values = {};
   }
 
   _createClass(Filterer, [{
-    key: 'applyFilter',
-    value: function applyFilter(filterInformation) {
-      if (this.viewModel.applyFilter) {
-        this.viewModel.applyFilter(filterInformation);
+    key: 'setFilter',
+    value: function setFilter(column, newValue) {
+      this.values[column.property] = newValue;
+      this.onFilterChanged(column);
+    }
+  }, {
+    key: 'onFilterChanged',
+    value: function onFilterChanged(column) {
+      this.updateFilter(column);
+      this.pushFilters();
+    }
+  }, {
+    key: 'updateFilter',
+    value: function updateFilter(column) {
+      var existingFilter = this.filters.find(function (filter) {
+        return filter.property === column.property;
+      });
+
+      var filter = undefined;
+      if (existingFilter) {
+        filter = existingFilter;
       } else {
-        this.filterLocally(this.grid.items, filterInformation);
+        filter = { property: column.property };
+        this.filters.push(filter);
+      }
+
+      var value = this.values[column.property];
+      if (value || value === false) {
+        filter.value = value;
+      } else {
+        var index = this.filters.indexOf(filter);
+        this.filters.splice(index, 1);
       }
     }
   }, {
-    key: 'filterLocally',
-    value: function filterLocally(items, filterInformation) {
-      var _this2 = this;
-
+    key: 'pushFilters',
+    value: function pushFilters() {
       if (!this.unfilteredItems) {
-        this.unfilteredItems = items.slice(0);
+        this.unfilteredItems = this.grid.items.slice(0);
       }
 
-      var filteredItems = undefined;
-
-      if (filterInformation.value || filterInformation.value === false) {
-        filteredItems = _lodash2['default'].filter(this.unfilteredItems, function (item) {
-          return _this2.matchesFilter(item, filterInformation);
-        });
+      if (this.viewModel.applyFilter) {
+        this.viewModel.applyFilter(this.filters);
       } else {
-        filteredItems = this.unfilteredItems;
+        this.grid.items = this.strategy.filter(this.unfilteredItems, this.filters);
       }
-
-      items.splice(0, items.length);
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = filteredItems[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var item = _step.value;
-
-          items.push(item);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator['return']) {
-            _iterator['return']();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-    }
-  }, {
-    key: 'matchesFilter',
-    value: function matchesFilter(item, filterInformation) {
-      var property = (item[filterInformation.property] + '').toString().toLowerCase();
-      return property.startsWith(filterInformation.value.toString().toLowerCase());
     }
   }]);
 

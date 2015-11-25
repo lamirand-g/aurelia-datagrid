@@ -32,7 +32,7 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
       initializer: null,
       enumerable: true
     }, {
-      key: 'items',
+      key: 'dataSource',
       decorators: [_aureliaTemplating.bindable],
       initializer: null,
       enumerable: true
@@ -122,7 +122,7 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
 
       _defineDecoratedPropertyDescriptor(this, 'cssFramework', _instanceInitializers);
 
-      _defineDecoratedPropertyDescriptor(this, 'items', _instanceInitializers);
+      _defineDecoratedPropertyDescriptor(this, 'dataSource', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'filterCheckboxButtonClass', _instanceInitializers);
 
@@ -180,13 +180,12 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
       key: 'addColumn',
       value: function addColumn(column) {
         this.columns.push(column);
-        this.filterer.observeColumn(column);
       }
     }, {
       key: 'bind',
       value: function bind(bindingContext) {
         this.$parent = bindingContext;
-        this.items = bindingContext.items || [];
+        this.items = this.dataSource || bindingContext.items || [];
         this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
         this.loadCssFrameworkSettings();
@@ -196,7 +195,7 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
       key: 'loadCssFrameworkSettings',
       value: function loadCssFrameworkSettings() {
         this.cssFramework = this.cssFrameworkConfiguration.name;
-        this['class'] = this.cssFrameworkConfiguration.gridClasses.table;
+        this['class'] = this['class'] || this.cssFrameworkConfiguration.gridClasses.table;
         this.loadFilterCssFrameworkSettings();
         this.loadSortCssFrameworkSettings();
       }
@@ -227,6 +226,11 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
         this.sortButtonGroupClass = settings.sortButtonGroup;
         this.sortButtonClass = settings.sortButton;
         this.sortDescendingIconClass = settings.sortDescendingIcon;
+      }
+    }, {
+      key: 'dataSourceChanged',
+      value: function dataSourceChanged() {
+        this.items = this.datasource || bindingContext.items || [];
       }
     }], null, _instanceInitializers);
 

@@ -14,6 +14,7 @@ export class ColumnUtility {
     }
 
     let column = {
+      alignment: template.alignment,
       heading: template.heading,
       inputType: template.inputType || 'text',
       property: template.property,

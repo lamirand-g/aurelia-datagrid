@@ -80,6 +80,8 @@ var GridColumnCheckbox = (function () {
   function GridColumnCheckbox(grid, utility) {
     _classCallCheck(this, _GridColumnCheckbox);
 
+    this.alignment = 'center aligned';
+
     _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'checkedIconClass', _instanceInitializers);

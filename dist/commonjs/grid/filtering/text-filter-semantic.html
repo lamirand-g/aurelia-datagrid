@@ -1,13 +1,21 @@
 <template>
-	<div class.bind="$parent.filterFormClass" if.bind="column.filterable && column.inputType !== 'checkbox'">
-        <div class.bind="$parent.filterFormFieldClass">
-            <div class.bind="$parent.filterInputGroupClass">
-                <input type.bind="column.inputType"
-                       class.bind="$parent.filterInputClass"
-                       placeholder="Filter for ${column.heading}"
-                       value.bind="column.filter.value">
-                <i class.bind="$parent.filterSearchIconClass"></i>
-            </div>
-        </div>
-    </div>
+  <div class.bind="$parent.filterInputGroupClass"
+       if.bind="(column.filterable || column.filterable === '') && column.inputType !== 'checkbox'">
+    <input type.bind="column.inputType"
+           class.bind="$parent.filterInputClass"
+           placeholder="Filter"
+           value.bind="filterer.values[column.property]"
+           oninput.call="filterer.onFilterChanged(column) & debounce:500">
+    <button type="button"
+            class="ui basic icon button"
+            if.bind="!filterer.values[column.property]">
+      <i class.bind="$parent.filterSearchIconClass"></i>
+    </button>
+    <button type="button"
+            class="ui basic icon button"
+            if.bind="filterer.values[column.property]"
+            click.delegate="filterer.setFilter(column, '')">
+      <i class="remove icon"></i>
+    </button>
+  </div>
 </temlate>

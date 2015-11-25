@@ -75,6 +75,8 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
         function GridColumn(grid, utility, element, observerLocator) {
           _classCallCheck(this, _GridColumn);
 
+          this.alignment = 'left aligned';
+
           _defineDecoratedPropertyDescriptor(this, 'heading', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'editInputClass', _instanceInitializers);

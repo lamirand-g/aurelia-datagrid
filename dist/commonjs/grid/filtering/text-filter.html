@@ -1,12 +1,16 @@
 <template>
-	<div class.bind="$parent.filterFormFieldClass" if.bind="column.filterable && column.inputType !== 'checkbox'">
+	<div class.bind="$parent.filterFormFieldClass" 
+       if.bind="column.filterable && column.inputType !== 'checkbox'">
     <div class.bind="$parent.filterFormField">
       <div class.bind="$parent.filterInputGroupClass">
         <input type.bind="column.inputType"
-                       class.bind="$parent.filterInputClass"
-                       placeholder="Filter for ${column.heading}"
-                       value.bind="column.filter.value">
-        <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+               class.bind="$parent.filterInputClass"
+               placeholder="Filter"
+               value.bind="filterer.values[column.property]"
+               oninput.call="filterer.onFilterChanged(column) & debounce:500">
+        <div class="input-group-addon">
+          <span class="glyphicon glyphicon-search"></span>
+        </div>
       </div>
     </div>
   </div>

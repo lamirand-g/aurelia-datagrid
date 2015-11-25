@@ -33,6 +33,7 @@ define(['exports', 'lodash'], function (exports, _lodash) {
         }
 
         var column = {
+          alignment: template.alignment,
           heading: template.heading,
           inputType: template.inputType || 'text',
           property: template.property,
