@@ -84,7 +84,108 @@ export function configure(aurelia) {
 # Getting started
 
 ## Bootstrap
-> TODO
+If you have not already, setup your app using the instructions from the <a href="http://aurelia.io/docs.html#/aurelia/framework/latest/doc/article/getting-started" target="_blank">Getting Started<a> page on Aurelia.
+
+After setting up and installing this plugin, we'll create a simple working example by doing the following:
+- Configure the plugin to use Bootstrap styling.
+- Include Semantic in your HTML.
+- Create an Aurelia view and view model.
+- Add the aurelia-datagrid to the view.
+
+### Configure the plugin to use Bootstrap styling
+In the **main.js** file, make the following change to the plugin:
+```javascript
+.plugin('donnelljenkins/aurelia-datagrid', config => 
+	config => config.defaultCssFramework = 'bootstrap');
+```
+
+### Include Semantic in your HTML
+In the **index.html**, add the following to the head element:
+```html
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+```
+Alternatively, you can install **Bootstrap** using JSPM and include the link to the downloaded .css file.
+
+### Create an Aurelia view and view model
+Let's create the view model.  In the same folder the **app.js** file is located, create a **products.js** file.  In the file, add this code:
+```javascript
+export class Products {
+  items = [
+    { name: 'Hammer', active: true, price: 5.99 },
+    { name: 'Jackhammer', active: false, price: 599.99 },
+    { name: 'Wench', active: true, price: 2.99 }
+  ];
+}
+
+```
+Now, we need a view to go along with the model.  Create a **products.html** file and add the following code:
+```html
+<template>
+  <div class="panel panel-primary">
+    <div class="panel-heading">Products</div>
+    <div class="panel-body">
+    
+    </div>
+  </div>
+</template>
+```
+Update the router to include our new Products page.  In **app.js**, update the array that is passed to the config.map function by adding the following line:
+```javascript
+{ route: 'products', name: 'products', moduleId: 'products', nav: true, title: 'Products'}
+```
+The contents should like similar to this:
+```javascript
+export class App {
+  configureRouter(config) {
+    config.title = 'Aurelia Datagrid Sample';
+    config.map([
+      { route: ['','welcome'], name: 'welcome', moduleId: 'welcome', nav: true, title:'Welcome' },
+      { route: 'products', name: 'products', moduleId: 'products', nav: true, title: 'Products'}
+    ]);
+  }
+}
+
+```
+Now, we can navigate to our Products page to view it by going to **[your url]/#/products**.
+
+### Add the aurelia-datagrid to the view.
+
+In **products.html**, add the following code inside the **.panel-body** element:
+```html
+<grid>
+  <template replace-part="grid-template">
+  	<grid-column property="name" filterable sortable></grid-column>
+  	<grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
+  	<grid-column property="price"></grid-column>
+  </template>
+</grid>
+```
+This will generate a grid with three columns:
+- a column that shows the names of the products
+- a column that indicates which products are active with a check mark
+- a column that shows the prices of the products
+
+The first two columns can be filtered and sorted.  Filter inputs and sorting buttons will be included in the headers for each column.
+
+The **products.html** file contents should like this:
+```html
+<template>
+  <div class="panel panel-primary">
+    <div class="panel-heading">Products</div>
+    <div class="panel-body">
+      <grid>
+        <template replace-part="grid-template">
+          <grid-column property="name" filterable sortable></grid-column>
+          <grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
+          <grid-column property="price"></grid-column>
+        </template>
+      </grid>
+    </div>
+  </div>
+</template>
+```
+
+Now, when you run your app and navigate to the products page, the grid with the list of products will display.
 
 ## Semantic-UI
 If you have not already, setup your app using the instructions from the <a href="http://aurelia.io/docs.html#/aurelia/framework/latest/doc/article/getting-started" target="_blank">Getting Started<a> page on Aurelia.
@@ -137,7 +238,7 @@ The contents should like similar to this:
 ```javascript
 export class App {
   configureRouter(config) {
-    config.title = 'Don The Dev';
+    config.title = 'Aurelia Datagrid Sample';
     config.map([
       { route: ['','welcome'], name: 'welcome', moduleId: 'welcome', nav: true, title:'Welcome' },
       { route: 'products', name: 'products', moduleId: 'products', nav: true, title: 'Products'}
@@ -184,7 +285,7 @@ The **products.html** file contents should like this:
 </template>
 ```
 
-Now, when you run your app and navigate to the products page, the grid showing the products will display.
+Now, when you run your app and navigate to the products page, the grid with the list of products will display.
 
 # Grid
 - By default, the grid looks for an array property named **items** on your view model. In an upcoming release, a **datasource** attribute will be available to override this.
