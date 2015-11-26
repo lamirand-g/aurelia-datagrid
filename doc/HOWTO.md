@@ -1,7 +1,7 @@
 # Example
 
 ```html
-<grid>
+<grid data-source="books">
 	<template replace-part="grid-template">
 		<grid-column property="name" filterable sortable></grid-column>
 		<grid-column property="title" filterable sortable></grid-column>
@@ -110,7 +110,7 @@ Alternatively, you can install **Bootstrap** using JSPM and include the link to 
 Let's create the view model.  In the same folder the **app.js** file is located, create a **products.js** file.  In the file, add this code:
 ```javascript
 export class Products {
-  items = [
+  tools = [
     { name: 'Hammer', active: true, price: 5.99 },
     { name: 'Jackhammer', active: false, price: 599.99 },
     { name: 'Wench', active: true, price: 2.99 }
@@ -152,7 +152,7 @@ Now, we can navigate to our Products page to view it by going to **[your url]/#/
 
 In **products.html**, add the following code inside the **.panel-body** element:
 ```html
-<grid>
+<grid data-source="tools">
   <template replace-part="grid-template">
   	<grid-column property="name" filterable sortable></grid-column>
   	<grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
@@ -173,7 +173,7 @@ The **products.html** file contents should like this:
   <div class="panel panel-primary">
     <div class="panel-heading">Products</div>
     <div class="panel-body">
-      <grid>
+      <grid data-source="tools">
         <template replace-part="grid-template">
           <grid-column property="name" filterable sortable></grid-column>
           <grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
@@ -214,7 +214,7 @@ Alternatively, you can install it using JSPM and include the link to the downloa
 Let's create the view model.  In the same folder the **app.js** file is located, create a **products.js** file.  In the file, add this code:
 ```javascript
 export class Products {
-  items = [
+  tools = [
     { name: 'Hammer', active: true, price: 5.99 },
     { name: 'Jackhammer', active: false, price: 599.99 },
     { name: 'Wench', active: true, price: 2.99 }
@@ -253,7 +253,7 @@ Now, we can navigate to our Products page to view it by going to **[your url]/#/
 
 In **products.html**, add the following code inside the **.ui.segment div** element:
 ```html
-<grid>
+<grid data-source="tools">
 	<template replace-part="grid-template">
   	<grid-column property="name" filterable sortable></grid-column>
   	<grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
@@ -274,7 +274,7 @@ The **products.html** file contents should like this:
   <div class="ui segment">
     <div class="ui top attached inverted blue header">Products</div>
 
-    <grid>
+    <grid data-source="tools">
       <template replace-part="grid-template">
         <grid-column property="name" filterable sortable></grid-column>
         <grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
@@ -291,7 +291,7 @@ Now, when you run your app and navigate to the products page, the grid with the 
 - By default, the grid looks for an array property named **items** on your view model. In an upcoming release, a **datasource** attribute will be available to override this.
 ```javascript
 export class ViewModel {
-  items = [
+  tools = [
     { name: 'Hammer', active: true, price: 5.99 },
     { name: 'Jackhammer', active: false, price: 599.99 },
     { name: 'Wench', active: true, price: 2.99 }
@@ -302,12 +302,20 @@ export class ViewModel {
 
 ## Attributes
 
-### class (future release)
+### class
+Bootstrap
 ```html
-<grid class="table-striped table-condensed
+<grid class="table-striped table-condensed">
   ...
 </grid>
 ```
+Semantic-UI
+```html
+<grid class="ui striped celled compact table">
+  ...
+</grid>
+```
+
 HTML class attribute to apply to the generated **&lt;table&gt;** element.
 
 ### css-framework
@@ -320,7 +328,7 @@ Specifies the CSS framework to use for styling the grid.  Currently, there are t
 - bootstrap (<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>)
 - semantic (<a href="http://semantic-ui.com/" target="_blank">Semantic-UI</a>)
 
-### data-source (future release)
+### data-source
 ```html
 <grid data-source="products">
   ...
@@ -523,26 +531,100 @@ export function configure(aurelia) {
 
 # How to provide custom filtering
 ```html
-  <grid-column filterable property="name"></grid-column>
+  <grid-column filterable="starts with" property="name"></grid-column>
 ```
-The grid looks for an **applyFilter(filter)** function on the view model. Add the function to your view model in order to override the grid's default filtering to provide your own.
+
+There are three ways you can provide custom filtering:
+1. Providing a global filtering strategy
+2. Providing a grid level filtering strategy.
+3. Providing a column level filtering strategy.
+
+## Providing a global filtering strategy
+Global level filter strategies will apply to any column that meets all the following requirements:
+- A filterable attribute is set with no value.
+- No grid level default filtering strategy is provided.
+```html
+<grid-column property="name" filterable></grid-column>
+```
+
+By default, all grids use the **starts with** filter strategy.  This is a configuration setting that can be changed.  In the **main.js** file, update the configuration file like so:
 ```javascript
-   applyFilter(filter){
-    this.items = this.items.filter(item => {
-      return item[filter.property].startsWith(filter.value);
-    });
-   }
+.plugin('donnelljenkins/aurelia-datagrid', config => {
+  config.defaultFilterStrategy: 'starts with';
+  config.defaultCssFramework = 'bootstrap';
+});
 ```
 
-## applyFilter(filter) method
+Available Filter Strategies:
+- **contains**
+- **ends with**
+- **equals**
+- **starts with**
 
-### filter Parameter
+## Providing a grid level filtering strategy
+```html
+<grid default-filter="contains" data-source="products">
+```
 
-#### property
-The name of the property the filter applies to.
+Available Filter Strategies:
+- **contains**
+- **ends with**
+- **equals**
+- **starts with**
 
-#### value
-The value to filter by.
+## Providing a column level filtering strategy
+```html
+<grid-column filterable="ends with" property="name"></grid-column>
+```
+
+# Creating a custom filter strategy
+
+Create a function with an apply method.
+```javascript
+const lastToContainFilterStrategy = {
+  apply: (items, filter) => {
+    let filterValue = filter.value.toLowerCase();
+    let filteredItems = items.filter(item => {
+        return item[filter.property].toLowerCase().includes(filterValue);
+      });
+    return filteredItems.slice(filteredItems.length-1);
+  }
+};
+
+export default lastToContainFilterStrategy;
+
+```
+Import the strategy into **main.js**.
+```javascript
+import lastToContainFilterStrategy from './last-to-contain-filter-strategy';
+```
+Add the strategy to the global list of filter strategies.
+```javascript
+.plugin('donnelljenkins/aurelia-datagrid', config => {
+  ...
+  config.filterStrategies.push(
+  {
+    name: 'last to contain', 
+    strategy: lastToContainFilterStrategy
+  });
+});
+```
+Use the strategy.
+```javascript
+<grid-column filterable="last to contain" property="name"></grid-column>
+```
+
+## Filter Strategies
+
+### apply(items, filter) method
+
+#### filter Parameter
+
+##### items
+The data source items to apply the filter to.
+
+#### filter
+The filter information to apply.  It contains the property and the value the filter applies to.
 
 # How to provide custom sorting
 ```html
