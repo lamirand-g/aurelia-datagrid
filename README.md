@@ -32,6 +32,7 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
 
 ## Documentation
 
+### [Current Release (@v0.1.4)](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md)
 - [Installation](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#installation)
 - [Getting started](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#getting-started)
   - [Bootstrap](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#bootstrap)
@@ -48,9 +49,14 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
   - [Global settings](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#global-settings)
   - [Grid level settings](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-level-settings)
 - [Custom filtering](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#how-to-provide-custom-filtering)
-  - [applyFilter(filter) method](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#applyfilterfilter-method)
 - [Custom sorting](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#how-to-provide-custom-sorting)
   - [applySort(sort) method](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#applysortsort-method)
+
+### [Release @v0.1.3](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO%40v0.1.3.md)
+
+## Examples
+- [All Examples](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/EXAMPLES.md)
+- [Paging](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/EXAMPLES.md#paging)
 
 ## Dependencies
 
