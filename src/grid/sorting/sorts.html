@@ -1,6 +1,6 @@
 <template>
 	<div if.bind="column.sortable != undefined" class.bind="sortButtonGroupClass" role="group">
-		<a role="button" class="${column.alignment} ${sortButtonClass}" click.delegate="sorter.applySort(column.sort)">
+		<a role="button" class="${column.alignment} ${sortButtonClass}" click.delegate="sorter.setSort(column.sort)">
 		    ${column.heading}
 		    <i class.bind="sortAvailableIconClass" if.bind="!column.sort.direction"></i>
 		    <i class.bind="sortAscendingIconClass" if.bind="column.sort.direction === 'asc'"></i>

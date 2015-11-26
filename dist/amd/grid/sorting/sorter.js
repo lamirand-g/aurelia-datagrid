@@ -19,14 +19,20 @@ define(['exports', 'module', 'lodash', '../grid-constants'], function (exports, 
     }
 
     _createClass(Sorter, [{
-      key: 'applySort',
-      value: function applySort(sort) {
+      key: 'setSort',
+      value: function setSort(sort) {
         this.updateSortInformation(sort);
-
-        if (this.grid.$parent.applySort) {
-          this.grid.$parent.applySort(sort);
-        } else {
-          this.sortItemsLocally(this.grid.items, sort);
+        this.grid.refresh();
+      }
+    }, {
+      key: 'applySort',
+      value: function applySort() {
+        if (this.sortInformation) {
+          if (this.grid.$parent.applySort) {
+            this.grid.$parent.applySort(this.sortInformation);
+          } else {
+            this.sortItemsLocally(this.grid.filteredItems, this.sortInformation);
+          }
         }
       }
     }, {
@@ -62,40 +68,32 @@ define(['exports', 'module', 'lodash', '../grid-constants'], function (exports, 
     }, {
       key: 'sortItemsLocally',
       value: function sortItemsLocally(items, sort) {
-        if (!this.unsortedItems) {
-          this.unsortedItems = items.slice(0);
-        }
-
         var sortedItems = undefined;
-
         if (sort.direction) {
-          sortedItems = _2['default'].sortByOrder(this.unsortedItems, sort.property, sort.direction);
-        } else {
-          sortedItems = this.unsortedItems;
-        }
+          sortedItems = _2['default'].sortByOrder(items, sort.property, sort.direction);
+          items.splice(0, items.length);
+          var _iteratorNormalCompletion2 = true;
+          var _didIteratorError2 = false;
+          var _iteratorError2 = undefined;
 
-        items.splice(0, items.length);
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
-
-        try {
-          for (var _iterator2 = sortedItems[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var item = _step2.value;
-
-            items.push(item);
-          }
-        } catch (err) {
-          _didIteratorError2 = true;
-          _iteratorError2 = err;
-        } finally {
           try {
-            if (!_iteratorNormalCompletion2 && _iterator2['return']) {
-              _iterator2['return']();
+            for (var _iterator2 = sortedItems[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+              var item = _step2.value;
+
+              items.push(item);
             }
+          } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
           } finally {
-            if (_didIteratorError2) {
-              throw _iteratorError2;
+            try {
+              if (!_iteratorNormalCompletion2 && _iterator2['return']) {
+                _iterator2['return']();
+              }
+            } finally {
+              if (_didIteratorError2) {
+                throw _iteratorError2;
+              }
             }
           }
         }
@@ -118,6 +116,8 @@ define(['exports', 'module', 'lodash', '../grid-constants'], function (exports, 
             sortInformation.direction = _GridConstants['default'].sortAscending;
             break;
         }
+
+        this.sortInformation = sortInformation;
       }
     }]);
 

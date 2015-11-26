@@ -7,13 +7,18 @@ export default class Sorter {
     this.grid = grid;
   }
 
-  applySort(sort) {
+  setSort(sort) {
     this.updateSortInformation(sort);
+    this.grid.refresh();
+  }
 
-    if (this.grid.$parent.applySort) {
-      this.grid.$parent.applySort(sort);
-    } else {
-      this.sortItemsLocally(this.grid.items, sort);
+  applySort() {
+    if (this.sortInformation) {
+      if (this.grid.$parent.applySort) {
+        this.grid.$parent.applySort(this.sortInformation);
+      } else {
+        this.sortItemsLocally(this.grid.filteredItems, this.sortInformation);
+      }
     }
   }
 
@@ -26,21 +31,13 @@ export default class Sorter {
   }
 
   sortItemsLocally(items, sort) {
-    if (!this.unsortedItems) {
-      this.unsortedItems = items.slice(0);
-    }
-
     let sortedItems;
-
     if (sort.direction) {
-      sortedItems = _.sortByOrder(this.unsortedItems, sort.property, sort.direction);
-    } else {
-      sortedItems = this.unsortedItems;
-    }
-
-    items.splice(0, items.length);
-    for (let item of sortedItems) {
-      items.push(item);
+      sortedItems = _.sortByOrder(items, sort.property, sort.direction);
+      items.splice(0, items.length);
+      for (let item of sortedItems) {
+        items.push(item);
+      }
     }
   }
 
@@ -60,5 +57,7 @@ export default class Sorter {
       sortInformation.direction = GridConstants.sortAscending;
       break;
     }
+
+    this.sortInformation = sortInformation;
   }
 }

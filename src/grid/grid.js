@@ -41,11 +41,12 @@ export class Grid {
   }
 
   filtersApplied = (filteredItems) => {
-    let items = filteredItems;
+    this.filteredItems = filteredItems;
+    this.sorter.applySort();
+
     if (this.additionalFiltering) {
-      items = this.additionalFiltering(items);
+      this.filteredItems = this.additionalFiltering(this.filteredItems);
     }
-    this.filteredItems = items;
   }
 
   addColumn(column) {

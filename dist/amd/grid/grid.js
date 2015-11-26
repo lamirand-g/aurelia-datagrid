@@ -171,11 +171,12 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
       _defineDecoratedPropertyDescriptor(this, 'sortDescendingIconClass', _instanceInitializers);
 
       this.filtersApplied = function (filteredItems) {
-        var items = filteredItems;
+        _this.filteredItems = filteredItems;
+        _this.sorter.applySort();
+
         if (_this.additionalFiltering) {
-          items = _this.additionalFiltering(items);
+          _this.filteredItems = _this.additionalFiltering(_this.filteredItems);
         }
-        _this.filteredItems = items;
       };
 
       this.beginEditingItem = function (item) {
