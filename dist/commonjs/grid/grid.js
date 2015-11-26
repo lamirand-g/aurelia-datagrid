@@ -35,6 +35,11 @@ var Grid = (function () {
   var _instanceInitializers = {};
 
   _createDecoratedClass(Grid, [{
+    key: 'additionalFiltering',
+    decorators: [_aureliaTemplating.bindable],
+    initializer: null,
+    enumerable: true
+  }, {
     key: 'class',
     decorators: [_aureliaTemplating.bindable],
     initializer: null,
@@ -136,6 +141,8 @@ var Grid = (function () {
 
     _classCallCheck(this, _Grid);
 
+    _defineDecoratedPropertyDescriptor(this, 'additionalFiltering', _instanceInitializers);
+
     _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'cssFramework', _instanceInitializers);
@@ -175,7 +182,11 @@ var Grid = (function () {
     _defineDecoratedPropertyDescriptor(this, 'sortDescendingIconClass', _instanceInitializers);
 
     this.filtersApplied = function (filteredItems) {
-      _this.filteredItems = filteredItems;
+      var items = filteredItems;
+      if (_this.additionalFiltering) {
+        items = _this.additionalFiltering(items);
+      }
+      _this.filteredItems = items;
     };
 
     this.beginEditingItem = function (item) {
@@ -217,6 +228,11 @@ var Grid = (function () {
       this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
       this.loadCssFrameworkSettings();
+      this.refresh();
+    }
+  }, {
+    key: 'refresh',
+    value: function refresh() {
       this.filterEngine.applyFilters();
     }
   }, {
@@ -259,7 +275,7 @@ var Grid = (function () {
     key: 'dataSourceChanged',
     value: function dataSourceChanged() {
       this.items = this.dataSource || this.$parent.items || [];
-      this.filterEngine.applyFilters();
+      this.refresh();
     }
   }, {
     key: 'getFilterStrategy',

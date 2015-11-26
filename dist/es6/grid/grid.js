@@ -7,6 +7,7 @@ import configuration from './grid-configuration';
 
 @inject(GridCssFrameworkRepository)
 export class Grid {
+  @bindable additionalFiltering;
   @bindable class;
   @bindable cssFramework;
   @bindable dataSource;
@@ -40,7 +41,11 @@ export class Grid {
   }
 
   filtersApplied = (filteredItems) => {
-    this.filteredItems = filteredItems;
+    let items = filteredItems;
+    if (this.additionalFiltering) {
+      items = this.additionalFiltering(items);
+    }
+    this.filteredItems = items;
   }
 
   addColumn(column) {
@@ -53,6 +58,10 @@ export class Grid {
     this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
     this.loadCssFrameworkSettings();
+    this.refresh();
+  }
+
+  refresh() {
     this.filterEngine.applyFilters();
   }
 
@@ -104,7 +113,7 @@ export class Grid {
 
   dataSourceChanged() {
     this.items = this.dataSource || this.$parent.items || [];
-    this.filterEngine.applyFilters();
+    this.refresh();
   }
 
   getFilterStrategy(column) {

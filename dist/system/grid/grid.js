@@ -29,6 +29,11 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
         var _instanceInitializers = {};
 
         _createDecoratedClass(Grid, [{
+          key: 'additionalFiltering',
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }, {
           key: 'class',
           decorators: [bindable],
           initializer: null,
@@ -130,6 +135,8 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
 
           _classCallCheck(this, _Grid);
 
+          _defineDecoratedPropertyDescriptor(this, 'additionalFiltering', _instanceInitializers);
+
           _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'cssFramework', _instanceInitializers);
@@ -169,7 +176,11 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
           _defineDecoratedPropertyDescriptor(this, 'sortDescendingIconClass', _instanceInitializers);
 
           this.filtersApplied = function (filteredItems) {
-            _this.filteredItems = filteredItems;
+            var items = filteredItems;
+            if (_this.additionalFiltering) {
+              items = _this.additionalFiltering(items);
+            }
+            _this.filteredItems = items;
           };
 
           this.beginEditingItem = function (item) {
@@ -211,6 +222,11 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
             this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
             this.loadCssFrameworkSettings();
+            this.refresh();
+          }
+        }, {
+          key: 'refresh',
+          value: function refresh() {
             this.filterEngine.applyFilters();
           }
         }, {
@@ -253,7 +269,7 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
           key: 'dataSourceChanged',
           value: function dataSourceChanged() {
             this.items = this.dataSource || this.$parent.items || [];
-            this.filterEngine.applyFilters();
+            this.refresh();
           }
         }, {
           key: 'getFilterStrategy',
