@@ -13,8 +13,8 @@ define(['exports', 'module', './filtering/strategies/contains-filter-strategy', 
 
   var gridConfiguration = {
     defaultCssFramework: 'default',
-    defaultFilter: 'starts-with',
-    filters: [{ name: 'contains', strategy: _containsFilterStrategy['default'] }, { name: 'ends-with', strategy: _endsWithFilterStrategy['default'] }, { name: 'equals', strategy: _equalsFilterStrategy['default'] }, { name: 'starts-with', strategy: _startsWithFilterStrategy['default'] }]
+    defaultFilterStrategy: 'starts with',
+    filterStrategies: [{ name: 'contains', strategy: _containsFilterStrategy['default'] }, { name: 'ends with', strategy: _endsWithFilterStrategy['default'] }, { name: 'equals', strategy: _equalsFilterStrategy['default'] }, { name: 'starts with', strategy: _startsWithFilterStrategy['default'] }]
   };
 
   module.exports = gridConfiguration;

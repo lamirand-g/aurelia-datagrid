@@ -15,8 +15,8 @@ System.register(['./filtering/strategies/contains-filter-strategy', './filtering
     execute: function () {
       gridConfiguration = {
         defaultCssFramework: 'default',
-        defaultFilter: 'starts-with',
-        filters: [{ name: 'contains', strategy: containsFilterStrategy }, { name: 'ends-with', strategy: endsWithFilterStrategy }, { name: 'equals', strategy: equalsFilterStrategy }, { name: 'starts-with', strategy: startsWithFilterStrategy }]
+        defaultFilterStrategy: 'starts with',
+        filterStrategies: [{ name: 'contains', strategy: containsFilterStrategy }, { name: 'ends with', strategy: endsWithFilterStrategy }, { name: 'equals', strategy: equalsFilterStrategy }, { name: 'starts with', strategy: startsWithFilterStrategy }]
       };
 
       _export('default', gridConfiguration);

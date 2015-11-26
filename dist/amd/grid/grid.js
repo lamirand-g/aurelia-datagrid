@@ -39,6 +39,11 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
       initializer: null,
       enumerable: true
     }, {
+      key: 'defaultFilter',
+      decorators: [_aureliaTemplating.bindable],
+      initializer: null,
+      enumerable: true
+    }, {
       key: 'filterCheckboxButtonClass',
       decorators: [_aureliaTemplating.bindable],
       initializer: null,
@@ -125,6 +130,8 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
       _defineDecoratedPropertyDescriptor(this, 'cssFramework', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'dataSource', _instanceInitializers);
+
+      _defineDecoratedPropertyDescriptor(this, 'defaultFilter', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'filterCheckboxButtonClass', _instanceInitializers);
 
@@ -246,19 +253,19 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
     }, {
       key: 'getFilterStrategy',
       value: function getFilterStrategy(column) {
-        var strategyTemplate = column.filterable || _configuration['default'].defaultFilter;
+        var strategyTemplate = column.filterable || this.defaultFilter || _configuration['default'].defaultFilterStrategy;
         var strategyType = typeof strategyTemplate;
-        var strategy = strategyType;
+        var strategy = strategyTemplate;
 
         if (strategyType === 'string') {
-          var filter = _configuration['default'].filters.find(function (fil) {
+          var filterStrategies = _configuration['default'].filterStrategies.filter(function (fil) {
             return fil.name.toLowerCase() === strategyTemplate.toLowerCase();
           });
 
-          if (!filter) {
+          if (filterStrategies.length === 0) {
             throw Error('The filter \'' + strategyTemplate + '\' cannot be found.');
           }
-          strategy = filter.strategy;
+          strategy = filterStrategies[filterStrategies.length - 1].strategy;
         }
         return strategy;
       }

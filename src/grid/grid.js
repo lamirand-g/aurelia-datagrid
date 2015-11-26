@@ -10,6 +10,7 @@ export class Grid {
   @bindable class;
   @bindable cssFramework;
   @bindable dataSource;
+  @bindable defaultFilter;
   @bindable filterCheckboxButtonClass;
   @bindable filterCheckboxCheckedIconClass;
   @bindable filterCheckboxClearIconClass;
@@ -107,19 +108,19 @@ export class Grid {
   }
 
   getFilterStrategy(column) {
-    let strategyTemplate = column.filterable || configuration.defaultFilter;
+    let strategyTemplate = column.filterable || this.defaultFilter || configuration.defaultFilterStrategy;
     let strategyType = typeof(strategyTemplate);
-    let strategy = strategyType;
+    let strategy = strategyTemplate;
 
     if (strategyType === 'string') {
-      let filter = configuration.filters.find(fil => {
+      let filterStrategies = configuration.filterStrategies.filter(fil => {
         return fil.name.toLowerCase() === strategyTemplate.toLowerCase();
       });
 
-      if (!filter) {
+      if (filterStrategies.length === 0) {
         throw Error(`The filter '${strategyTemplate}' cannot be found.`);
       }
-      strategy = filter.strategy;
+      strategy = filterStrategies[filterStrategies.length - 1].strategy;
     }
     return strategy;
   }

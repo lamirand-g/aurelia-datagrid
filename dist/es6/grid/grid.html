@@ -3,7 +3,8 @@
         <thead>
             <tr>
                 <th repeat.for="column of columns">
-                    <span if.bind="column.sortable === undefined">${column.heading}</span>
+                    ${column.sortable}
+                    <span if.bind="column.sortable == undefined">${column.heading}</span>
                     <compose view="./sorting/sorts.html" containerless></compose>
                 </th>
             </tr>

@@ -50,6 +50,11 @@ var Grid = (function () {
     initializer: null,
     enumerable: true
   }, {
+    key: 'defaultFilter',
+    decorators: [_aureliaTemplating.bindable],
+    initializer: null,
+    enumerable: true
+  }, {
     key: 'filterCheckboxButtonClass',
     decorators: [_aureliaTemplating.bindable],
     initializer: null,
@@ -136,6 +141,8 @@ var Grid = (function () {
     _defineDecoratedPropertyDescriptor(this, 'cssFramework', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'dataSource', _instanceInitializers);
+
+    _defineDecoratedPropertyDescriptor(this, 'defaultFilter', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'filterCheckboxButtonClass', _instanceInitializers);
 
@@ -257,19 +264,19 @@ var Grid = (function () {
   }, {
     key: 'getFilterStrategy',
     value: function getFilterStrategy(column) {
-      var strategyTemplate = column.filterable || _gridConfiguration2['default'].defaultFilter;
+      var strategyTemplate = column.filterable || this.defaultFilter || _gridConfiguration2['default'].defaultFilterStrategy;
       var strategyType = typeof strategyTemplate;
-      var strategy = strategyType;
+      var strategy = strategyTemplate;
 
       if (strategyType === 'string') {
-        var filter = _gridConfiguration2['default'].filters.find(function (fil) {
+        var filterStrategies = _gridConfiguration2['default'].filterStrategies.filter(function (fil) {
           return fil.name.toLowerCase() === strategyTemplate.toLowerCase();
         });
 
-        if (!filter) {
+        if (filterStrategies.length === 0) {
           throw Error('The filter \'' + strategyTemplate + '\' cannot be found.');
         }
-        strategy = filter.strategy;
+        strategy = filterStrategies[filterStrategies.length - 1].strategy;
       }
       return strategy;
     }

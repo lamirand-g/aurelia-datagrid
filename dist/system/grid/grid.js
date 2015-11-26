@@ -44,6 +44,11 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
           initializer: null,
           enumerable: true
         }, {
+          key: 'defaultFilter',
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }, {
           key: 'filterCheckboxButtonClass',
           decorators: [bindable],
           initializer: null,
@@ -130,6 +135,8 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
           _defineDecoratedPropertyDescriptor(this, 'cssFramework', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'dataSource', _instanceInitializers);
+
+          _defineDecoratedPropertyDescriptor(this, 'defaultFilter', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'filterCheckboxButtonClass', _instanceInitializers);
 
@@ -251,19 +258,19 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
         }, {
           key: 'getFilterStrategy',
           value: function getFilterStrategy(column) {
-            var strategyTemplate = column.filterable || configuration.defaultFilter;
+            var strategyTemplate = column.filterable || this.defaultFilter || configuration.defaultFilterStrategy;
             var strategyType = typeof strategyTemplate;
-            var strategy = strategyType;
+            var strategy = strategyTemplate;
 
             if (strategyType === 'string') {
-              var filter = configuration.filters.find(function (fil) {
+              var filterStrategies = configuration.filterStrategies.filter(function (fil) {
                 return fil.name.toLowerCase() === strategyTemplate.toLowerCase();
               });
 
-              if (!filter) {
+              if (filterStrategies.length === 0) {
                 throw Error('The filter \'' + strategyTemplate + '\' cannot be found.');
               }
-              strategy = filter.strategy;
+              strategy = filterStrategies[filterStrategies.length - 1].strategy;
             }
             return strategy;
           }

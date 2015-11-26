@@ -5,12 +5,12 @@ import startsWithFilterStrategy from './filtering/strategies/starts-with-filter-
 
 const gridConfiguration = {
   defaultCssFramework: 'default',
-  defaultFilter: 'starts-with',
-  filters: [
+  defaultFilterStrategy: 'starts with',
+  filterStrategies: [
     { name: 'contains', strategy: containsFilterStrategy },
-    { name: 'ends-with', strategy: endsWithFilterStrategy },
+    { name: 'ends with', strategy: endsWithFilterStrategy },
     { name: 'equals', strategy: equalsFilterStrategy },
-    { name: 'starts-with', strategy: startsWithFilterStrategy }
+    { name: 'starts with', strategy: startsWithFilterStrategy }
   ]
 };
 

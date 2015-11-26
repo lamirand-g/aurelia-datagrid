@@ -24,8 +24,8 @@ var _filteringStrategiesStartsWithFilterStrategy2 = _interopRequireDefault(_filt
 
 var gridConfiguration = {
   defaultCssFramework: 'default',
-  defaultFilter: 'starts-with',
-  filters: [{ name: 'contains', strategy: _filteringStrategiesContainsFilterStrategy2['default'] }, { name: 'ends-with', strategy: _filteringStrategiesEndsWithFilterStrategy2['default'] }, { name: 'equals', strategy: _filteringStrategiesEqualsFilterStrategy2['default'] }, { name: 'starts-with', strategy: _filteringStrategiesStartsWithFilterStrategy2['default'] }]
+  defaultFilterStrategy: 'starts with',
+  filterStrategies: [{ name: 'contains', strategy: _filteringStrategiesContainsFilterStrategy2['default'] }, { name: 'ends with', strategy: _filteringStrategiesEndsWithFilterStrategy2['default'] }, { name: 'equals', strategy: _filteringStrategiesEqualsFilterStrategy2['default'] }, { name: 'starts with', strategy: _filteringStrategiesStartsWithFilterStrategy2['default'] }]
 };
 
 exports['default'] = gridConfiguration;
