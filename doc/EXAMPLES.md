@@ -61,7 +61,7 @@ The grid should look like this:
       view-model.ref="gridViewModel"
       additional-filtering.bind="applyPaging">
 ```
-This will create a reference to the grid and with the name '**gridViewModel**'.  We now have access to the grid's view model.  We can use this reference to force the grid to refresh whenever the user clicks on one of the pages in the pagination control.  Let's update our **products** view model to do that.
+This will create a reference to the grid with the name '**gridViewModel**'.  We now have access to the grid's view model.  We can use this reference to force the grid to refresh whenever the user clicks on one of the pages in the pagination control.  Let's update our **products** view model to do that.
 
 In the **goToPage** method (products.js), add the following line to the end of the method:
 ```javascript
