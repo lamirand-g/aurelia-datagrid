@@ -1,11 +1,11 @@
 ﻿import { bindable } from 'aurelia-templating';
-import { ObserverLocator } from 'aurelia-binding';
 import { inject } from 'aurelia-dependency-injection';
 import { GridCssFrameworkRepository } from './css-frameworks/repository';
-import Filterer from './filtering/filterer';
+import FilterEngine from './filtering/filter-engine';
 import Sorter from './sorting/sorter';
+import configuration from './grid-configuration';
 
-@inject(ObserverLocator, GridCssFrameworkRepository)
+@inject(GridCssFrameworkRepository)
 export class Grid {
   @bindable class;
   @bindable cssFramework;
@@ -26,12 +26,20 @@ export class Grid {
   @bindable sortButtonClass;
   @bindable sortDescendingIconClass;
 
-  constructor(observerLocator, repository) {
+  constructor(repository) {
     this.columns = [];
     this.itemsCurrentlyEditing = [];
-    this.observerLocator = observerLocator;
     this.repository = repository;
+    this.filteredItems = [];
+    this.filterEngine = new FilterEngine({
+      model: this,
+      filtersApplied: this.filtersApplied
+    });
     this.sorter = new Sorter(this);
+  }
+
+  filtersApplied = (filteredItems) => {
+    this.filteredItems = filteredItems;
   }
 
   addColumn(column) {
@@ -44,7 +52,7 @@ export class Grid {
     this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
     this.loadCssFrameworkSettings();
-    this.filterer = new Filterer(this, this.$parent, this.observerLocator);
+    this.filterEngine.applyFilters();
   }
 
   loadCssFrameworkSettings() {
@@ -94,6 +102,25 @@ export class Grid {
   }
 
   dataSourceChanged() {
-    this.items = this.datasource || bindingContext.items || [];
+    this.items = this.dataSource || this.$parent.items || [];
+    this.filterEngine.applyFilters();
+  }
+
+  getFilterStrategy(column) {
+    let strategyTemplate = column.filterable || configuration.defaultFilter;
+    let strategyType = typeof(strategyTemplate);
+    let strategy = strategyType;
+
+    if (strategyType === 'string') {
+      let filter = configuration.filters.find(fil => {
+        return fil.name.toLowerCase() === strategyTemplate.toLowerCase();
+      });
+
+      if (!filter) {
+        throw Error(`The filter '${strategyTemplate}' cannot be found.`);
+      }
+      strategy = filter.strategy;
+    }
+    return strategy;
   }
 }

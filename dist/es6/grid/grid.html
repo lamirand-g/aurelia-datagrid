@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th repeat.for="column of columns">
-                    <span if.bind="!column.sortable">${column.heading}</span>
+                    <span if.bind="column.sortable === undefined">${column.heading}</span>
                     <compose view="./sorting/sorts.html" containerless></compose>
                 </th>
             </tr>
@@ -15,7 +15,7 @@
         </thead>
 
         <tbody>
-            <tr repeat.for="row of items">
+            <tr repeat.for="row of filteredItems">
                 <template replaceable part="grid-template"></template>
             </tr>
         </tbody>

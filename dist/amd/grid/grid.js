@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-injection', './css-frameworks/repository', './filtering/filterer', './sorting/sorter'], function (exports, _aureliaTemplating, _aureliaBinding, _aureliaDependencyInjection, _cssFrameworksRepository, _filteringFilterer, _sortingSorter) {
+define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-frameworks/repository', './filtering/filter-engine', './sorting/sorter', './grid-configuration'], function (exports, _aureliaTemplating, _aureliaDependencyInjection, _cssFrameworksRepository, _filteringFilterEngine, _sortingSorter, _gridConfiguration) {
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -13,9 +13,11 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
 
   function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer ? descriptor.initializer.call(target) : undefined; Object.defineProperty(target, key, descriptor); }
 
-  var _Filterer = _interopRequireDefault(_filteringFilterer);
+  var _FilterEngine = _interopRequireDefault(_filteringFilterEngine);
 
   var _Sorter = _interopRequireDefault(_sortingSorter);
+
+  var _configuration = _interopRequireDefault(_gridConfiguration);
 
   var Grid = (function () {
     var _instanceInitializers = {};
@@ -113,7 +115,7 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
       enumerable: true
     }], null, _instanceInitializers);
 
-    function Grid(observerLocator, repository) {
+    function Grid(repository) {
       var _this = this;
 
       _classCallCheck(this, _Grid);
@@ -154,6 +156,10 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
 
       _defineDecoratedPropertyDescriptor(this, 'sortDescendingIconClass', _instanceInitializers);
 
+      this.filtersApplied = function (filteredItems) {
+        _this.filteredItems = filteredItems;
+      };
+
       this.beginEditingItem = function (item) {
         _this.itemsCurrentlyEditing.push(item);
       };
@@ -171,8 +177,12 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
 
       this.columns = [];
       this.itemsCurrentlyEditing = [];
-      this.observerLocator = observerLocator;
       this.repository = repository;
+      this.filteredItems = [];
+      this.filterEngine = new _FilterEngine['default']({
+        model: this,
+        filtersApplied: this.filtersApplied
+      });
       this.sorter = new _Sorter['default'](this);
     }
 
@@ -189,7 +199,7 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
         this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
         this.loadCssFrameworkSettings();
-        this.filterer = new _Filterer['default'](this, this.$parent, this.observerLocator);
+        this.filterEngine.applyFilters();
       }
     }, {
       key: 'loadCssFrameworkSettings',
@@ -230,12 +240,32 @@ define(['exports', 'aurelia-templating', 'aurelia-binding', 'aurelia-dependency-
     }, {
       key: 'dataSourceChanged',
       value: function dataSourceChanged() {
-        this.items = this.datasource || bindingContext.items || [];
+        this.items = this.dataSource || this.$parent.items || [];
+        this.filterEngine.applyFilters();
+      }
+    }, {
+      key: 'getFilterStrategy',
+      value: function getFilterStrategy(column) {
+        var strategyTemplate = column.filterable || _configuration['default'].defaultFilter;
+        var strategyType = typeof strategyTemplate;
+        var strategy = strategyType;
+
+        if (strategyType === 'string') {
+          var filter = _configuration['default'].filters.find(function (fil) {
+            return fil.name.toLowerCase() === strategyTemplate.toLowerCase();
+          });
+
+          if (!filter) {
+            throw Error('The filter \'' + strategyTemplate + '\' cannot be found.');
+          }
+          strategy = filter.strategy;
+        }
+        return strategy;
       }
     }], null, _instanceInitializers);
 
     var _Grid = Grid;
-    Grid = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.ObserverLocator, _cssFrameworksRepository.GridCssFrameworkRepository)(Grid) || Grid;
+    Grid = (0, _aureliaDependencyInjection.inject)(_cssFrameworksRepository.GridCssFrameworkRepository)(Grid) || Grid;
     return Grid;
   })();
 

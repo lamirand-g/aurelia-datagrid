@@ -2,19 +2,19 @@
   <div class.bind="$parent.filterInputGroupClass"
        if.bind="(column.filterable || column.filterable === '') && column.inputType !== 'checkbox'">
     <input type.bind="column.inputType"
-           class.bind="$parent.filterInputClass"
+           class.bind="filterInputClass"
            placeholder="Filter"
-           value.bind="filterer.values[column.property]"
-           oninput.call="filterer.onFilterChanged(column) & debounce:500">
+           value.bind="filterEngine.values[column.property]"
+           oninput.call="filterEngine.onFilterChanged(column.property, getFilterStrategy(column)) & debounce:500">
     <button type="button"
             class="ui basic icon button"
-            if.bind="!filterer.values[column.property]">
-      <i class.bind="$parent.filterSearchIconClass"></i>
+            if.bind="!filterEngine.values[column.property]">
+      <i class.bind="filterSearchIconClass"></i>
     </button>
     <button type="button"
             class="ui basic icon button"
-            if.bind="filterer.values[column.property]"
-            click.delegate="filterer.setFilter(column, '')">
+            if.bind="filterEngine.values[column.property]"
+            click.delegate="filterEngine.setFilter(column.property, '', getFilterStrategy(column))">
       <i class="remove icon"></i>
     </button>
   </div>

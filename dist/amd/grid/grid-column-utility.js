@@ -27,30 +27,14 @@ define(['exports', 'lodash'], function (exports, _lodash) {
       }
     }, {
       key: 'registerWithGrid',
-      value: function registerWithGrid(grid, template) {
-        if (!template.heading && template.property) {
-          template.heading = _2['default'].startCase(template.property);
+      value: function registerWithGrid(grid, column) {
+        if (!column.heading && column.property) {
+          column.heading = _2['default'].startCase(column.property);
         }
-
-        var column = {
-          alignment: template.alignment,
-          heading: template.heading,
-          inputType: template.inputType || 'text',
-          property: template.property,
-
-          filterable: template.filterable !== null && template.filterable !== undefined,
-
-          filter: {
-            property: template.property,
-            value: null
-          },
-
-          sortable: template.sortable !== null && template.sortable !== undefined,
-
-          sort: {
-            property: template.property,
-            direction: null
-          }
+        column.inputType = column.inputType || 'text';
+        column.sort = {
+          property: column.property,
+          direction: null
         };
 
         grid.addColumn(column);

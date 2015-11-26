@@ -1,10 +1,10 @@
 <template>
-	<div if.bind="column.sortable" class.bind="$parent.sortButtonGroupClass" role="group">
-		<a role="button" class="${column.alignment} ${sortButtonClass}" click.delegate="$parent.sorter.applySort(column.sort)">
+	<div if.bind="column.sortable != undefined" class.bind="sortButtonGroupClass" role="group">
+		<a role="button" class="${column.alignment} ${sortButtonClass}" click.delegate="sorter.applySort(column.sort)">
 		    ${column.heading}
-		    <i class.bind="$parent.sortAvailableIconClass" if.bind="!column.sort.direction"></i>
-		    <i class.bind="$parent.sortAscendingIconClass" if.bind="column.sort.direction === 'asc'"></i>
-		    <i class.bind="$parent.sortDescendingIconClass" if.bind="column.sort.direction === 'desc'"></i>
+		    <i class.bind="sortAvailableIconClass" if.bind="!column.sort.direction"></i>
+		    <i class.bind="sortAscendingIconClass" if.bind="column.sort.direction === 'asc'"></i>
+		    <i class.bind="sortDescendingIconClass" if.bind="column.sort.direction === 'desc'"></i>
 		</a>
 	</div>
 </template

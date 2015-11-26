@@ -1,23 +1,23 @@
 <template>
-	<div class.bind="$parent.filterFormClass" if.bind="column.filterable && column.inputType === 'checkbox'">
-        <div class.bind="$parent.filterCheckboxFormFieldGroupClass">
-            <div class.bind="$parent.filterCheckboxGroupClass">
-                <button type="button"
-                        class.bind="$parent.filterCheckboxButtonClass + (filterer.values[column.property] === null ? ' active' : '')"
-                        click.delegate="filterer.setFilter(column, null)">
-                    <i class.bind="$parent.filterCheckboxClearIconClass"></i>
-                </button>
-                <button type="button"
-                        class.bind="$parent.filterCheckboxButtonClass + (filterer.values[column.property] === true ? ' active' : '')"
-                        click.delegate="filterer.setFilter(column, true)">
-                    <i class.bind="$parent.filterCheckboxCheckedIconClass"></i>
-                </button>
-                <button type="button"
-                        class.bind="$parent.filterCheckboxButtonClass + (filterer.values[column.property] === false ? ' active' : '')"
-                        click.delegate="filterer.setFilter(column, false)">
-                    <i class.bind="$parent.filterCheckboxUncheckedIconClass"></i>
-                </button>
-            </div>
-        </div>
+  <div class.bind="filterFormClass" if.bind="column.filterable !== undefined && column.inputType === 'checkbox'">
+    <div class.bind="filterCheckboxFormFieldGroupClass">
+      <div class.bind="filterCheckboxGroupClass">
+        <button type="button"
+                class.bind="filterCheckboxButtonClass + (filterEngine.values[column.property] === null ? ' active' : '')"
+                click.delegate="filterEngine.setFilter(column.property, null, getFilterStrategy(column))">
+          <i class.bind="filterCheckboxClearIconClass"></i>
+        </button>
+        <button type="button"
+                class.bind="filterCheckboxButtonClass + (filterEngine.values[column.property] === true ? ' active' : '')"
+                click.delegate="filterEngine.setFilter(column.property, true, getFilterStrategy(column))">
+          <i class.bind="filterCheckboxCheckedIconClass"></i>
+        </button>
+        <button type="button"
+                class.bind="filterCheckboxButtonClass + (filterEngine.values[column.property] === false ? ' active' : '')"
+                click.delegate="filterEngine.setFilter(column.property, false, getFilterStrategy(column))">
+          <i class.bind="filterCheckboxUncheckedIconClass"></i>
+        </button>
+      </div>
     </div>
+  </div>
 </template>
