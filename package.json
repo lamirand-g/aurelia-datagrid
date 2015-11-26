@@ -1,6 +1,6 @@
 {
   "name": "aurelia-datagrid",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A data grid control for Aurelia with sorting and filtering capabilities.",
   "keywords": [
     "aurelia",
