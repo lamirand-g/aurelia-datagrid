@@ -1,8 +1,8 @@
 export default class FilterEngine {
   constructor(settings) {
     this.model = settings.model;
-    this.filtersApplied = settings.filtersApplied;
     this.filters = [];
+    this.filtersChanged = settings.filtersChanged;
     this.values = {};
   }
 
@@ -13,7 +13,7 @@ export default class FilterEngine {
 
   onFilterChanged(property, strategy) {
     this.updateFilter(property, strategy);
-    this.applyFilters();
+    this.refresh();
   }
 
   updateFilter(property, strategy) {
@@ -39,14 +39,21 @@ export default class FilterEngine {
     }
   }
 
-  applyFilters() {
-    let filteredItems = this.model.items;
-    this.filters.forEach(filter => {
-      filteredItems = filter.strategy.apply(filteredItems, filter);
-    });
-
-    if (this.filtersApplied) {
-      this.filtersApplied(filteredItems);
+  refresh() {
+    if(this.filtersChanged) {
+      this.filtersChanged();
+    } else {
+      throw new Error(`${bindingContext.constructor.name} does not contain an 'refresh' function.`);
     }
+  }
+
+  applyFilters = (data) => {
+    return new Promise(resolve => {
+      let filteredItems = data;
+      this.filters.forEach(filter => {
+        filteredItems = filter.strategy.apply(filteredItems, filter);
+      });
+      resolve(filteredItems);
+    });
   }
 }

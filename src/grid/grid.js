@@ -4,6 +4,7 @@ import { GridCssFrameworkRepository } from './css-frameworks/repository';
 import FilterEngine from './filtering/filter-engine';
 import Sorter from './sorting/sorter';
 import configuration from './grid-configuration';
+import dataRefinerHandler from './data-refiner-handler';
 
 @inject(GridCssFrameworkRepository)
 export class Grid {
@@ -30,23 +31,39 @@ export class Grid {
 
   constructor(repository) {
     this.columns = [];
+    this.dataRefiners = [];
     this.itemsCurrentlyEditing = [];
     this.repository = repository;
     this.filteredItems = [];
     this.filterEngine = new FilterEngine({
       model: this,
-      filtersApplied: this.filtersApplied
+      filtersChanged: this.refresh
     });
     this.sorter = new Sorter(this);
+
+    Object.assign(this, dataRefinerHandler);
+    this.addDataRefiner(this.filterEngine.applyFilters, 1000, false);
+    this.addDataRefiner(this.sorter.applySort, 2000, false);
+    this.addDataRefiner(this.applyAdditionalFiltering, 9000, false);
+    this.addDataRefiner(this.updateFilteredItems, Number.MAX_VALUE, false);
   }
 
-  filtersApplied = (filteredItems) => {
-    this.filteredItems = filteredItems;
-    this.sorter.applySort();
+  applyAdditionalFiltering = (data) => {
+    return new Promise(resolve => {
+      let filteredData = data;
+      if (this.additionalFiltering) {
+        filteredData = this.additionalFiltering(data);
+      };
 
-    if (this.additionalFiltering) {
-      this.filteredItems = this.additionalFiltering(this.filteredItems);
-    }
+      resolve(filteredData);
+    });
+  }
+
+  updateFilteredItems = (data) => {
+    return new Promise(resolve => {
+      this.filteredItems = data;
+      resolve(this.filteredItems);
+    });
   }
 
   addColumn(column) {
@@ -55,15 +72,19 @@ export class Grid {
 
   bind(bindingContext) {
     this.$parent = bindingContext;
-    this.items = this.dataSource || bindingContext.items || [];
+    this.dataSource = this.dataSource || bindingContext.items;
+    if (!this.dataSource) {
+      throw new Error('The data-source is not undefined.');
+    }
+
     this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
 
     this.loadCssFrameworkSettings();
     this.refresh();
   }
 
-  refresh() {
-    this.filterEngine.applyFilters();
+  refresh = () => {
+    this.applyDataRefiners(this.dataSource);
   }
 
   loadCssFrameworkSettings() {
@@ -113,7 +134,6 @@ export class Grid {
   }
 
   dataSourceChanged() {
-    this.items = this.dataSource || this.$parent.items || [];
     this.refresh();
   }
 

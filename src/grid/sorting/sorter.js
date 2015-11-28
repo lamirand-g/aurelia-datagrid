@@ -12,14 +12,18 @@ export default class Sorter {
     this.grid.refresh();
   }
 
-  applySort() {
-    if (this.sortInformation) {
-      if (this.grid.$parent.applySort) {
-        this.grid.$parent.applySort(this.sortInformation);
-      } else {
-        this.sortItemsLocally(this.grid.filteredItems, this.sortInformation);
+  applySort = (data) => {
+    return new Promise(resolve => {
+      let sortedData = data;
+      if (this.sortInformation) {
+        if (this.grid.$parent.applySort) {
+          this.grid.$parent.applySort(this.sortInformation);
+        } else {
+          sortedData = this.sortItemsLocally(data, this.sortInformation);
+        }
       }
-    }
+      resolve(sortedData);
+    });
   }
 
   clearAllSorts() {
@@ -31,13 +35,10 @@ export default class Sorter {
   }
 
   sortItemsLocally(items, sort) {
-    let sortedItems;
     if (sort.direction) {
-      sortedItems = _.sortByOrder(items, sort.property, sort.direction);
-      items.splice(0, items.length);
-      for (let item of sortedItems) {
-        items.push(item);
-      }
+      return _.sortByOrder(items, sort.property, sort.direction);
+    } else {
+      return items;
     }
   }
 
