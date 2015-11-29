@@ -1,6 +1,11 @@
 # Examples
 
 ## Paging
+
+### Using the aurelia-pagination plugin.
+Follow the instructions on the [Getting Started](https://github.com/donnelljenkins/aurelia-pagination/blob/master/doc/HOWTO.md#aurelia-datagrid014) section of the **aurelia-pagination** plugin.
+
+### Manually perfoming pagination
 Paging is not provided out of the box, however, it can be manually implemented using the *additional-filtering* attribute on the grid.
 
 Let's update the *products* page from the [Getting Started](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#getting-started) section to demonstrate.
