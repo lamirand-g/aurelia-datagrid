@@ -1,9 +1,12 @@
 import { bindable } from 'aurelia-templating';
 import { inject } from 'aurelia-dependency-injection';
+import gridCssConfigurationLoader from './css-frameworks/grid-css-configuration-loader';
 import { GridCssFrameworkRepository } from './css-frameworks/repository';
-import FilterEngine from './filtering/filter-engine';
-import Sorter from './sorting/sorter';
-import configuration from './grid-configuration';
+import dataRefinerHandler from './data-refiner-handler';
+import FilterDataRefiner from './filtering/filter-data-refiner';
+import configuration from './configuration';
+import inlineEditing from './inline-editing';
+import SortDataRefiner from './sorting/sort-data-refiner';
 
 @inject(GridCssFrameworkRepository)
 export class Grid {
@@ -30,23 +33,43 @@ export class Grid {
 
   constructor(repository) {
     this.columns = [];
+    this.dataRefiners = [];
     this.itemsCurrentlyEditing = [];
     this.repository = repository;
     this.filteredItems = [];
-    this.filterEngine = new FilterEngine({
-      model: this,
-      filtersApplied: this.filtersApplied
-    });
-    this.sorter = new Sorter(this);
+    Object.assign(this, gridCssConfigurationLoader);
+    Object.assign(this, inlineEditing);
+    Object.assign(this, dataRefinerHandler);
+    this.addDataRefiners();
   }
 
-  filtersApplied = (filteredItems) => {
-    this.filteredItems = filteredItems;
-    this.sorter.applySort();
+  addDataRefiners() {
+    let dataRefinerSettings = {
+      dataRefinerHandler: this,
+      refresh: this.refresh
+    };
+    this.filterDataRefiner = new FilterDataRefiner(dataRefinerSettings);
+    this.sortDataRefiner = new SortDataRefiner(dataRefinerSettings);
+    this.addDataRefiner(this.applyAdditionalDataRefining, 9000, false);
+    this.addDataRefiner(this.updateFilteredItems, Number.MAX_VALUE, false);
+  }
 
-    if (this.additionalFiltering) {
-      this.filteredItems = this.additionalFiltering(this.filteredItems);
-    }
+  applyAdditionalDataRefining = (data) => {
+    return new Promise(resolve => {
+      if (this.additionalFiltering) {
+        let filteredData = this.additionalFiltering(data);
+        resolve(filteredData);
+      } else {
+        resolve(data);
+      }
+    });
+  }
+
+  updateFilteredItems = (data) => {
+    return new Promise(resolve => {
+      this.filteredItems = data;
+      resolve(this.filteredItems);
+    });
   }
 
   addColumn(column) {
@@ -54,66 +77,20 @@ export class Grid {
   }
 
   bind(bindingContext) {
-    this.$parent = bindingContext;
-    this.items = this.dataSource || bindingContext.items || [];
-    this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
+    this.dataSource = this.dataSource || bindingContext.items;
+    if (!this.dataSource) {
+      throw new Error('The data-source is not undefined.');
+    }
 
-    this.loadCssFrameworkSettings();
+    this.loadCssConfiguration();
     this.refresh();
   }
 
-  refresh() {
-    this.filterEngine.applyFilters();
-  }
-
-  loadCssFrameworkSettings() {
-    this.cssFramework = this.cssFrameworkConfiguration.name;
-    this.class = this.class || this.cssFrameworkConfiguration.gridClasses.table;
-    this.loadFilterCssFrameworkSettings();
-    this.loadSortCssFrameworkSettings();
-  }
-
-  loadFilterCssFrameworkSettings() {
-    let settings = this.cssFrameworkConfiguration.gridClasses;
-
-    this.filterCheckboxButtonClass = settings.filterCheckboxButton;
-    this.filterCheckboxCheckedIconClass = settings.filterCheckboxCheckedIcon;
-    this.filterCheckboxClearIconClass = settings.filterCheckboxClearIcon;
-    this.filterCheckboxFormFieldGroupClass = settings.filterCheckboxFormFieldGroup;
-    this.filterCheckboxGroupClass = settings.filterCheckboxGroup;
-    this.filterCheckboxUncheckedIconClass = settings.filterCheckboxUncheckedIcon;
-    this.filterFormClass = settings.filterForm;
-    this.filterFormFieldClass = settings.filterFormField;
-    this.filterInputGroupClass = settings.filterInputGroup;
-    this.filterInputClass = settings.filterInput;
-    this.filterSearchIconClass = settings.filterSearchIcon;
-  }
-
-  loadSortCssFrameworkSettings() {
-    let settings = this.cssFrameworkConfiguration.gridClasses;
-
-    this.sortAscendingIconClass = settings.sortAscendingIcon;
-    this.sortAvailableIconClass = settings.sortAvailableIcon;
-    this.sortButtonGroupClass = settings.sortButtonGroup;
-    this.sortButtonClass = settings.sortButton;
-    this.sortDescendingIconClass = settings.sortDescendingIcon;
-  }
-
-  beginEditingItem = (item) => {
-    this.itemsCurrentlyEditing.push(item);
-  }
-
-  isEditingItem  = (item) => {
-    return this.itemsCurrentlyEditing.some(editing => editing === item);
-  }
-
-  finishEditingItem = (item) => {
-    let index = this.itemsCurrentlyEditing.indexOf(item);
-    this.itemsCurrentlyEditing.splice(index, 1);
+  refresh = () => {
+    this.applyDataRefiners(this.dataSource);
   }
 
   dataSourceChanged() {
-    this.items = this.dataSource || this.$parent.items || [];
     this.refresh();
   }
 
@@ -123,8 +100,8 @@ export class Grid {
     let strategy = strategyTemplate;
 
     if (strategyType === 'string') {
-      let filterStrategies = configuration.filterStrategies.filter(fil => {
-        return fil.name.toLowerCase() === strategyTemplate.toLowerCase();
+      let filterStrategies = configuration.filterStrategies.filter(filter => {
+        return filter.name.toLowerCase() === strategyTemplate.toLowerCase();
       });
 
       if (filterStrategies.length === 0) {

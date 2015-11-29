@@ -22,9 +22,9 @@ var _semantic = require('./semantic');
 
 var _semantic2 = _interopRequireDefault(_semantic);
 
-var _gridConfiguration = require('../grid-configuration');
+var _configuration = require('../configuration');
 
-var _gridConfiguration2 = _interopRequireDefault(_gridConfiguration);
+var _configuration2 = _interopRequireDefault(_configuration);
 
 var GridCssFrameworkRepository = (function () {
   function GridCssFrameworkRepository() {
@@ -40,7 +40,7 @@ var GridCssFrameworkRepository = (function () {
       this.frameworks.push(framework);
 
       if (setAsDefault === true) {
-        _gridConfiguration2['default'].defaultCssFramework = framework.name;
+        _configuration2['default'].defaultCssFramework = framework.name;
       }
     }
   }, {
@@ -52,10 +52,10 @@ var GridCssFrameworkRepository = (function () {
         framework = this.frameworks.find(function (item) {
           return item.name.toLowerCase() === frameworkName.toLowerCase();
         });
-      } else if (typeof _gridConfiguration2['default'].defaultCssFramework === 'string') {
-        framework = this.get(_gridConfiguration2['default'].defaultCssFramework);
+      } else if (typeof _configuration2['default'].defaultCssFramework === 'string') {
+        framework = this.get(_configuration2['default'].defaultCssFramework);
       } else {
-        framework = _gridConfiguration2['default'].defaultCssFramework;
+        framework = _configuration2['default'].defaultCssFramework;
       }
 
       return Object.assign({}, _default2['default'], framework);

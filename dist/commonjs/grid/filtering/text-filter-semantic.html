@@ -4,17 +4,17 @@
     <input type.bind="column.inputType"
            class.bind="filterInputClass"
            placeholder="Filter"
-           value.bind="filterEngine.values[column.property]"
-           oninput.call="filterEngine.onFilterChanged(column.property, getFilterStrategy(column)) & debounce:500">
+           value.bind="filterDataRefiner.values[column.property]"
+           oninput.call="filterDataRefiner.onFilterChanged(column.property, getFilterStrategy(column)) & debounce:500">
     <button type="button"
             class="ui basic icon button"
-            if.bind="!filterEngine.values[column.property]">
+            if.bind="!filterDataRefiner.values[column.property]">
       <i class.bind="filterSearchIconClass"></i>
     </button>
     <button type="button"
             class="ui basic icon button"
-            if.bind="filterEngine.values[column.property]"
-            click.delegate="filterEngine.setFilter(column.property, '', getFilterStrategy(column))">
+            if.bind="filterDataRefiner.values[column.property]"
+            click.delegate="filterDataRefiner.setFilter(column.property, '', getFilterStrategy(column))">
       <i class="remove icon"></i>
     </button>
   </div>

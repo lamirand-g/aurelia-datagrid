@@ -6,8 +6,8 @@
         <input type.bind="column.inputType"
                class.bind="$parent.filterInputClass"
                placeholder="Filter"
-               value.bind="filterEngine.values[column.property]"
-               oninput.call="filterEngine.onFilterChanged(column.property, getFilterStrategy(column)) & debounce:500">
+               value.bind="filterDataRefiner.values[column.property]"
+               oninput.call="filterDataRefiner.onFilterChanged(column.property, getFilterStrategy(column)) & debounce:500">
         <div class="input-group-addon">
           <span class="glyphicon glyphicon-search"></span>
         </div>

@@ -3,18 +3,18 @@
     <div class.bind="filterCheckboxFormFieldGroupClass">
       <div class.bind="filterCheckboxGroupClass">
         <button type="button"
-                class.bind="filterCheckboxButtonClass + (filterEngine.values[column.property] === null ? ' active' : '')"
-                click.delegate="filterEngine.setFilter(column.property, null, getFilterStrategy(column))">
+                class.bind="filterCheckboxButtonClass + (filterDataRefiner.values[column.property] === null ? ' active' : '')"
+                click.delegate="filterDataRefiner.setFilter(column.property, null, getFilterStrategy(column))">
           <i class.bind="filterCheckboxClearIconClass"></i>
         </button>
         <button type="button"
-                class.bind="filterCheckboxButtonClass + (filterEngine.values[column.property] === true ? ' active' : '')"
-                click.delegate="filterEngine.setFilter(column.property, true, getFilterStrategy(column))">
+                class.bind="filterCheckboxButtonClass + (filterDataRefiner.values[column.property] === true ? ' active' : '')"
+                click.delegate="filterDataRefiner.setFilter(column.property, true, getFilterStrategy(column))">
           <i class.bind="filterCheckboxCheckedIconClass"></i>
         </button>
         <button type="button"
-                class.bind="filterCheckboxButtonClass + (filterEngine.values[column.property] === false ? ' active' : '')"
-                click.delegate="filterEngine.setFilter(column.property, false, getFilterStrategy(column))">
+                class.bind="filterCheckboxButtonClass + (filterDataRefiner.values[column.property] === false ? ' active' : '')"
+                click.delegate="filterDataRefiner.setFilter(column.property, false, getFilterStrategy(column))">
           <i class.bind="filterCheckboxUncheckedIconClass"></i>
         </button>
       </div>

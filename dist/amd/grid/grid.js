@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-frameworks/repository', './filtering/filter-engine', './sorting/sorter', './grid-configuration'], function (exports, _aureliaTemplating, _aureliaDependencyInjection, _cssFrameworksRepository, _filteringFilterEngine, _sortingSorter, _gridConfiguration) {
+define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-frameworks/grid-css-configuration-loader', './css-frameworks/repository', './data-refiner-handler', './filtering/filter-data-refiner', './configuration', './inline-editing', './sorting/sort-data-refiner'], function (exports, _aureliaTemplating, _aureliaDependencyInjection, _cssFrameworksGridCssConfigurationLoader, _cssFrameworksRepository, _dataRefinerHandler, _filteringFilterDataRefiner, _configuration, _inlineEditing, _sortingSortDataRefiner) {
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -13,11 +13,17 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
 
   function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer ? descriptor.initializer.call(target) : undefined; Object.defineProperty(target, key, descriptor); }
 
-  var _FilterEngine = _interopRequireDefault(_filteringFilterEngine);
+  var _gridCssConfigurationLoader = _interopRequireDefault(_cssFrameworksGridCssConfigurationLoader);
 
-  var _Sorter = _interopRequireDefault(_sortingSorter);
+  var _dataRefinerHandler2 = _interopRequireDefault(_dataRefinerHandler);
 
-  var _configuration = _interopRequireDefault(_gridConfiguration);
+  var _FilterDataRefiner = _interopRequireDefault(_filteringFilterDataRefiner);
+
+  var _configuration2 = _interopRequireDefault(_configuration);
+
+  var _inlineEditing2 = _interopRequireDefault(_inlineEditing);
+
+  var _SortDataRefiner = _interopRequireDefault(_sortingSortDataRefiner);
 
   var Grid = (function () {
     var _instanceInitializers = {};
@@ -170,42 +176,52 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
 
       _defineDecoratedPropertyDescriptor(this, 'sortDescendingIconClass', _instanceInitializers);
 
-      this.filtersApplied = function (filteredItems) {
-        _this.filteredItems = filteredItems;
-        _this.sorter.applySort();
-
-        if (_this.additionalFiltering) {
-          _this.filteredItems = _this.additionalFiltering(_this.filteredItems);
-        }
-      };
-
-      this.beginEditingItem = function (item) {
-        _this.itemsCurrentlyEditing.push(item);
-      };
-
-      this.isEditingItem = function (item) {
-        return _this.itemsCurrentlyEditing.some(function (editing) {
-          return editing === item;
+      this.applyAdditionalDataRefining = function (data) {
+        return new Promise(function (resolve) {
+          if (_this.additionalFiltering) {
+            var filteredData = _this.additionalFiltering(data);
+            resolve(filteredData);
+          } else {
+            resolve(data);
+          }
         });
       };
 
-      this.finishEditingItem = function (item) {
-        var index = _this.itemsCurrentlyEditing.indexOf(item);
-        _this.itemsCurrentlyEditing.splice(index, 1);
+      this.updateFilteredItems = function (data) {
+        return new Promise(function (resolve) {
+          _this.filteredItems = data;
+          resolve(_this.filteredItems);
+        });
+      };
+
+      this.refresh = function () {
+        _this.applyDataRefiners(_this.dataSource);
       };
 
       this.columns = [];
+      this.dataRefiners = [];
       this.itemsCurrentlyEditing = [];
       this.repository = repository;
       this.filteredItems = [];
-      this.filterEngine = new _FilterEngine['default']({
-        model: this,
-        filtersApplied: this.filtersApplied
-      });
-      this.sorter = new _Sorter['default'](this);
+      Object.assign(this, _gridCssConfigurationLoader['default']);
+      Object.assign(this, _inlineEditing2['default']);
+      Object.assign(this, _dataRefinerHandler2['default']);
+      this.addDataRefiners();
     }
 
     _createDecoratedClass(Grid, [{
+      key: 'addDataRefiners',
+      value: function addDataRefiners() {
+        var dataRefinerSettings = {
+          dataRefinerHandler: this,
+          refresh: this.refresh
+        };
+        this.filterDataRefiner = new _FilterDataRefiner['default'](dataRefinerSettings);
+        this.sortDataRefiner = new _SortDataRefiner['default'](dataRefinerSettings);
+        this.addDataRefiner(this.applyAdditionalDataRefining, 9000, false);
+        this.addDataRefiner(this.updateFilteredItems, Number.MAX_VALUE, false);
+      }
+    }, {
       key: 'addColumn',
       value: function addColumn(column) {
         this.columns.push(column);
@@ -213,70 +229,29 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
     }, {
       key: 'bind',
       value: function bind(bindingContext) {
-        this.$parent = bindingContext;
-        this.items = this.dataSource || bindingContext.items || [];
-        this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
+        this.dataSource = this.dataSource || bindingContext.items;
+        if (!this.dataSource) {
+          throw new Error('The data-source is not undefined.');
+        }
 
-        this.loadCssFrameworkSettings();
+        this.loadCssConfiguration();
         this.refresh();
-      }
-    }, {
-      key: 'refresh',
-      value: function refresh() {
-        this.filterEngine.applyFilters();
-      }
-    }, {
-      key: 'loadCssFrameworkSettings',
-      value: function loadCssFrameworkSettings() {
-        this.cssFramework = this.cssFrameworkConfiguration.name;
-        this['class'] = this['class'] || this.cssFrameworkConfiguration.gridClasses.table;
-        this.loadFilterCssFrameworkSettings();
-        this.loadSortCssFrameworkSettings();
-      }
-    }, {
-      key: 'loadFilterCssFrameworkSettings',
-      value: function loadFilterCssFrameworkSettings() {
-        var settings = this.cssFrameworkConfiguration.gridClasses;
-
-        this.filterCheckboxButtonClass = settings.filterCheckboxButton;
-        this.filterCheckboxCheckedIconClass = settings.filterCheckboxCheckedIcon;
-        this.filterCheckboxClearIconClass = settings.filterCheckboxClearIcon;
-        this.filterCheckboxFormFieldGroupClass = settings.filterCheckboxFormFieldGroup;
-        this.filterCheckboxGroupClass = settings.filterCheckboxGroup;
-        this.filterCheckboxUncheckedIconClass = settings.filterCheckboxUncheckedIcon;
-        this.filterFormClass = settings.filterForm;
-        this.filterFormFieldClass = settings.filterFormField;
-        this.filterInputGroupClass = settings.filterInputGroup;
-        this.filterInputClass = settings.filterInput;
-        this.filterSearchIconClass = settings.filterSearchIcon;
-      }
-    }, {
-      key: 'loadSortCssFrameworkSettings',
-      value: function loadSortCssFrameworkSettings() {
-        var settings = this.cssFrameworkConfiguration.gridClasses;
-
-        this.sortAscendingIconClass = settings.sortAscendingIcon;
-        this.sortAvailableIconClass = settings.sortAvailableIcon;
-        this.sortButtonGroupClass = settings.sortButtonGroup;
-        this.sortButtonClass = settings.sortButton;
-        this.sortDescendingIconClass = settings.sortDescendingIcon;
       }
     }, {
       key: 'dataSourceChanged',
       value: function dataSourceChanged() {
-        this.items = this.dataSource || this.$parent.items || [];
         this.refresh();
       }
     }, {
       key: 'getFilterStrategy',
       value: function getFilterStrategy(column) {
-        var strategyTemplate = column.filterable || this.defaultFilter || _configuration['default'].defaultFilterStrategy;
+        var strategyTemplate = column.filterable || this.defaultFilter || _configuration2['default'].defaultFilterStrategy;
         var strategyType = typeof strategyTemplate;
         var strategy = strategyTemplate;
 
         if (strategyType === 'string') {
-          var filterStrategies = _configuration['default'].filterStrategies.filter(function (fil) {
-            return fil.name.toLowerCase() === strategyTemplate.toLowerCase();
+          var filterStrategies = _configuration2['default'].filterStrategies.filter(function (filter) {
+            return filter.name.toLowerCase() === strategyTemplate.toLowerCase();
           });
 
           if (filterStrategies.length === 0) {

@@ -1,7 +1,7 @@
 import bootstrapCssFramework from './bootstrap';
 import defaultCssFramework from './default';
 import semanticCssFramework from './semantic';
-import configuration from '../grid-configuration';
+import configuration from '../configuration';
 
 export class GridCssFrameworkRepository {
   constructor() {

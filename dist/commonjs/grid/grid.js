@@ -16,19 +16,31 @@ var _aureliaTemplating = require('aurelia-templating');
 
 var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
+var _cssFrameworksGridCssConfigurationLoader = require('./css-frameworks/grid-css-configuration-loader');
+
+var _cssFrameworksGridCssConfigurationLoader2 = _interopRequireDefault(_cssFrameworksGridCssConfigurationLoader);
+
 var _cssFrameworksRepository = require('./css-frameworks/repository');
 
-var _filteringFilterEngine = require('./filtering/filter-engine');
+var _dataRefinerHandler = require('./data-refiner-handler');
 
-var _filteringFilterEngine2 = _interopRequireDefault(_filteringFilterEngine);
+var _dataRefinerHandler2 = _interopRequireDefault(_dataRefinerHandler);
 
-var _sortingSorter = require('./sorting/sorter');
+var _filteringFilterDataRefiner = require('./filtering/filter-data-refiner');
 
-var _sortingSorter2 = _interopRequireDefault(_sortingSorter);
+var _filteringFilterDataRefiner2 = _interopRequireDefault(_filteringFilterDataRefiner);
 
-var _gridConfiguration = require('./grid-configuration');
+var _configuration = require('./configuration');
 
-var _gridConfiguration2 = _interopRequireDefault(_gridConfiguration);
+var _configuration2 = _interopRequireDefault(_configuration);
+
+var _inlineEditing = require('./inline-editing');
+
+var _inlineEditing2 = _interopRequireDefault(_inlineEditing);
+
+var _sortingSortDataRefiner = require('./sorting/sort-data-refiner');
+
+var _sortingSortDataRefiner2 = _interopRequireDefault(_sortingSortDataRefiner);
 
 var Grid = (function () {
   var _instanceInitializers = {};
@@ -181,42 +193,52 @@ var Grid = (function () {
 
     _defineDecoratedPropertyDescriptor(this, 'sortDescendingIconClass', _instanceInitializers);
 
-    this.filtersApplied = function (filteredItems) {
-      _this.filteredItems = filteredItems;
-      _this.sorter.applySort();
-
-      if (_this.additionalFiltering) {
-        _this.filteredItems = _this.additionalFiltering(_this.filteredItems);
-      }
-    };
-
-    this.beginEditingItem = function (item) {
-      _this.itemsCurrentlyEditing.push(item);
-    };
-
-    this.isEditingItem = function (item) {
-      return _this.itemsCurrentlyEditing.some(function (editing) {
-        return editing === item;
+    this.applyAdditionalDataRefining = function (data) {
+      return new Promise(function (resolve) {
+        if (_this.additionalFiltering) {
+          var filteredData = _this.additionalFiltering(data);
+          resolve(filteredData);
+        } else {
+          resolve(data);
+        }
       });
     };
 
-    this.finishEditingItem = function (item) {
-      var index = _this.itemsCurrentlyEditing.indexOf(item);
-      _this.itemsCurrentlyEditing.splice(index, 1);
+    this.updateFilteredItems = function (data) {
+      return new Promise(function (resolve) {
+        _this.filteredItems = data;
+        resolve(_this.filteredItems);
+      });
+    };
+
+    this.refresh = function () {
+      _this.applyDataRefiners(_this.dataSource);
     };
 
     this.columns = [];
+    this.dataRefiners = [];
     this.itemsCurrentlyEditing = [];
     this.repository = repository;
     this.filteredItems = [];
-    this.filterEngine = new _filteringFilterEngine2['default']({
-      model: this,
-      filtersApplied: this.filtersApplied
-    });
-    this.sorter = new _sortingSorter2['default'](this);
+    Object.assign(this, _cssFrameworksGridCssConfigurationLoader2['default']);
+    Object.assign(this, _inlineEditing2['default']);
+    Object.assign(this, _dataRefinerHandler2['default']);
+    this.addDataRefiners();
   }
 
   _createDecoratedClass(Grid, [{
+    key: 'addDataRefiners',
+    value: function addDataRefiners() {
+      var dataRefinerSettings = {
+        dataRefinerHandler: this,
+        refresh: this.refresh
+      };
+      this.filterDataRefiner = new _filteringFilterDataRefiner2['default'](dataRefinerSettings);
+      this.sortDataRefiner = new _sortingSortDataRefiner2['default'](dataRefinerSettings);
+      this.addDataRefiner(this.applyAdditionalDataRefining, 9000, false);
+      this.addDataRefiner(this.updateFilteredItems, Number.MAX_VALUE, false);
+    }
+  }, {
     key: 'addColumn',
     value: function addColumn(column) {
       this.columns.push(column);
@@ -224,70 +246,29 @@ var Grid = (function () {
   }, {
     key: 'bind',
     value: function bind(bindingContext) {
-      this.$parent = bindingContext;
-      this.items = this.dataSource || bindingContext.items || [];
-      this.cssFrameworkConfiguration = this.repository.get(this.cssFramework);
+      this.dataSource = this.dataSource || bindingContext.items;
+      if (!this.dataSource) {
+        throw new Error('The data-source is not undefined.');
+      }
 
-      this.loadCssFrameworkSettings();
+      this.loadCssConfiguration();
       this.refresh();
-    }
-  }, {
-    key: 'refresh',
-    value: function refresh() {
-      this.filterEngine.applyFilters();
-    }
-  }, {
-    key: 'loadCssFrameworkSettings',
-    value: function loadCssFrameworkSettings() {
-      this.cssFramework = this.cssFrameworkConfiguration.name;
-      this['class'] = this['class'] || this.cssFrameworkConfiguration.gridClasses.table;
-      this.loadFilterCssFrameworkSettings();
-      this.loadSortCssFrameworkSettings();
-    }
-  }, {
-    key: 'loadFilterCssFrameworkSettings',
-    value: function loadFilterCssFrameworkSettings() {
-      var settings = this.cssFrameworkConfiguration.gridClasses;
-
-      this.filterCheckboxButtonClass = settings.filterCheckboxButton;
-      this.filterCheckboxCheckedIconClass = settings.filterCheckboxCheckedIcon;
-      this.filterCheckboxClearIconClass = settings.filterCheckboxClearIcon;
-      this.filterCheckboxFormFieldGroupClass = settings.filterCheckboxFormFieldGroup;
-      this.filterCheckboxGroupClass = settings.filterCheckboxGroup;
-      this.filterCheckboxUncheckedIconClass = settings.filterCheckboxUncheckedIcon;
-      this.filterFormClass = settings.filterForm;
-      this.filterFormFieldClass = settings.filterFormField;
-      this.filterInputGroupClass = settings.filterInputGroup;
-      this.filterInputClass = settings.filterInput;
-      this.filterSearchIconClass = settings.filterSearchIcon;
-    }
-  }, {
-    key: 'loadSortCssFrameworkSettings',
-    value: function loadSortCssFrameworkSettings() {
-      var settings = this.cssFrameworkConfiguration.gridClasses;
-
-      this.sortAscendingIconClass = settings.sortAscendingIcon;
-      this.sortAvailableIconClass = settings.sortAvailableIcon;
-      this.sortButtonGroupClass = settings.sortButtonGroup;
-      this.sortButtonClass = settings.sortButton;
-      this.sortDescendingIconClass = settings.sortDescendingIcon;
     }
   }, {
     key: 'dataSourceChanged',
     value: function dataSourceChanged() {
-      this.items = this.dataSource || this.$parent.items || [];
       this.refresh();
     }
   }, {
     key: 'getFilterStrategy',
     value: function getFilterStrategy(column) {
-      var strategyTemplate = column.filterable || this.defaultFilter || _gridConfiguration2['default'].defaultFilterStrategy;
+      var strategyTemplate = column.filterable || this.defaultFilter || _configuration2['default'].defaultFilterStrategy;
       var strategyType = typeof strategyTemplate;
       var strategy = strategyTemplate;
 
       if (strategyType === 'string') {
-        var filterStrategies = _gridConfiguration2['default'].filterStrategies.filter(function (fil) {
-          return fil.name.toLowerCase() === strategyTemplate.toLowerCase();
+        var filterStrategies = _configuration2['default'].filterStrategies.filter(function (filter) {
+          return filter.name.toLowerCase() === strategyTemplate.toLowerCase();
         });
 
         if (filterStrategies.length === 0) {

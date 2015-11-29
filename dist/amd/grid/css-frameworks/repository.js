@@ -1,4 +1,4 @@
-define(['exports', './bootstrap', './default', './semantic', '../grid-configuration'], function (exports, _bootstrap, _default, _semantic, _gridConfiguration) {
+define(['exports', './bootstrap', './default', './semantic', '../configuration'], function (exports, _bootstrap, _default, _semantic, _configuration) {
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -17,7 +17,7 @@ define(['exports', './bootstrap', './default', './semantic', '../grid-configurat
 
   var _semanticCssFramework = _interopRequireDefault(_semantic);
 
-  var _configuration = _interopRequireDefault(_gridConfiguration);
+  var _configuration2 = _interopRequireDefault(_configuration);
 
   var GridCssFrameworkRepository = (function () {
     function GridCssFrameworkRepository() {
@@ -33,7 +33,7 @@ define(['exports', './bootstrap', './default', './semantic', '../grid-configurat
         this.frameworks.push(framework);
 
         if (setAsDefault === true) {
-          _configuration['default'].defaultCssFramework = framework.name;
+          _configuration2['default'].defaultCssFramework = framework.name;
         }
       }
     }, {
@@ -45,10 +45,10 @@ define(['exports', './bootstrap', './default', './semantic', '../grid-configurat
           framework = this.frameworks.find(function (item) {
             return item.name.toLowerCase() === frameworkName.toLowerCase();
           });
-        } else if (typeof _configuration['default'].defaultCssFramework === 'string') {
-          framework = this.get(_configuration['default'].defaultCssFramework);
+        } else if (typeof _configuration2['default'].defaultCssFramework === 'string') {
+          framework = this.get(_configuration2['default'].defaultCssFramework);
         } else {
-          framework = _configuration['default'].defaultCssFramework;
+          framework = _configuration2['default'].defaultCssFramework;
         }
 
         return Object.assign({}, _defaultCssFramework['default'], framework);

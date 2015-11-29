@@ -1,4 +1,4 @@
-System.register(['./bootstrap', './default', './semantic', '../grid-configuration'], function (_export) {
+System.register(['./bootstrap', './default', './semantic', '../configuration'], function (_export) {
   'use strict';
 
   var bootstrapCssFramework, defaultCssFramework, semanticCssFramework, configuration, GridCssFrameworkRepository;
@@ -14,8 +14,8 @@ System.register(['./bootstrap', './default', './semantic', '../grid-configuratio
       defaultCssFramework = _default['default'];
     }, function (_semantic) {
       semanticCssFramework = _semantic['default'];
-    }, function (_gridConfiguration) {
-      configuration = _gridConfiguration['default'];
+    }, function (_configuration) {
+      configuration = _configuration['default'];
     }],
     execute: function () {
       GridCssFrameworkRepository = (function () {
