@@ -39,7 +39,8 @@ System.register([], function (_export) {
           sortButtonGroup: 'btn-group btn-group-justified',
           sortButton: 'btn btn-default',
           sortDescendingIcon: 'glyphicon glyphicon-arrow-down',
-          table: 'table table-striped table-condensed table-bordered'
+          table: 'table table-striped table-condensed table-bordered',
+          tableSelectable: 'table-hover'
         },
         textClasses: {
           editForm: '',

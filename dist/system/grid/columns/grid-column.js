@@ -1,7 +1,7 @@
-System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-templating', '../grid', './grid-column-utility'], function (_export) {
+System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-templating', '../grid', './grid-column-base'], function (_export) {
   'use strict';
 
-  var ObserverLocator, inject, bindable, containerless, Grid, ColumnUtility, GridColumn;
+  var ObserverLocator, inject, bindable, containerless, Grid, gridColumnBase, GridColumn;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -19,8 +19,8 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
       containerless = _aureliaTemplating.containerless;
     }, function (_grid) {
       Grid = _grid.Grid;
-    }, function (_gridColumnUtility) {
-      ColumnUtility = _gridColumnUtility.ColumnUtility;
+    }, function (_gridColumnBase) {
+      gridColumnBase = _gridColumnBase['default'];
     }],
     execute: function () {
       GridColumn = (function () {
@@ -72,7 +72,7 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
           }
         }], null, _instanceInitializers);
 
-        function GridColumn(grid, utility, element, observerLocator) {
+        function GridColumn(grid, observerLocator) {
           _classCallCheck(this, _GridColumn);
 
           this.alignment = 'left aligned';
@@ -91,11 +91,10 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
 
           _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
 
-          this.element = element;
           this.grid = grid;
           this.observerLocator = observerLocator;
           this.row = {};
-          this.utility = utility;
+          Object.assign(this, gridColumnBase);
         }
 
         _createDecoratedClass(GridColumn, [{
@@ -103,17 +102,13 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
           value: function bind(bindingContext) {
             var _this = this;
 
-            if (bindingContext === this.grid) {
-              this.utility.registerWithGrid(this.grid, this);
-            } else {
-              this.utility.bindToRow(bindingContext, this);
+            this.bindToContext(bindingContext);
 
+            if (bindingContext !== this.grid) {
               this.observerLocator.getObserver(bindingContext.row, 'validation').subscribe(function (newValue) {
                 _this.validation = Object.assign({}, newValue, { property: _this.property });
               });
             }
-
-            this.loadCssFrameworkSettings();
           }
         }, {
           key: 'loadCssFrameworkSettings',
@@ -129,7 +124,7 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
         }], null, _instanceInitializers);
 
         var _GridColumn = GridColumn;
-        GridColumn = inject(Grid, ColumnUtility, Element, ObserverLocator)(GridColumn) || GridColumn;
+        GridColumn = inject(Grid, ObserverLocator)(GridColumn) || GridColumn;
         GridColumn = containerless(GridColumn) || GridColumn;
         return GridColumn;
       })();

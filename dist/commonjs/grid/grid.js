@@ -42,6 +42,10 @@ var _sortingSortDataRefiner = require('./sorting/sort-data-refiner');
 
 var _sortingSortDataRefiner2 = _interopRequireDefault(_sortingSortDataRefiner);
 
+var _selection = require('./selection');
+
+var _selection2 = _interopRequireDefault(_selection);
+
 var Grid = (function () {
   var _instanceInitializers = {};
   var _instanceInitializers = {};
@@ -122,6 +126,23 @@ var Grid = (function () {
     initializer: null,
     enumerable: true
   }, {
+    key: 'rowSelected',
+    decorators: [_aureliaTemplating.bindable],
+    initializer: null,
+    enumerable: true
+  }, {
+    key: 'selectable',
+    decorators: [_aureliaTemplating.bindable],
+    initializer: function initializer() {
+      return 'row';
+    },
+    enumerable: true
+  }, {
+    key: 'selectableClass',
+    decorators: [_aureliaTemplating.bindable],
+    initializer: null,
+    enumerable: true
+  }, {
     key: 'sortAscendingIconClass',
     decorators: [_aureliaTemplating.bindable],
     initializer: null,
@@ -148,7 +169,7 @@ var Grid = (function () {
     enumerable: true
   }], null, _instanceInitializers);
 
-  function Grid(repository) {
+  function Grid(repository, element) {
     var _this = this;
 
     _classCallCheck(this, _Grid);
@@ -182,6 +203,12 @@ var Grid = (function () {
     _defineDecoratedPropertyDescriptor(this, 'filterInputClass', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'filterSearchIconClass', _instanceInitializers);
+
+    _defineDecoratedPropertyDescriptor(this, 'rowSelected', _instanceInitializers);
+
+    _defineDecoratedPropertyDescriptor(this, 'selectable', _instanceInitializers);
+
+    _defineDecoratedPropertyDescriptor(this, 'selectableClass', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'sortAscendingIconClass', _instanceInitializers);
 
@@ -217,11 +244,13 @@ var Grid = (function () {
 
     this.columns = [];
     this.dataRefiners = [];
+    this.element = element;
     this.itemsCurrentlyEditing = [];
     this.repository = repository;
     this.filteredItems = [];
     Object.assign(this, _cssFrameworksGridCssConfigurationLoader2['default']);
     Object.assign(this, _inlineEditing2['default']);
+    Object.assign(this, _selection2['default']);
     Object.assign(this, _dataRefinerHandler2['default']);
     this.addDataRefiners();
   }
@@ -255,6 +284,13 @@ var Grid = (function () {
       this.refresh();
     }
   }, {
+    key: 'attached',
+    value: function attached() {
+      if (this.selectable !== 'false') {
+        this.handleEvents();
+      }
+    }
+  }, {
     key: 'dataSourceChanged',
     value: function dataSourceChanged() {
       this.refresh();
@@ -281,7 +317,7 @@ var Grid = (function () {
   }], null, _instanceInitializers);
 
   var _Grid = Grid;
-  Grid = (0, _aureliaDependencyInjection.inject)(_cssFrameworksRepository.GridCssFrameworkRepository)(Grid) || Grid;
+  Grid = (0, _aureliaDependencyInjection.inject)(_cssFrameworksRepository.GridCssFrameworkRepository, Element)(Grid) || Grid;
   return Grid;
 })();
 

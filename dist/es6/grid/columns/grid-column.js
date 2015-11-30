@@ -2,10 +2,10 @@ import { ObserverLocator } from 'aurelia-binding';
 import { inject } from 'aurelia-dependency-injection';
 import { bindable, containerless } from 'aurelia-templating';
 import { Grid } from '../grid';
-import { ColumnUtility } from './grid-column-utility';
+import gridColumnBase from './grid-column-base';
 
 @containerless
-@inject(Grid, ColumnUtility, Element, ObserverLocator)
+@inject(Grid, ObserverLocator)
 export class GridColumn {
   alignment = 'left aligned';
   @bindable heading;
@@ -23,28 +23,23 @@ export class GridColumn {
     return false;
   }
 
-  constructor(grid, utility, element, observerLocator) {
-    this.element = element;
+  constructor(grid, observerLocator) {
     this.grid = grid;
     this.observerLocator = observerLocator;
     this.row = {};
-    this.utility = utility;
+    Object.assign(this, gridColumnBase);
   }
 
   bind(bindingContext) {
-    if (bindingContext === this.grid) {
-      this.utility.registerWithGrid(this.grid, this);
-    } else {
-      this.utility.bindToRow(bindingContext, this);
+    this.bindToContext(bindingContext);
 
+    if (bindingContext !== this.grid) {
       this.observerLocator
         .getObserver(bindingContext.row, 'validation')
         .subscribe(newValue => {
           this.validation = Object.assign({}, newValue, { property: this.property });
         });
     }
-
-    this.loadCssFrameworkSettings();
   }
 
   loadCssFrameworkSettings() {

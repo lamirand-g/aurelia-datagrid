@@ -1,5 +1,5 @@
 <template>
-    <td if.bind="!isEditing">${row[property]}</td>
+    <td if.bind="!isEditing" viewModel.bind="self">${row[property]}</td>
     <td if.bind="isEditing">
         <form class="${editFormClass}" role="form">
             <div class="${editFieldClass}">

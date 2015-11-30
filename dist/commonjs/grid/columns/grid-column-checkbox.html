@@ -1,5 +1,5 @@
 <template>
-    <td>
+    <td viewModel.bind="self">
         <div class="${containerClass}">
             <div if.bind="!isEditing">
                 <i if.bind="row[property]" class="${checkedIconClass}"></i>

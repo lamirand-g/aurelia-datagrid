@@ -1,7 +1,7 @@
-System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-templating', '../grid', './grid-column-utility'], function (_export) {
+System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid', './grid-column-base'], function (_export) {
   'use strict';
 
-  var ObserverLocator, inject, bindable, containerless, Grid, ColumnUtility, GridColumnTemplate;
+  var inject, bindable, containerless, Grid, gridColumnBase, GridColumnTemplate;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -10,17 +10,15 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
   function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer ? descriptor.initializer.call(target) : undefined; Object.defineProperty(target, key, descriptor); }
 
   return {
-    setters: [function (_aureliaBinding) {
-      ObserverLocator = _aureliaBinding.ObserverLocator;
-    }, function (_aureliaDependencyInjection) {
+    setters: [function (_aureliaDependencyInjection) {
       inject = _aureliaDependencyInjection.inject;
     }, function (_aureliaTemplating) {
       bindable = _aureliaTemplating.bindable;
       containerless = _aureliaTemplating.containerless;
     }, function (_grid) {
       Grid = _grid.Grid;
-    }, function (_gridColumnUtility) {
-      ColumnUtility = _gridColumnUtility.ColumnUtility;
+    }, function (_gridColumnBase) {
+      gridColumnBase = _gridColumnBase['default'];
     }],
     execute: function () {
       GridColumnTemplate = (function () {
@@ -49,7 +47,7 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
           enumerable: true
         }], null, _instanceInitializers);
 
-        function GridColumnTemplate(grid, utility, element, observerLocator) {
+        function GridColumnTemplate(grid) {
           _classCallCheck(this, _GridColumnTemplate);
 
           _defineDecoratedPropertyDescriptor(this, 'heading', _instanceInitializers);
@@ -60,26 +58,19 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
 
           _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
 
-          this.element = element;
-          this.grid = grid;
-          this.observerLocator = observerLocator;
           this.row = {};
-          this.utility = utility;
+          Object.assign(this, gridColumnBase);
         }
 
         _createDecoratedClass(GridColumnTemplate, [{
           key: 'bind',
           value: function bind(bindingContext) {
-            if (bindingContext === this.grid) {
-              this.utility.registerWithGrid(this.grid, this);
-            } else {
-              this.utility.bindToRow(bindingContext, this);
-            }
+            this.bindToContext(bindingContext);
           }
         }], null, _instanceInitializers);
 
         var _GridColumnTemplate = GridColumnTemplate;
-        GridColumnTemplate = inject(Grid, ColumnUtility, Element, ObserverLocator)(GridColumnTemplate) || GridColumnTemplate;
+        GridColumnTemplate = inject(Grid)(GridColumnTemplate) || GridColumnTemplate;
         GridColumnTemplate = containerless(GridColumnTemplate) || GridColumnTemplate;
         return GridColumnTemplate;
       })();

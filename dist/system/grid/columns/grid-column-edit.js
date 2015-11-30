@@ -1,7 +1,7 @@
-System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid', './grid-column-utility'], function (_export) {
+System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid', './grid-column-base'], function (_export) {
   'use strict';
 
-  var inject, bindable, containerless, Grid, ColumnUtility, GridColumnEdit;
+  var inject, bindable, containerless, Grid, gridColumnBase, GridColumnEdit;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -17,8 +17,8 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
       containerless = _aureliaTemplating.containerless;
     }, function (_grid) {
       Grid = _grid.Grid;
-    }, function (_gridColumnUtility) {
-      ColumnUtility = _gridColumnUtility.ColumnUtility;
+    }, function (_gridColumnBase) {
+      gridColumnBase = _gridColumnBase['default'];
     }],
     execute: function () {
       GridColumnEdit = (function () {
@@ -85,7 +85,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
           }
         }], null, _instanceInitializers);
 
-        function GridColumnEdit(grid, utility) {
+        function GridColumnEdit(grid) {
           _classCallCheck(this, _GridColumnEdit);
 
           _defineDecoratedPropertyDescriptor(this, 'butttonGroupClass', _instanceInitializers);
@@ -110,19 +110,13 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
 
           this.grid = grid;
           this.showCancel = true;
-          this.utility = utility;
+          Object.assign(this, gridColumnBase);
         }
 
         _createDecoratedClass(GridColumnEdit, [{
           key: 'bind',
           value: function bind(bindingContext) {
-            if (bindingContext === this.grid) {
-              this.utility.registerWithGrid(this.grid, this);
-            } else {
-              this.utility.bindToRow(bindingContext, this);
-            }
-
-            this.loadCssFrameworkSettings();
+            this.bindToContext(bindingContext);
           }
         }, {
           key: 'cancelButtonClick',
@@ -171,7 +165,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
         }], null, _instanceInitializers);
 
         var _GridColumnEdit = GridColumnEdit;
-        GridColumnEdit = inject(Grid, ColumnUtility)(GridColumnEdit) || GridColumnEdit;
+        GridColumnEdit = inject(Grid)(GridColumnEdit) || GridColumnEdit;
         GridColumnEdit = containerless(GridColumnEdit) || GridColumnEdit;
         return GridColumnEdit;
       })();

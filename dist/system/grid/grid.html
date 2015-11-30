@@ -1,5 +1,5 @@
 <template>
-    <table class="${class}">
+    <table class="${class} ${selectable !== 'false' ? selectableClass : ''} ">
         <thead>
             <tr>
                 <th repeat.for="column of columns">

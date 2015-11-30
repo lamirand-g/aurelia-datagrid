@@ -1,29 +1,23 @@
 import { inject } from 'aurelia-dependency-injection';
 import { bindable, containerless } from 'aurelia-templating';
 import { Grid } from '../grid';
-import { ColumnUtility } from './grid-column-utility';
+import gridColumnBase from './grid-column-base';
 
 @containerless
-@inject(Grid, ColumnUtility)
+@inject(Grid)
 export class GridColumnButton {
   @bindable caption;
   @bindable class;
   @bindable buttonClick;
   @bindable heading;
 
-  constructor(grid, utility) {
+  constructor(grid) {
     this.grid = grid;
-    this.utility = utility;
+    Object.assign(this, gridColumnBase);
   }
 
   bind(bindingContext) {
-    if (bindingContext === this.grid) {
-      this.utility.registerWithGrid(this.grid, this);
-    } else {
-      this.utility.bindToRow(bindingContext, this);
-    }
-
-    this.loadCssFrameworkSettings();
+    this.bindToContext(bindingContext);
   }
 
   click() {

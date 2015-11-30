@@ -34,7 +34,8 @@ System.register([], function (_export) {
           sortButtonGroup: '',
           sortButton: '',
           sortDescendingIcon: '',
-          table: ''
+          table: '',
+          tableSelectable: ''
         },
         textClasses: {
           editForm: '',

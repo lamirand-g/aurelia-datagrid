@@ -39,7 +39,8 @@ System.register([], function (_export) {
           sortButtonGroup: 'ui fluid buttons',
           sortButton: 'ui basic button',
           sortDescendingIcon: 'ui sort descending icon',
-          table: 'ui celled compact striped table'
+          table: 'ui celled compact striped table',
+          tableSelectable: 'selectable'
         },
         textClasses: {
           editForm: 'ui form',

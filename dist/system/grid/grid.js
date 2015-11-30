@@ -1,7 +1,7 @@
-System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-frameworks/grid-css-configuration-loader', './css-frameworks/repository', './data-refiner-handler', './filtering/filter-data-refiner', './configuration', './inline-editing', './sorting/sort-data-refiner'], function (_export) {
+System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-frameworks/grid-css-configuration-loader', './css-frameworks/repository', './data-refiner-handler', './filtering/filter-data-refiner', './configuration', './inline-editing', './sorting/sort-data-refiner', './selection'], function (_export) {
   'use strict';
 
-  var bindable, inject, gridCssConfigurationLoader, GridCssFrameworkRepository, dataRefinerHandler, FilterDataRefiner, configuration, inlineEditing, SortDataRefiner, Grid;
+  var bindable, inject, gridCssConfigurationLoader, GridCssFrameworkRepository, dataRefinerHandler, FilterDataRefiner, configuration, inlineEditing, SortDataRefiner, selection, Grid;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -28,6 +28,8 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
       inlineEditing = _inlineEditing['default'];
     }, function (_sortingSortDataRefiner) {
       SortDataRefiner = _sortingSortDataRefiner['default'];
+    }, function (_selection) {
+      selection = _selection['default'];
     }],
     execute: function () {
       Grid = (function () {
@@ -110,6 +112,23 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
           initializer: null,
           enumerable: true
         }, {
+          key: 'rowSelected',
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }, {
+          key: 'selectable',
+          decorators: [bindable],
+          initializer: function initializer() {
+            return 'row';
+          },
+          enumerable: true
+        }, {
+          key: 'selectableClass',
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }, {
           key: 'sortAscendingIconClass',
           decorators: [bindable],
           initializer: null,
@@ -136,7 +155,7 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
           enumerable: true
         }], null, _instanceInitializers);
 
-        function Grid(repository) {
+        function Grid(repository, element) {
           var _this = this;
 
           _classCallCheck(this, _Grid);
@@ -170,6 +189,12 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
           _defineDecoratedPropertyDescriptor(this, 'filterInputClass', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'filterSearchIconClass', _instanceInitializers);
+
+          _defineDecoratedPropertyDescriptor(this, 'rowSelected', _instanceInitializers);
+
+          _defineDecoratedPropertyDescriptor(this, 'selectable', _instanceInitializers);
+
+          _defineDecoratedPropertyDescriptor(this, 'selectableClass', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'sortAscendingIconClass', _instanceInitializers);
 
@@ -205,11 +230,13 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
 
           this.columns = [];
           this.dataRefiners = [];
+          this.element = element;
           this.itemsCurrentlyEditing = [];
           this.repository = repository;
           this.filteredItems = [];
           Object.assign(this, gridCssConfigurationLoader);
           Object.assign(this, inlineEditing);
+          Object.assign(this, selection);
           Object.assign(this, dataRefinerHandler);
           this.addDataRefiners();
         }
@@ -243,6 +270,13 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
             this.refresh();
           }
         }, {
+          key: 'attached',
+          value: function attached() {
+            if (this.selectable !== 'false') {
+              this.handleEvents();
+            }
+          }
+        }, {
           key: 'dataSourceChanged',
           value: function dataSourceChanged() {
             this.refresh();
@@ -269,7 +303,7 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
         }], null, _instanceInitializers);
 
         var _Grid = Grid;
-        Grid = inject(GridCssFrameworkRepository)(Grid) || Grid;
+        Grid = inject(GridCssFrameworkRepository, Element)(Grid) || Grid;
         return Grid;
       })();
 

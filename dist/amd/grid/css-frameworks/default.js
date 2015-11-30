@@ -30,7 +30,8 @@ define(['exports', 'module'], function (exports, module) {
       sortButtonGroup: '',
       sortButton: '',
       sortDescendingIcon: '',
-      table: ''
+      table: '',
+      tableSelectable: ''
     },
     textClasses: {
       editForm: '',

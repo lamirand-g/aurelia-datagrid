@@ -7,8 +7,9 @@ import FilterDataRefiner from './filtering/filter-data-refiner';
 import configuration from './configuration';
 import inlineEditing from './inline-editing';
 import SortDataRefiner from './sorting/sort-data-refiner';
+import selection from './selection';
 
-@inject(GridCssFrameworkRepository)
+@inject(GridCssFrameworkRepository, Element)
 export class Grid {
   @bindable additionalFiltering;
   @bindable class;
@@ -25,20 +26,25 @@ export class Grid {
   @bindable filterInputGroupClass;
   @bindable filterInputClass;
   @bindable filterSearchIconClass;
+  @bindable rowSelected;
+  @bindable selectable = 'row';
+  @bindable selectableClass;
   @bindable sortAscendingIconClass;
   @bindable sortAvailableIconClass;
   @bindable sortButtonGroupClass;
   @bindable sortButtonClass;
   @bindable sortDescendingIconClass;
 
-  constructor(repository) {
+  constructor(repository, element) {
     this.columns = [];
     this.dataRefiners = [];
+    this.element = element;
     this.itemsCurrentlyEditing = [];
     this.repository = repository;
     this.filteredItems = [];
     Object.assign(this, gridCssConfigurationLoader);
     Object.assign(this, inlineEditing);
+    Object.assign(this, selection);
     Object.assign(this, dataRefinerHandler);
     this.addDataRefiners();
   }
@@ -88,6 +94,12 @@ export class Grid {
 
   refresh = () => {
     this.applyDataRefiners(this.dataSource);
+  }
+
+  attached() {
+    if (this.selectable !== 'false') {
+      this.handleEvents();
+    }
   }
 
   dataSourceChanged() {

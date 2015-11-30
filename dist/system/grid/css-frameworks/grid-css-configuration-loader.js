@@ -14,6 +14,7 @@ System.register([], function (_export) {
         loadCssFrameworkSettings: function loadCssFrameworkSettings() {
           this.cssFramework = this.cssFrameworkConfiguration.name;
           this["class"] = this["class"] || this.cssFrameworkConfiguration.gridClasses.table;
+          this.selectableClass = this.selectableClass || this.cssFrameworkConfiguration.gridClasses.tableSelectable;
           this.loadFilterCssFrameworkSettings();
           this.loadSortCssFrameworkSettings();
         },

@@ -27,7 +27,8 @@ const defaultCssFramework = {
     sortButtonGroup: '',
     sortButton: '',
     sortDescendingIcon: '',
-    table: ''
+    table: '',
+    tableSelectable: ''
   },
   textClasses: {
     editForm: '',

@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-frameworks/grid-css-configuration-loader', './css-frameworks/repository', './data-refiner-handler', './filtering/filter-data-refiner', './configuration', './inline-editing', './sorting/sort-data-refiner'], function (exports, _aureliaTemplating, _aureliaDependencyInjection, _cssFrameworksGridCssConfigurationLoader, _cssFrameworksRepository, _dataRefinerHandler, _filteringFilterDataRefiner, _configuration, _inlineEditing, _sortingSortDataRefiner) {
+define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-frameworks/grid-css-configuration-loader', './css-frameworks/repository', './data-refiner-handler', './filtering/filter-data-refiner', './configuration', './inline-editing', './sorting/sort-data-refiner', './selection'], function (exports, _aureliaTemplating, _aureliaDependencyInjection, _cssFrameworksGridCssConfigurationLoader, _cssFrameworksRepository, _dataRefinerHandler, _filteringFilterDataRefiner, _configuration, _inlineEditing, _sortingSortDataRefiner, _selection) {
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
@@ -24,6 +24,8 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
   var _inlineEditing2 = _interopRequireDefault(_inlineEditing);
 
   var _SortDataRefiner = _interopRequireDefault(_sortingSortDataRefiner);
+
+  var _selection2 = _interopRequireDefault(_selection);
 
   var Grid = (function () {
     var _instanceInitializers = {};
@@ -105,6 +107,23 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
       initializer: null,
       enumerable: true
     }, {
+      key: 'rowSelected',
+      decorators: [_aureliaTemplating.bindable],
+      initializer: null,
+      enumerable: true
+    }, {
+      key: 'selectable',
+      decorators: [_aureliaTemplating.bindable],
+      initializer: function initializer() {
+        return 'row';
+      },
+      enumerable: true
+    }, {
+      key: 'selectableClass',
+      decorators: [_aureliaTemplating.bindable],
+      initializer: null,
+      enumerable: true
+    }, {
       key: 'sortAscendingIconClass',
       decorators: [_aureliaTemplating.bindable],
       initializer: null,
@@ -131,7 +150,7 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
       enumerable: true
     }], null, _instanceInitializers);
 
-    function Grid(repository) {
+    function Grid(repository, element) {
       var _this = this;
 
       _classCallCheck(this, _Grid);
@@ -165,6 +184,12 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
       _defineDecoratedPropertyDescriptor(this, 'filterInputClass', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'filterSearchIconClass', _instanceInitializers);
+
+      _defineDecoratedPropertyDescriptor(this, 'rowSelected', _instanceInitializers);
+
+      _defineDecoratedPropertyDescriptor(this, 'selectable', _instanceInitializers);
+
+      _defineDecoratedPropertyDescriptor(this, 'selectableClass', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'sortAscendingIconClass', _instanceInitializers);
 
@@ -200,11 +225,13 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
 
       this.columns = [];
       this.dataRefiners = [];
+      this.element = element;
       this.itemsCurrentlyEditing = [];
       this.repository = repository;
       this.filteredItems = [];
       Object.assign(this, _gridCssConfigurationLoader['default']);
       Object.assign(this, _inlineEditing2['default']);
+      Object.assign(this, _selection2['default']);
       Object.assign(this, _dataRefinerHandler2['default']);
       this.addDataRefiners();
     }
@@ -238,6 +265,13 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
         this.refresh();
       }
     }, {
+      key: 'attached',
+      value: function attached() {
+        if (this.selectable !== 'false') {
+          this.handleEvents();
+        }
+      }
+    }, {
       key: 'dataSourceChanged',
       value: function dataSourceChanged() {
         this.refresh();
@@ -264,7 +298,7 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
     }], null, _instanceInitializers);
 
     var _Grid = Grid;
-    Grid = (0, _aureliaDependencyInjection.inject)(_cssFrameworksRepository.GridCssFrameworkRepository)(Grid) || Grid;
+    Grid = (0, _aureliaDependencyInjection.inject)(_cssFrameworksRepository.GridCssFrameworkRepository, Element)(Grid) || Grid;
     return Grid;
   })();
 
