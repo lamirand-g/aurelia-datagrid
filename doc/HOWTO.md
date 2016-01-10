@@ -1,7 +1,7 @@
 # Example
 
 ```html
-<grid data-source="books">
+<grid data-source.bind="books">
 	<template replace-part="grid-template">
 		<grid-column property="name" filterable sortable></grid-column>
 		<grid-column property="title" filterable sortable></grid-column>
@@ -152,7 +152,7 @@ Now, we can navigate to our Products page to view it by going to **[your url]/#/
 
 In **products.html**, add the following code inside the **.panel-body** element:
 ```html
-<grid data-source="tools">
+<grid data-source.bind="tools">
   <template replace-part="grid-template">
   	<grid-column property="name" filterable sortable></grid-column>
   	<grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
@@ -173,7 +173,7 @@ The **products.html** file contents should like this:
   <div class="panel panel-primary">
     <div class="panel-heading">Products</div>
     <div class="panel-body">
-      <grid data-source="tools">
+      <grid data-source.bind="tools">
         <template replace-part="grid-template">
           <grid-column property="name" filterable sortable></grid-column>
           <grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
@@ -253,7 +253,7 @@ Now, we can navigate to our Products page to view it by going to **[your url]/#/
 
 In **products.html**, add the following code inside the **.ui.segment div** element:
 ```html
-<grid data-source="tools">
+<grid data-source.bind="tools">
 	<template replace-part="grid-template">
   	<grid-column property="name" filterable sortable></grid-column>
   	<grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
@@ -274,7 +274,7 @@ The **products.html** file contents should like this:
   <div class="ui segment">
     <div class="ui top attached inverted blue header">Products</div>
 
-    <grid data-source="tools">
+    <grid data-source.bind="tools">
       <template replace-part="grid-template">
         <grid-column property="name" filterable sortable></grid-column>
         <grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
@@ -330,7 +330,7 @@ Specifies the CSS framework to use for styling the grid.  Currently, there are t
 
 ### data-source
 ```html
-<grid data-source="products">
+<grid data-source.bind="products">
   ...
 </grid>
 ```
@@ -563,7 +563,7 @@ Available Filter Strategies:
 
 ## Providing a grid level filtering strategy
 ```html
-<grid default-filter="contains" data-source="products">
+<grid default-filter="contains" data-source.bind="products">
 ```
 
 Available Filter Strategies:
