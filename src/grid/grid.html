@@ -2,15 +2,17 @@
     <table class="${class} ${selectable !== 'false' ? selectableClass : ''} ">
         <thead>
             <tr>
-                <th repeat.for="column of columns">
+                <th repeat.for="column of columns" class="${column.alignmentClass}">
                     ${column.sortable}
                     <span if.bind="column.sortable == undefined">${column.heading}</span>
                     <compose view="./sorting/sorts.html" containerless></compose>
                 </th>
             </tr>
-            <tr>
+            <tr if.bind="hasFilters">
                 <th repeat.for="column of columns">
-                    <compose view="./filtering/filters.html" containerless></compose>
+                    <compose view="./filtering/filters.html" 
+                        if.bind="column.filterable !== null"
+                        containerless></compose>
                 </th>
             </tr>
             

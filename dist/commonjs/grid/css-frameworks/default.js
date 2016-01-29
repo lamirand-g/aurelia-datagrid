@@ -39,6 +39,10 @@ var defaultCssFramework = {
     editForm: '',
     editField: '',
     editInput: ''
+  },
+
+  getAlignmentClass: function getAlignmentClass(alignment) {
+    return '';
   }
 };
 

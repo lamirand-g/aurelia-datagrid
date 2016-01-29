@@ -27,6 +27,13 @@ var GridColumnCheckbox = (function () {
   var _instanceInitializers = {};
 
   _createDecoratedClass(GridColumnCheckbox, [{
+    key: 'alignment',
+    decorators: [_aureliaTemplating.bindable],
+    initializer: function initializer() {
+      return 'center';
+    },
+    enumerable: true
+  }, {
     key: 'class',
     decorators: [_aureliaTemplating.bindable],
     initializer: null,
@@ -84,7 +91,7 @@ var GridColumnCheckbox = (function () {
   function GridColumnCheckbox(grid) {
     _classCallCheck(this, _GridColumnCheckbox);
 
-    this.alignment = 'center aligned';
+    _defineDecoratedPropertyDescriptor(this, 'alignment', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 

@@ -1,11 +1,13 @@
-System.register(['lodash'], function (_export) {
+System.register(['lodash', '../object-helper'], function (_export) {
   'use strict';
 
-  var _, gridColumnBase;
+  var _, objectHelper, gridColumnBase;
 
   return {
     setters: [function (_lodash) {
       _ = _lodash['default'];
+    }, function (_objectHelper) {
+      objectHelper = _objectHelper['default'];
     }],
     execute: function () {
       gridColumnBase = {
@@ -17,11 +19,19 @@ System.register(['lodash'], function (_export) {
             this.bindToRow(bindingContext);
             this.loadCssFrameworkSettings();
           }
+          this.setAlignmentClass();
+        },
+
+        setAlignmentClass: function setAlignmentClass() {
+          if (this.grid.cssFrameworkConfiguration) {
+            this.alignmentClass = this.grid.cssFrameworkConfiguration.getAlignmentClass(this.alignment || '');
+          }
         },
 
         registerWithGrid: function registerWithGrid(grid) {
           if (!this.heading && this.property) {
-            this.heading = _.startCase(this.property);
+            var bindingProperty = objectHelper.getDeepestPropertyFromPath(this.property);
+            this.heading = _.startCase(bindingProperty);
           }
           this.inputType = this.inputType || 'text';
           grid.addColumn(this);
@@ -31,6 +41,9 @@ System.register(['lodash'], function (_export) {
           this.bindingContext = bindingRowContext;
           this.bindingContext.editing = this.bindingContext.editing || false;
           this.row = bindingRowContext.row;
+
+          this.bindingObject = objectHelper.getDeepestObjectFromPath(this.row, this.property);
+          this.bindingProperty = objectHelper.getDeepestPropertyFromPath(this.property);
         }
       };
 

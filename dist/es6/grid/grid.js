@@ -80,6 +80,7 @@ export class Grid {
 
   addColumn(column) {
     this.columns.push(column);
+    this.hasFilters = this.hasFilters || (column.filterable !== null && column.filterable !== undefined);
   }
 
   bind(bindingContext) {

@@ -28,6 +28,13 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
         var _instanceInitializers = {};
 
         _createDecoratedClass(GridColumn, [{
+          key: 'alignment',
+          decorators: [bindable],
+          initializer: function initializer() {
+            return 'left';
+          },
+          enumerable: true
+        }, {
           key: 'heading',
           decorators: [bindable],
           initializer: null,
@@ -75,7 +82,7 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
         function GridColumn(grid, observerLocator) {
           _classCallCheck(this, _GridColumn);
 
-          this.alignment = 'left aligned';
+          _defineDecoratedPropertyDescriptor(this, 'alignment', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'heading', _instanceInitializers);
 

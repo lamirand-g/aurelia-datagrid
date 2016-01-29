@@ -1,3 +1,5 @@
+import objectHelper from '../../object-helper';
+
 const endsWithFilterStrategy = {
   apply: (items, filter) => {
     let filteredItems = items.slice(0);
@@ -10,7 +12,10 @@ const endsWithFilterStrategy = {
   },
 
   matchesFilter: (item, filter) => {
-    let property = (item[filter.property] + '').toString().toLowerCase();
+    let bindingObject = objectHelper.getDeepestObjectFromPath(item, filter.property);
+    let bindingProperty = objectHelper.getDeepestPropertyFromPath(filter.property);
+
+    let property = (bindingObject[bindingProperty] + '').toString().toLowerCase();
     return property.endsWith(filter.value.toString().toLowerCase());
   }
 };

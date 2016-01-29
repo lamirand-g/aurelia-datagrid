@@ -20,6 +20,13 @@ define(['exports', 'aurelia-binding', 'aurelia-dependency-injection', 'aurelia-t
     var _instanceInitializers = {};
 
     _createDecoratedClass(GridColumn, [{
+      key: 'alignment',
+      decorators: [_aureliaTemplating.bindable],
+      initializer: function initializer() {
+        return 'left';
+      },
+      enumerable: true
+    }, {
       key: 'heading',
       decorators: [_aureliaTemplating.bindable],
       initializer: null,
@@ -67,7 +74,7 @@ define(['exports', 'aurelia-binding', 'aurelia-dependency-injection', 'aurelia-t
     function GridColumn(grid, observerLocator) {
       _classCallCheck(this, _GridColumn);
 
-      this.alignment = 'left aligned';
+      _defineDecoratedPropertyDescriptor(this, 'alignment', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'heading', _instanceInitializers);
 

@@ -257,6 +257,7 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
           key: 'addColumn',
           value: function addColumn(column) {
             this.columns.push(column);
+            this.hasFilters = this.hasFilters || column.filterable !== null && column.filterable !== undefined;
           }
         }, {
           key: 'bind',

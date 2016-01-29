@@ -41,6 +41,10 @@ System.register([], function (_export) {
           editForm: '',
           editField: '',
           editInput: ''
+        },
+
+        getAlignmentClass: function getAlignmentClass(alignment) {
+          return '';
         }
       };
 

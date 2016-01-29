@@ -1,9 +1,11 @@
-System.register([], function (_export) {
+System.register(['../../object-helper'], function (_export) {
   'use strict';
 
-  var endsWithFilterStrategy;
+  var objectHelper, endsWithFilterStrategy;
   return {
-    setters: [],
+    setters: [function (_objectHelper) {
+      objectHelper = _objectHelper['default'];
+    }],
     execute: function () {
       endsWithFilterStrategy = {
         apply: function apply(items, filter) {
@@ -17,7 +19,10 @@ System.register([], function (_export) {
         },
 
         matchesFilter: function matchesFilter(item, filter) {
-          var property = (item[filter.property] + '').toString().toLowerCase();
+          var bindingObject = objectHelper.getDeepestObjectFromPath(item, filter.property);
+          var bindingProperty = objectHelper.getDeepestPropertyFromPath(filter.property);
+
+          var property = (bindingObject[bindingProperty] + '').toString().toLowerCase();
           return property.endsWith(filter.value.toString().toLowerCase());
         }
       };

@@ -42,6 +42,27 @@ define(['exports', 'module'], function (exports, module) {
       editForm: '',
       editField: 'form-group',
       editInput: 'form-control'
+    },
+
+    getAlignmentClass: function getAlignmentClass(alignment) {
+      alignment = alignment.toLowerCase();
+
+      switch (alignment) {
+        case 'right':
+        case 'right aligned':
+          return 'text-right';
+
+        case 'center':
+        case 'center aligned':
+          return 'text-center';
+
+        case 'justify':
+        case 'justified':
+          return 'text-justify';
+
+        default:
+          return 'text-left';
+      }
     }
   };
 

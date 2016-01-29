@@ -3,7 +3,7 @@ const semanticCssFramework = {
   buttonClass: 'ui button',
   checkboxClasses: {
     checkedIcon: 'ui green checkmark icon',
-    container: 'ui center aligned center',
+    container: 'ui center aligned',
     input: 'ui checkbox',
     uncheckedIcon: 'ui red remove icon'
   },
@@ -39,6 +39,26 @@ const semanticCssFramework = {
     editForm: 'ui form',
     editField: 'field',
     editInput: ''
+  },
+  getAlignmentClass(alignment) {
+    alignment = alignment.toLowerCase();
+
+    switch (alignment) {
+    case 'right':
+    case 'right aligned':
+      return 'ui right aligned';
+
+    case 'center':
+    case 'center aligned':
+      return 'ui center aligned';
+
+    case 'justify':
+    case 'justified':
+      return 'justified';
+
+    default:
+      return 'ui left aligned';
+    }
   }
 };
 

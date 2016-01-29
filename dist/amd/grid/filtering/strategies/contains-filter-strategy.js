@@ -1,5 +1,9 @@
-define(['exports', 'module'], function (exports, module) {
+define(['exports', 'module', '../../object-helper'], function (exports, module, _objectHelper) {
   'use strict';
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+  var _objectHelper2 = _interopRequireDefault(_objectHelper);
 
   var containsFilterStrategy = {
     apply: function apply(items, filter) {
@@ -13,7 +17,10 @@ define(['exports', 'module'], function (exports, module) {
     },
 
     matchesFilter: function matchesFilter(item, filter) {
-      var property = (item[filter.property] + '').toString().toLowerCase();
+      var bindingObject = _objectHelper2['default'].getDeepestObjectFromPath(item, filter.property);
+      var bindingProperty = _objectHelper2['default'].getDeepestPropertyFromPath(filter.property);
+
+      var property = (bindingObject[bindingProperty] + '').toString().toLowerCase();
       return property.includes(filter.value.toString().toLowerCase());
     }
   };

@@ -6,7 +6,7 @@ import gridColumnBase from './grid-column-base';
 @containerless
 @inject(Grid)
 export class GridColumnCheckbox {
-  alignment = 'center aligned';
+  @bindable alignment = 'center';
   @bindable class;
   @bindable checkedIconClass;
   @bindable containerClass;
