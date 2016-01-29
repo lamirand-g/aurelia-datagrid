@@ -99,7 +99,7 @@ In the **main.js** file, make the following change to the plugin:
 	config => config.defaultCssFramework = 'bootstrap');
 ```
 
-### Include Semantic in your HTML
+### Include Bootstrap in your HTML
 In the **index.html**, add the following to the head element:
 ```html
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
