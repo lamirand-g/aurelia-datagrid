@@ -1,0 +1,24 @@
+.dtd-table {
+  display: table;
+}
+
+.dtd-table-row {
+  display: table-row;
+}
+
+.dtd-table-heading {
+  display: table-header-group;
+}
+
+.dtd-table-body {
+  display: table-row-group;
+}
+
+.dtd-table-foot {
+  display: table-footer-group;
+}
+
+.dtd-table-cell,
+.dtd-table-head {
+  display: table-cell;
+}

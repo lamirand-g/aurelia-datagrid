@@ -9,9 +9,9 @@ module.exports = {
   root: appRoot,
   source: appRoot + '**/*.js',
   html: appRoot + '**/*.html',
-  style: 'styles/**/*.css',
+  style: appRoot + '**/*.css',
   output: outputRoot,
-  doc:'./doc',
+  doc: './doc',
   packageName: pkg.name,
   packageVersion: pkg.version
 };

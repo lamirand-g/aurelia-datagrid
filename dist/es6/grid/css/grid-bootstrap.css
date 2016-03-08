@@ -1,0 +1,25 @@
+
+/* Work around styling for the tables since using the actual table elements
+ causes issues in older browsers because of some of the polyfills used. 
+ Refer to https://github.com/donnelljenkins/aurelia-datagrid/issues/9
+ */
+.table-bordered>.dtd-table-body>.dtd-table-row>.dtd-table-cell,
+ .table-bordered>.dtd-table-body>.dtd-table-row>.dtd-table-head,
+ .table-bordered>.dtd-table-foot>.dtd-table-row>.dtd-table-cell,
+ .table-bordered>.dtd-table-foot>.dtd-table-row>.dtd-table-head,
+ .table-bordered>.dtd-table-heading>.dtd-table-row>.dtd-table-cell,
+ .table-bordered>.dtd-table-heading>.dtd-table-row>.dtd-table-head {
+    border: 1px solid #ddd;
+}
+
+.table>.dtd-table-body>.dtd-table-row>.dtd-table-cell,
+ .table>.dtd-table-body>.dtd-table-row>.dtd-table-head,
+ .table>.dtd-table-foot>.dtd-table-row>.dtd-table-cell,
+ .table>.dtd-table-foot>.dtd-table-row>.dtd-table-head,
+ .table>.dtd-table-heading>.dtd-table-row>.dtd-table-cell,
+ .table>.dtd-table-heading>.dtd-table-row>.dtd-table-head {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
