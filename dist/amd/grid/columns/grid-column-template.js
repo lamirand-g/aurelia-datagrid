@@ -52,6 +52,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', '../gri
 
       _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
 
+      this.grid = grid;
       this.row = {};
       Object.assign(this, _gridColumnBase2['default']);
     }
@@ -61,6 +62,9 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', '../gri
       value: function bind(bindingContext) {
         this.bindToContext(bindingContext);
       }
+    }, {
+      key: 'loadCssFrameworkSettings',
+      value: function loadCssFrameworkSettings() {}
     }], null, _instanceInitializers);
 
     var _GridColumnTemplate = GridColumnTemplate;

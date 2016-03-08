@@ -1,5 +1,5 @@
 <template>
-    <td viewModel.bind="self">
+    <div class="dtd-table-cell" viewModel.bind="self">
         <div class.bind="butttonGroupClass" role="group">
             <button if.bind="!isEditing" role="button" class.bind="editButtonClass" click.delegate="editButtonClick()">
                 Edit
@@ -17,5 +17,5 @@
                 </button>
             </div>
         </div>
-    </td>
+    </div>
 </template>

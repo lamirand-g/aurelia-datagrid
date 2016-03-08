@@ -1,5 +1,5 @@
 <template>
-    <td viewModel.bind="self">
+    <div class="dtd-table-cell" viewModel.bind="self">
         <div class="${containerClass}">
             <div if.bind="!isEditing">
                 <i if.bind="bindingObject[bindingProperty]" class="${checkedIconClass}"></i>
@@ -12,5 +12,5 @@
                 </label>
             </div>
         </div>
-    </td>
+    </divtd>
 </template>

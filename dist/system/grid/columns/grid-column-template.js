@@ -58,6 +58,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
 
           _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
 
+          this.grid = grid;
           this.row = {};
           Object.assign(this, gridColumnBase);
         }
@@ -67,6 +68,9 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
           value: function bind(bindingContext) {
             this.bindToContext(bindingContext);
           }
+        }, {
+          key: 'loadCssFrameworkSettings',
+          value: function loadCssFrameworkSettings() {}
         }], null, _instanceInitializers);
 
         var _GridColumnTemplate = GridColumnTemplate;

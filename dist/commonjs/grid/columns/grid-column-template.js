@@ -59,6 +59,7 @@ var GridColumnTemplate = (function () {
 
     _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
 
+    this.grid = grid;
     this.row = {};
     Object.assign(this, _gridColumnBase2['default']);
   }
@@ -68,6 +69,9 @@ var GridColumnTemplate = (function () {
     value: function bind(bindingContext) {
       this.bindToContext(bindingContext);
     }
+  }, {
+    key: 'loadCssFrameworkSettings',
+    value: function loadCssFrameworkSettings() {}
   }], null, _instanceInitializers);
 
   var _GridColumnTemplate = GridColumnTemplate;
