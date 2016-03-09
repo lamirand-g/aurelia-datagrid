@@ -37,28 +37,32 @@ var GridColumnButton = (function () {
     initializer: null,
     enumerable: true
   }, {
-    key: 'buttonClick',
-    decorators: [_aureliaTemplating.bindable],
-    initializer: null,
-    enumerable: true
-  }, {
     key: 'heading',
     decorators: [_aureliaTemplating.bindable],
     initializer: null,
     enumerable: true
   }], null, _instanceInitializers);
 
-  function GridColumnButton(grid) {
+  function GridColumnButton(element, grid) {
+    var _this = this;
+
     _classCallCheck(this, _GridColumnButton);
 
     _defineDecoratedPropertyDescriptor(this, 'caption', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
-    _defineDecoratedPropertyDescriptor(this, 'buttonClick', _instanceInitializers);
-
     _defineDecoratedPropertyDescriptor(this, 'heading', _instanceInitializers);
 
+    this.handleButtonClick = function (event) {
+      var clickEvent = _this.createCustomEvent('click', event);
+      _this.element.dispatchEvent(clickEvent);
+
+      var buttonClickEvent = _this.createCustomEvent('button-click', event);
+      _this.element.dispatchEvent(buttonClickEvent);
+    };
+
+    this.element = element;
     this.grid = grid;
     Object.assign(this, _gridColumnBase2['default']);
   }
@@ -69,11 +73,33 @@ var GridColumnButton = (function () {
       this.bindToContext(bindingContext);
     }
   }, {
-    key: 'click',
-    value: function click() {
-      if (this.buttonClick) {
-        this.buttonClick();
+    key: 'attached',
+    value: function attached() {
+      this.button = this.element.getElementsByTagName('BUTTON')[0];
+      this.button.addEventListener('click', this.handleButtonClick);
+    }
+  }, {
+    key: 'detached',
+    value: function detached() {
+      this.button.removeEventListener('click', this.handleButtonClick);
+    }
+  }, {
+    key: 'createCustomEvent',
+    value: function createCustomEvent(eventName, event) {
+      var customEvent = undefined;
+
+      if (window.CustomEvent) {
+        customEvent = new CustomEvent(eventName, {
+          detail: {
+            value: event.value
+          },
+          bubbles: true
+        });
+      } else {
+        customEvent = document.createEvent('CustomEvent');
+        customEvent.initCustomEvent(eventName, true, true, { value: event.val });
       }
+      return customEvent;
     }
   }, {
     key: 'loadCssFrameworkSettings',
@@ -87,8 +113,7 @@ var GridColumnButton = (function () {
   }], null, _instanceInitializers);
 
   var _GridColumnButton = GridColumnButton;
-  GridColumnButton = (0, _aureliaDependencyInjection.inject)(_grid.Grid)(GridColumnButton) || GridColumnButton;
-  GridColumnButton = (0, _aureliaTemplating.containerless)(GridColumnButton) || GridColumnButton;
+  GridColumnButton = (0, _aureliaDependencyInjection.inject)(Element, _grid.Grid)(GridColumnButton) || GridColumnButton;
   return GridColumnButton;
 })();
 

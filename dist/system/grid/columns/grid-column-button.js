@@ -1,7 +1,7 @@
 System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid', './grid-column-base'], function (_export) {
   'use strict';
 
-  var inject, bindable, containerless, Grid, gridColumnBase, GridColumnButton;
+  var inject, bindable, Grid, gridColumnBase, GridColumnButton;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -14,7 +14,6 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
       inject = _aureliaDependencyInjection.inject;
     }, function (_aureliaTemplating) {
       bindable = _aureliaTemplating.bindable;
-      containerless = _aureliaTemplating.containerless;
     }, function (_grid) {
       Grid = _grid.Grid;
     }, function (_gridColumnBase) {
@@ -36,28 +35,32 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
           initializer: null,
           enumerable: true
         }, {
-          key: 'buttonClick',
-          decorators: [bindable],
-          initializer: null,
-          enumerable: true
-        }, {
           key: 'heading',
           decorators: [bindable],
           initializer: null,
           enumerable: true
         }], null, _instanceInitializers);
 
-        function GridColumnButton(grid) {
+        function GridColumnButton(element, grid) {
+          var _this = this;
+
           _classCallCheck(this, _GridColumnButton);
 
           _defineDecoratedPropertyDescriptor(this, 'caption', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
-          _defineDecoratedPropertyDescriptor(this, 'buttonClick', _instanceInitializers);
-
           _defineDecoratedPropertyDescriptor(this, 'heading', _instanceInitializers);
 
+          this.handleButtonClick = function (event) {
+            var clickEvent = _this.createCustomEvent('click', event);
+            _this.element.dispatchEvent(clickEvent);
+
+            var buttonClickEvent = _this.createCustomEvent('button-click', event);
+            _this.element.dispatchEvent(buttonClickEvent);
+          };
+
+          this.element = element;
           this.grid = grid;
           Object.assign(this, gridColumnBase);
         }
@@ -68,11 +71,33 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
             this.bindToContext(bindingContext);
           }
         }, {
-          key: 'click',
-          value: function click() {
-            if (this.buttonClick) {
-              this.buttonClick();
+          key: 'attached',
+          value: function attached() {
+            this.button = this.element.getElementsByTagName('BUTTON')[0];
+            this.button.addEventListener('click', this.handleButtonClick);
+          }
+        }, {
+          key: 'detached',
+          value: function detached() {
+            this.button.removeEventListener('click', this.handleButtonClick);
+          }
+        }, {
+          key: 'createCustomEvent',
+          value: function createCustomEvent(eventName, event) {
+            var customEvent = undefined;
+
+            if (window.CustomEvent) {
+              customEvent = new CustomEvent(eventName, {
+                detail: {
+                  value: event.value
+                },
+                bubbles: true
+              });
+            } else {
+              customEvent = document.createEvent('CustomEvent');
+              customEvent.initCustomEvent(eventName, true, true, { value: event.val });
             }
+            return customEvent;
           }
         }, {
           key: 'loadCssFrameworkSettings',
@@ -86,8 +111,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
         }], null, _instanceInitializers);
 
         var _GridColumnButton = GridColumnButton;
-        GridColumnButton = inject(Grid)(GridColumnButton) || GridColumnButton;
-        GridColumnButton = containerless(GridColumnButton) || GridColumnButton;
+        GridColumnButton = inject(Element, Grid)(GridColumnButton) || GridColumnButton;
         return GridColumnButton;
       })();
 
