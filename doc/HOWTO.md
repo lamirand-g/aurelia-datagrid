@@ -362,6 +362,18 @@ The event object passed to the specified event handler function is a MouseEvent.
 ##### row
 The object that is bound to the row that was clicked.
 
+####Example
+```html
+<grid row-selected.bind="showSelectedRowInfo">
+```
+
+```javascript
+showSelectedRowInfo(selectionInfo) {
+  alert('item:' + selectionInfo.row.name);
+  alert('cell info: ' + selectionInfo.column.property + '=' + selectionInfo.row[selectionInfo.column.property]);
+}
+```
+
 # Column Templates
 
 ## grid-column
