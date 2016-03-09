@@ -2,28 +2,36 @@
 A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> with sorting and filtering capabilities.
 
 ```html
-<grid>
-  <template replace-part="grid-template">
-    <grid-column property="name" filterable sortable></grid-column>
-    <grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
-    <grid-column-button 
-         caption="Select"
-         button-click.call="$parent.$parent.select($event)">
-    </grid-column-button>
-    <grid-column-template heading="Custom">
-      <template replace-part="custom-template">
-        <compose view="./demo-custom-column-template.html" 
-                 containerless>
-        </compose>
-      </template>
-    </grid-column-template>
-    <grid-column-edit></grid-column-edit>
-  </template>
+  <grid css-framework="bootstrap" data-source.bind="samples">
+    <template replace-part="grid-template">
+      <grid-column property="name" filterable sortable></grid-column>
+      <grid-column property="title" alignment="center" filterable sortable></grid-column>
+      <grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
+      <grid-column-button heading="Action" caption="Select" 
+          button-click.call="select(row.id)">
+      </grid-column-button>
+      
+      <grid-column-template heading="Custom">
+        <template replace-part="custom-template">
+          <div class="input-group">
+            <span class="input-group-addon">
+              <input type="radio" aria-label="...">
+              <input type="radio" aria-label="...">
+            </span>
+            <input type="text" class="form-control" aria-label="...">
+          </div>
+        </template>
+      </grid-column-template>
+      
+      <grid-column-edit></grid-column-edit>
+    </template>
 
-  <template replace-part="grid-footer-template">
-    <td colspan.bind="columns.length">Footer Here!</td>
-  </template>
-</grid>
+    <template replace-part="grid-footer-template">
+      <td colspan.bind="columns.length">
+        Total Items: ${samples.length}
+      </td>
+    </template>
+  </grid>
 ```
 
 ## Live Demo
@@ -32,12 +40,13 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
 
 ## Documentation
 
-### [Current Release (@v0.1.4)](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md)
+### [Current Release (@v0.1.5)](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md)
 - [Installation](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#installation)
 - [Getting started](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#getting-started)
   - [Bootstrap](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#bootstrap)
   - [Semantic-UI](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#semantic-ui)
 - [Grid](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid)
+  - [Row selected event](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#row-selected-event)
 - [Column Templates](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#column-templates)
   - [grid-column](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column)
   - [grid-column-button](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#grid-column-button)
@@ -52,6 +61,7 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
 - [Custom sorting](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#how-to-provide-custom-sorting)
   - [applySort(sort) method](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md#applysortsort-method)
 
+### [Release @v0.1.4](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO%40v0.1.4.md)
 ### [Release @v0.1.3](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO%40v0.1.3.md)
 
 ## Examples
@@ -65,7 +75,7 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
 * [aurelia-templating](https://github.com/aurelia/templating)
 * [lodash](https://lodash.com/)
 * [bootstrap**](http://getbootstrap.com/)
-* [Semantic-UI**](http://semantic-ui.com/)
+* [semantic-ui**](http://semantic-ui.com/)
 
 ** The grid can be configured to use either Bootstrap or Semantic-UI.  One of these packages must be manually installed depending on which framework you wish to use.  By default, the grid is configured to use Bootstrap.
 
