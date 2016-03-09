@@ -12,11 +12,15 @@ export class GridColumnTemplate {
   @bindable sortable;
 
   constructor(grid) {
+    this.grid = grid;
     this.row = {};
     Object.assign(this, gridColumnBase);
   }
 
   bind(bindingContext) {
     this.bindToContext(bindingContext);
+  }
+
+  loadCssFrameworkSettings() {
   }
 }
