@@ -1,4 +1,6 @@
-# Example
+# Release v0.1.4
+
+## Example
 
 ```html
 <grid data-source.bind="books">
