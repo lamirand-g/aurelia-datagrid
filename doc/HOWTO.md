@@ -1,31 +1,36 @@
-# Example
+# Current Release (v0.1.5)
+
+## Example
 
 ```html
-<grid data-source.bind="books">
-	<template replace-part="grid-template">
-		<grid-column property="name" filterable sortable></grid-column>
-		<grid-column property="title" filterable sortable></grid-column>
-		<grid-column-checkbox property="active" filterable></grid-column-checkbox>
-		<grid-column-button 
-		     heading="Actions"
-		     caption="Select"
-		     button-click.call="$parent.$parent.buttonClick($event)">
-		</grid-column-button>
-		<grid-column-template heading="Custom">
-			<template replace-part="custom-template">
-				<compose view="./demo-custom-column-template.html"
-				         containerless>
-				</compose>
-			</template>
-		</grid-column-template>
-		<grid-column property="id" alignment="right"></grid-column>
-		<grid-column-edit></grid-column-edit>
-	</template>
+<grid css-framework="bootstrap" data-source.bind="samples" row-selected.bind="rowSelected">
+    <template replace-part="grid-template">
+      <grid-column property="name" filterable sortable></grid-column>
+      <grid-column property="title" alignment="center" filterable sortable></grid-column>
+      <grid-column-checkbox property="active" filterable sortable></grid-column-checkbox>
+      <grid-column-button heading="Action" caption="Select" button-click.call="select(row.id)"></grid-column-button>
+      
+      <grid-column-template heading="Custom">
+        <template replace-part="custom-template">
+          <div class="input-group">
+            <span class="input-group-addon">
+              <input type="radio" aria-label="...">
+              <input type="radio" aria-label="...">
+            </span>
+            <input type="text" class="form-control" aria-label="...">
+          </div>
+        </template>
+      </grid-column-template>
+      
+      <grid-column-edit></grid-column-edit>
+    </template>
 
-	<template replace-part="grid-footer-template">
-		<td colspan.bind="columns.length">Total items: ${items.length}</td>
-	</template>
-</grid>
+    <template replace-part="grid-footer-template">
+      <td colspan.bind="columns.length">
+        Total Items: ${samples.length}
+      </td>
+    </template>
+  </grid>
 ```
 
 # Installation
@@ -288,7 +293,7 @@ The **products.html** file contents should like this:
 Now, when you run your app and navigate to the products page, the grid with the list of products will display.
 
 # Grid
-- By default, the grid looks for an array property named **items** on your view model. In an upcoming release, a **datasource** attribute will be available to override this.
+- By default, the grid looks for an array property named **items** on your view model. To override this, use the **data-source** attribute.
 ```javascript
 export class ViewModel {
   tools = [
@@ -336,6 +341,27 @@ Specifies the CSS framework to use for styling the grid.  Currently, there are t
 ```
 Specifies which property to use to populate the grid.
 
+## Row Selected Event
+
+```html
+<grid row-selected.bind="rowSelected">
+  ...
+</grid>
+```
+A bindable event that is called every time a cell is selected / clicked.
+
+### Row Selected Argument
+The argument passed to the row-selected function.
+
+##### column
+Information on the column that was clicked.
+
+##### event
+The event object passed to the specified event handler function is a MouseEvent.
+
+##### row
+The object that is bound to the row that was clicked.
+
 # Column Templates
 
 ## grid-column
@@ -352,6 +378,15 @@ Provides the name of the property to display for each item in the backing list.
 
 #### Optional
 
+##### alignment
+Positioning of the column's content. By default, this is set to 'left' (left aligned).
+
+###### Available Values
+- left | left aligned
+- right | right aligned
+- center | center aligned
+- justify | justified
+
 ##### filterable
 Indicates the content in this column can be filtered.  An *input* element is displayed in the column's header.  The value entered is used for the filter.
 
@@ -364,9 +399,9 @@ Indicates the content in this column can be sorted.  The column heading is conve
 ## grid-column-button
 ```html
 <grid-column-button 
-    heading="Column Heading"
-    caption="Button Text"
-    button-click.call="$parent.$parent.buttonClick($event)">
+    heading="Actions"
+    caption="Delete"
+    button-click.call="delete(row)">
 </grid-column-button>
 ```
 
@@ -376,6 +411,16 @@ Indicates the content in this column can be sorted.  The column heading is conve
 Provides the button text.
 
 #### Optional
+
+##### button-click (.call | .bind)
+Callback function when the button is clicked.
+
+###### .bind
+Binds button-click to a function.  The function will be called with the $event as the only argument.*
+* v0.1.5 currently has a bug with the $event not being passed.
+
+###### .call
+Passes a function reference to button-click.
 
 ##### property
 Provides the name of the property that is used for filtering and/or sorting.  The property value will not be displayed in the grid.
@@ -406,6 +451,15 @@ Indicates the content in this column can be sorted.  The column heading is conve
 Provides the name of the property to display for each item in the backing list.
 
 #### Optional
+
+##### alignment
+Positioning of the column's content. By default, this is set to 'left' (left aligned).
+
+###### Available Values
+- left | left aligned
+- right | right aligned
+- center | center aligned
+- justify | justified
 
 ##### filterable*
 Indicates the content in this column can be filtered.  An *input* element is displayed in the column's header.  The value entered is used for the filter.
