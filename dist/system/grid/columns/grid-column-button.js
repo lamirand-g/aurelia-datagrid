@@ -91,7 +91,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
                 detail: {
                   value: event.value
                 },
-                bubbles: true
+                bubbles: false
               });
             } else {
               customEvent = document.createEvent('CustomEvent');

@@ -86,7 +86,7 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', '../gri
             detail: {
               value: event.value
             },
-            bubbles: true
+            bubbles: false
           });
         } else {
           customEvent = document.createEvent('CustomEvent');

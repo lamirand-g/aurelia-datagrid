@@ -93,7 +93,7 @@ var GridColumnButton = (function () {
           detail: {
             value: event.value
           },
-          bubbles: true
+          bubbles: false
         });
       } else {
         customEvent = document.createEvent('CustomEvent');
