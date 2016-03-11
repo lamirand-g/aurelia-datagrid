@@ -488,15 +488,53 @@ Indicates the content in this column can be sorted.  The column heading is conve
 
 ## grid-column-edit
 ```html
-<grid-column-edit hide-cancel></grid-column-edit>
+<grid-column-edit></grid-column-edit>
 ```
 
 ### Attributes
 
 #### Optional
 
-##### hide-cancel
-Hides the *cancel* button when a row is in edit mode.  Only the *save* button will be dislayed.
+##### edit-click
+Event triggered when the edit button is clicked.
+**example.html**
+```html
+  <grid-column-edit edit-click.bind="enableEditingOfItem"></grid-column-edit>
+```
+**example.js**
+```javascript
+  enableEditingOfItem(info) {
+    alert(`Item '${info.row.name}' is now in edit mode.`);
+  }
+```
+
+##### save-click
+Event triggered when the save button is clicked.
+
+**example.html**
+```html
+  <grid-column-edit save-click.bind="saveItem"></grid-column-edit>
+```
+**example.js**
+```javascript
+  saveItem(item) {
+    alert(`Item '${item.name}' is saving...`);
+  }
+```
+
+##### cancel-click
+Event triggered when the edit button is clicked.
+
+**example.html**
+```html
+  <grid-column-edit cancel-click.bind="cancelEditOnItem"></grid-column-edit>
+```
+**example.js**
+```javascript
+  cancelEditOnItem(item) {
+    alert(`Changes to item '${item.name}' have been cancelled.`);
+  }
+```
 
 ## grid-column-template - Custom column template
 ```html
