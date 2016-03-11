@@ -497,11 +497,11 @@ Indicates the content in this column can be sorted.  The column heading is conve
 
 ##### edit-click
 Event triggered when the edit button is clicked.
-**example.html**
+*example.html*
 ```html
   <grid-column-edit edit-click.bind="enableEditingOfItem"></grid-column-edit>
 ```
-**example.js**
+*example.js*
 ```javascript
   enableEditingOfItem(info) {
     alert(`Item '${info.row.name}' is now in edit mode.`);
@@ -511,11 +511,11 @@ Event triggered when the edit button is clicked.
 ##### save-click
 Event triggered when the save button is clicked.
 
-**example.html**
+*example.html*
 ```html
   <grid-column-edit save-click.bind="saveItem"></grid-column-edit>
 ```
-**example.js**
+*example.js*
 ```javascript
   saveItem(item) {
     alert(`Item '${item.name}' is saving...`);
@@ -525,11 +525,11 @@ Event triggered when the save button is clicked.
 ##### cancel-click
 Event triggered when the edit button is clicked.
 
-**example.html**
+*example.html*
 ```html
   <grid-column-edit cancel-click.bind="cancelEditOnItem"></grid-column-edit>
 ```
-**example.js**
+*example.js*
 ```javascript
   cancelEditOnItem(item) {
     alert(`Changes to item '${item.name}' have been cancelled.`);
