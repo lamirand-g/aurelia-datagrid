@@ -69,10 +69,10 @@ var GridColumnButton = (function () {
       this.bindToContext(bindingContext);
     }
   }, {
-    key: 'click',
-    value: function click() {
+    key: 'handleButtonClick',
+    value: function handleButtonClick(event) {
       if (this.buttonClick) {
-        this.buttonClick();
+        this.buttonClick(event);
       }
     }
   }, {

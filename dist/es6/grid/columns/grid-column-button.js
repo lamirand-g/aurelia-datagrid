@@ -20,9 +20,9 @@ export class GridColumnButton {
     this.bindToContext(bindingContext);
   }
 
-  click() {
+  handleButtonClick(event) {
     if (this.buttonClick) {
-      this.buttonClick();
+      this.buttonClick(event);
     }
   }
 

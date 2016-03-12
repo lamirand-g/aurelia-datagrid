@@ -1,5 +1,5 @@
 <template>
 	<td viewModel.bind="self">
-		<button class="${class}" type="button" click.delegate="click()">${caption}</button>
+		<button class="${class}" type="button" click.delegate="handleButtonClick($event)">${caption}</button>
 	</td>
 </template>

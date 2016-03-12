@@ -26,7 +26,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
         var _instanceInitializers = {};
 
         _createDecoratedClass(GridColumnEdit, [{
-          key: 'butttonGroupClass',
+          key: 'buttonGroupClass',
           decorators: [bindable],
           initializer: null,
           enumerable: true
@@ -88,7 +88,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
         function GridColumnEdit(grid) {
           _classCallCheck(this, _GridColumnEdit);
 
-          _defineDecoratedPropertyDescriptor(this, 'butttonGroupClass', _instanceInitializers);
+          _defineDecoratedPropertyDescriptor(this, 'buttonGroupClass', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'cancelButtonClass', _instanceInitializers);
 
@@ -120,24 +120,40 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
           }
         }, {
           key: 'cancelButtonClick',
-          value: function cancelButtonClick() {
+          value: function cancelButtonClick(event) {
+            var _this = this;
+
+            var response = true;
+
             if (this.cancelClick) {
-              this.cancelClick(this.bindingContext.row);
+              response = this.cancelClick(event);
             }
 
-            Object.assign(this.bindingContext.row, this.originalValue);
-            this.grid.finishEditingItem(this.bindingContext.row);
+            Promise.resolve(response).then(function (promiseResponse) {
+              if (_this.successfulResponse(promiseResponse)) {
+                Object.assign(_this.bindingContext.row, _this.originalValue);
+                _this.grid.finishEditingItem(_this.bindingContext.row);
+              }
+            })['catch'](function () {});
           }
         }, {
           key: 'editButtonClick',
-          value: function editButtonClick() {
+          value: function editButtonClick(event) {
+            var _this2 = this;
+
             this.originalValue = Object.assign({}, this.bindingContext.row);
 
+            var response = true;
+
             if (this.editClick) {
-              this.editClick(this.bindingContext);
+              response = this.editClick(event);
             }
 
-            this.grid.beginEditingItem(this.bindingContext.row);
+            Promise.resolve(response).then(function (promiseResponse) {
+              if (_this2.successfulResponse(promiseResponse)) {
+                _this2.grid.beginEditingItem(_this2.bindingContext.row);
+              }
+            })['catch'](function () {});
           }
         }, {
           key: 'loadCssFrameworkSettings',
@@ -145,7 +161,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
             if (this.grid.cssFrameworkConfiguration) {
               var config = this.grid.cssFrameworkConfiguration.editClasses;
 
-              this.butttonGroupClass = config.buttonGroup;
+              this.buttonGroupClass = config.buttonGroup;
               this.cancelButtonClass = config.cancelButton;
               this.editButtonClass = config.editButton;
               this.orDivClass = config.orDiv;
@@ -155,12 +171,25 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
           }
         }, {
           key: 'saveButtonClick',
-          value: function saveButtonClick() {
+          value: function saveButtonClick(event) {
+            var _this3 = this;
+
+            var response = true;
+
             if (this.saveClick) {
-              this.saveClick(this.bindingContext.row);
+              response = this.saveClick(event);
             }
 
-            this.grid.finishEditingItem(this.bindingContext.row);
+            Promise.resolve(response).then(function (promiseResponse) {
+              if (_this3.successfulResponse(promiseResponse)) {
+                _this3.grid.finishEditingItem(_this3.bindingContext.row);
+              }
+            })['catch'](function () {});
+          }
+        }, {
+          key: 'successfulResponse',
+          value: function successfulResponse(response) {
+            return response === undefined || response;
           }
         }], null, _instanceInitializers);
 
