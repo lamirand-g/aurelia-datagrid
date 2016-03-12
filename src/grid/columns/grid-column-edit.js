@@ -1,12 +1,11 @@
 import { inject } from 'aurelia-dependency-injection';
-import { bindable, containerless } from 'aurelia-templating';
+import { bindable } from 'aurelia-templating';
 import { Grid } from '../grid';
 import gridColumnBase from './grid-column-base';
 
-@containerless
 @inject(Grid)
 export class GridColumnEdit {
-  @bindable butttonGroupClass;
+  @bindable buttonGroupClass;
   @bindable cancelButtonClass;
   @bindable cancelClick;
   @bindable editButtonClass;
@@ -34,19 +33,19 @@ export class GridColumnEdit {
     this.bindToContext(bindingContext);
   }
 
-  cancelButtonClick() {
+  cancelButtonClick(event) {
     if (this.cancelClick) {
-      this.cancelClick(this.bindingContext.row);
+      this.cancelClick(event);
     }
 
     Object.assign(this.bindingContext.row, this.originalValue);
     this.grid.finishEditingItem(this.bindingContext.row);
   }
 
-  editButtonClick() {
+  editButtonClick(event) {
     this.originalValue = Object.assign({}, this.bindingContext.row);
 
-    if (this.editClick) {
+    if (this.editClick(event)) {
       this.editClick(this.bindingContext);
     }
 
@@ -66,9 +65,9 @@ export class GridColumnEdit {
     }
   }
 
-  saveButtonClick() {
+  saveButtonClick(event) {
     if (this.saveClick) {
-      this.saveClick(this.bindingContext.row);
+      this.saveClick(event);
     }
 
     this.grid.finishEditingItem(this.bindingContext.row);
