@@ -19,17 +19,17 @@ export class GridColumnButton {
     this.bindToContext(bindingContext);
   }
 
+  handleButtonClick = (event) => {
+    if (this.buttonClick) {
+      this.buttonClick(event);
+    }
+  }
+
   loadCssFrameworkSettings() {
     if (this.grid.cssFrameworkConfiguration) {
       let config = this.grid.cssFrameworkConfiguration.buttonClass;
 
       this.class = config;
-    }
-  }
-
-  handleButtonClick = (event) => {
-    if (this.buttonClick) {
-      this.buttonClick(event);
     }
   }
 }

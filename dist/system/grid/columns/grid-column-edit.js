@@ -1,7 +1,7 @@
 System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid', './grid-column-base'], function (_export) {
   'use strict';
 
-  var inject, bindable, containerless, Grid, gridColumnBase, GridColumnEdit;
+  var inject, bindable, Grid, gridColumnBase, GridColumnEdit;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -14,7 +14,6 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
       inject = _aureliaDependencyInjection.inject;
     }, function (_aureliaTemplating) {
       bindable = _aureliaTemplating.bindable;
-      containerless = _aureliaTemplating.containerless;
     }, function (_grid) {
       Grid = _grid.Grid;
     }, function (_gridColumnBase) {
@@ -26,7 +25,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
         var _instanceInitializers = {};
 
         _createDecoratedClass(GridColumnEdit, [{
-          key: 'butttonGroupClass',
+          key: 'buttonGroupClass',
           decorators: [bindable],
           initializer: null,
           enumerable: true
@@ -88,7 +87,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
         function GridColumnEdit(grid) {
           _classCallCheck(this, _GridColumnEdit);
 
-          _defineDecoratedPropertyDescriptor(this, 'butttonGroupClass', _instanceInitializers);
+          _defineDecoratedPropertyDescriptor(this, 'buttonGroupClass', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'cancelButtonClass', _instanceInitializers);
 
@@ -120,24 +119,40 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
           }
         }, {
           key: 'cancelButtonClick',
-          value: function cancelButtonClick() {
+          value: function cancelButtonClick(event) {
+            var _this = this;
+
+            var response = true;
+
             if (this.cancelClick) {
-              this.cancelClick(this.bindingContext.row);
+              response = this.cancelClick(event);
             }
 
-            Object.assign(this.bindingContext.row, this.originalValue);
-            this.grid.finishEditingItem(this.bindingContext.row);
+            Promise.resolve(response).then(function (promiseResponse) {
+              if (_this.successfulResponse(promiseResponse)) {
+                Object.assign(_this.bindingContext.row, _this.originalValue);
+                _this.grid.finishEditingItem(_this.bindingContext.row);
+              }
+            })['catch'](function () {});
           }
         }, {
           key: 'editButtonClick',
-          value: function editButtonClick() {
+          value: function editButtonClick(event) {
+            var _this2 = this;
+
             this.originalValue = Object.assign({}, this.bindingContext.row);
 
+            var response = true;
+
             if (this.editClick) {
-              this.editClick(this.bindingContext);
+              response = this.editClick(event);
             }
 
-            this.grid.beginEditingItem(this.bindingContext.row);
+            Promise.resolve(response).then(function (promiseResponse) {
+              if (_this2.successfulResponse(promiseResponse)) {
+                _this2.grid.beginEditingItem(_this2.bindingContext.row);
+              }
+            })['catch'](function () {});
           }
         }, {
           key: 'loadCssFrameworkSettings',
@@ -145,7 +160,7 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
             if (this.grid.cssFrameworkConfiguration) {
               var config = this.grid.cssFrameworkConfiguration.editClasses;
 
-              this.butttonGroupClass = config.buttonGroup;
+              this.buttonGroupClass = config.buttonGroup;
               this.cancelButtonClass = config.cancelButton;
               this.editButtonClass = config.editButton;
               this.orDivClass = config.orDiv;
@@ -155,18 +170,30 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
           }
         }, {
           key: 'saveButtonClick',
-          value: function saveButtonClick() {
+          value: function saveButtonClick(event) {
+            var _this3 = this;
+
+            var response = true;
+
             if (this.saveClick) {
-              this.saveClick(this.bindingContext.row);
+              response = this.saveClick(event);
             }
 
-            this.grid.finishEditingItem(this.bindingContext.row);
+            Promise.resolve(response).then(function (promiseResponse) {
+              if (_this3.successfulResponse(promiseResponse)) {
+                _this3.grid.finishEditingItem(_this3.bindingContext.row);
+              }
+            })['catch'](function () {});
+          }
+        }, {
+          key: 'successfulResponse',
+          value: function successfulResponse(response) {
+            return response === undefined || response;
           }
         }], null, _instanceInitializers);
 
         var _GridColumnEdit = GridColumnEdit;
         GridColumnEdit = inject(Grid)(GridColumnEdit) || GridColumnEdit;
-        GridColumnEdit = containerless(GridColumnEdit) || GridColumnEdit;
         return GridColumnEdit;
       })();
 

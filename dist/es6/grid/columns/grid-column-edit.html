@@ -1,18 +1,18 @@
-<template>
-    <div class="dtd-table-cell" viewModel.bind="self">
-        <div class.bind="butttonGroupClass" role="group">
-            <button if.bind="!isEditing" role="button" class.bind="editButtonClass" click.delegate="editButtonClick()">
+<template class="dtd-table-cell">
+    <div viewModel.bind="self">
+        <div class.bind="buttonGroupClass" role="group">
+            <button if.bind="!isEditing" type="button" class.bind="editButtonClass" click.delegate="editButtonClick($event)">
                 Edit
             </button>
 
             <div if.bind="isEditing" class.bind="saveCancelButtonGroupClass">
-                <button role="button" class.bind="saveButtonClass" click.delegate="saveButtonClick()">
+                <button type="button" class.bind="saveButtonClass" click.delegate="saveButtonClick($event)">
                     Save
                 </button>
 
                 <div class.bind="orDivClass"></div>
 
-                <button role="button" class.bind="cancelButtonClass" click.delegate="cancelButtonClick()">
+                <button type="button" class.bind="cancelButtonClass" click.delegate="cancelButtonClick($event)">
                     Cancel
                 </button>
             </div>

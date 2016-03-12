@@ -34,29 +34,45 @@ export class GridColumnEdit {
   }
 
   cancelButtonClick(event) {
+    let response = true;
+
     if (this.cancelClick) {
-      this.cancelClick(event);
+      response = this.cancelClick(event);
     }
 
-    Object.assign(this.bindingContext.row, this.originalValue);
-    this.grid.finishEditingItem(this.bindingContext.row);
+    Promise.resolve(response)
+      .then(promiseResponse => {
+        if (this.successfulResponse(promiseResponse)) {
+          Object.assign(this.bindingContext.row, this.originalValue);
+          this.grid.finishEditingItem(this.bindingContext.row);
+        }
+      })
+      .catch(() => {});
   }
 
   editButtonClick(event) {
     this.originalValue = Object.assign({}, this.bindingContext.row);
 
-    if (this.editClick(event)) {
-      this.editClick(this.bindingContext);
+    let response = true;
+
+    if (this.editClick) {
+      response = this.editClick(event);
     }
 
-    this.grid.beginEditingItem(this.bindingContext.row);
+    Promise.resolve(response)
+      .then(promiseResponse => {
+        if (this.successfulResponse(promiseResponse)) {
+          this.grid.beginEditingItem(this.bindingContext.row);
+        }
+      })
+      .catch(() => {});
   }
 
   loadCssFrameworkSettings() {
     if (this.grid.cssFrameworkConfiguration) {
       let config = this.grid.cssFrameworkConfiguration.editClasses;
 
-      this.butttonGroupClass = config.buttonGroup;
+      this.buttonGroupClass = config.buttonGroup;
       this.cancelButtonClass = config.cancelButton;
       this.editButtonClass = config.editButton;
       this.orDivClass =  config.orDiv;
@@ -66,10 +82,22 @@ export class GridColumnEdit {
   }
 
   saveButtonClick(event) {
+    let response = true;
+
     if (this.saveClick) {
-      this.saveClick(event);
+      response = this.saveClick(event);
     }
 
-    this.grid.finishEditingItem(this.bindingContext.row);
+    Promise.resolve(response)
+      .then(promiseResponse => {
+        if (this.successfulResponse(promiseResponse)) {
+          this.grid.finishEditingItem(this.bindingContext.row);
+        }
+      })
+      .catch(() => {});
+  }
+
+  successfulResponse(response) {
+    return response === undefined || response;
   }
 }

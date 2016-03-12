@@ -1,12 +1,11 @@
 import { inject } from 'aurelia-dependency-injection';
-import { bindable, containerless } from 'aurelia-templating';
+import { bindable } from 'aurelia-templating';
 import { Grid } from '../grid';
 import gridColumnBase from './grid-column-base';
 
-@containerless
 @inject(Grid)
 export class GridColumnEdit {
-  @bindable butttonGroupClass;
+  @bindable buttonGroupClass;
   @bindable cancelButtonClass;
   @bindable cancelClick;
   @bindable editButtonClass;
@@ -34,30 +33,46 @@ export class GridColumnEdit {
     this.bindToContext(bindingContext);
   }
 
-  cancelButtonClick() {
+  cancelButtonClick(event) {
+    let response = true;
+
     if (this.cancelClick) {
-      this.cancelClick(this.bindingContext.row);
+      response = this.cancelClick(event);
     }
 
-    Object.assign(this.bindingContext.row, this.originalValue);
-    this.grid.finishEditingItem(this.bindingContext.row);
+    Promise.resolve(response)
+      .then(promiseResponse => {
+        if (this.successfulResponse(promiseResponse)) {
+          Object.assign(this.bindingContext.row, this.originalValue);
+          this.grid.finishEditingItem(this.bindingContext.row);
+        }
+      })
+      .catch(() => {});
   }
 
-  editButtonClick() {
+  editButtonClick(event) {
     this.originalValue = Object.assign({}, this.bindingContext.row);
 
+    let response = true;
+
     if (this.editClick) {
-      this.editClick(this.bindingContext);
+      response = this.editClick(event);
     }
 
-    this.grid.beginEditingItem(this.bindingContext.row);
+    Promise.resolve(response)
+      .then(promiseResponse => {
+        if (this.successfulResponse(promiseResponse)) {
+          this.grid.beginEditingItem(this.bindingContext.row);
+        }
+      })
+      .catch(() => {});
   }
 
   loadCssFrameworkSettings() {
     if (this.grid.cssFrameworkConfiguration) {
       let config = this.grid.cssFrameworkConfiguration.editClasses;
 
-      this.butttonGroupClass = config.buttonGroup;
+      this.buttonGroupClass = config.buttonGroup;
       this.cancelButtonClass = config.cancelButton;
       this.editButtonClass = config.editButton;
       this.orDivClass =  config.orDiv;
@@ -66,11 +81,23 @@ export class GridColumnEdit {
     }
   }
 
-  saveButtonClick() {
+  saveButtonClick(event) {
+    let response = true;
+
     if (this.saveClick) {
-      this.saveClick(this.bindingContext.row);
+      response = this.saveClick(event);
     }
 
-    this.grid.finishEditingItem(this.bindingContext.row);
+    Promise.resolve(response)
+      .then(promiseResponse => {
+        if (this.successfulResponse(promiseResponse)) {
+          this.grid.finishEditingItem(this.bindingContext.row);
+        }
+      })
+      .catch(() => {});
+  }
+
+  successfulResponse(response) {
+    return response === undefined || response;
   }
 }
