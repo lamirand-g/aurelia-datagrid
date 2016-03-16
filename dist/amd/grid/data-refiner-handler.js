@@ -2,8 +2,6 @@ define(["exports", "module"], function (exports, module) {
   "use strict";
 
   var dataRefinerHandler = {
-    dataRefiners: [],
-
     addDataRefiner: function addDataRefiner(refiner, priority, refreshImmediately) {
       var index = this.getDataRefinerPriorityIndexOf(priority);
       var refinerAndPriority = {

@@ -1,6 +1,4 @@
 const dataRefinerHandler = {
-  dataRefiners: [],
-
   addDataRefiner: function(refiner, priority, refreshImmediately) {
     let index = this.getDataRefinerPriorityIndexOf(priority);
     let refinerAndPriority = {
