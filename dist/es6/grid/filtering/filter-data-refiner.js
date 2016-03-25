@@ -1,3 +1,5 @@
+import { reduce } from 'lodash';
+
 export default class FilterDataRefiner {
   constructor(settings) {
     this.filters = [];
@@ -13,13 +15,9 @@ export default class FilterDataRefiner {
   }
 
   refineData = (data) => {
-    return new Promise(resolve => {
-      let filteredItems = data;
-      this.filters.forEach(filter => {
-        filteredItems = filter.strategy.apply(filteredItems, filter);
-      });
-      resolve(filteredItems);
-    });
+    return reduce(this.filters, function(filteredItems, filter) {
+      return filter.strategy.apply(filteredItems, filter);
+    }, data);
   }
 
   setFilter(property, value, strategy) {
