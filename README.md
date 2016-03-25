@@ -38,6 +38,10 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
 
 <a href="http://donthedev.com/aurelia/#datagrid-examples/" target="_blank">Aurelia-DataGrid Demo</a>
 
+## Sample Web App Using the Plugin
+
+<a href="https://github.com/donnelljenkins/aurelia-datagrid-examples/" target="_blank">Aurelia-DataGrid Examples</a>
+
 ## Documentation
 
 ### [Current Release (@v0.1.5)](https://github.com/donnelljenkins/aurelia-datagrid/blob/master/doc/HOWTO.md)
