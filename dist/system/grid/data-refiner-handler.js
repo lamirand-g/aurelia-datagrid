@@ -6,8 +6,6 @@ System.register([], function (_export) {
     setters: [],
     execute: function () {
       dataRefinerHandler = {
-        dataRefiners: [],
-
         addDataRefiner: function addDataRefiner(refiner, priority, refreshImmediately) {
           var index = this.getDataRefinerPriorityIndexOf(priority);
           var refinerAndPriority = {

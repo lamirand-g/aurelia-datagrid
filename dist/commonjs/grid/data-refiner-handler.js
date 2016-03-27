@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var dataRefinerHandler = {
-  dataRefiners: [],
-
   addDataRefiner: function addDataRefiner(refiner, priority, refreshImmediately) {
     var index = this.getDataRefinerPriorityIndexOf(priority);
     var refinerAndPriority = {
