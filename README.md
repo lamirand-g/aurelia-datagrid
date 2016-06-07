@@ -36,7 +36,7 @@ A data grid plugin for <a href="http://aurelia.io/" target="_blank">Aurelia</a> 
 
 ## Live Demo
 
-<a href="http://donthedev.com/#/aurelia-datagrid-local-demo/" target="_blank">Aurelia-DataGrid Demo</a>
+<a href="http://donthedev.com/#/aurelia-datagrid-demo/" target="_blank">Aurelia-DataGrid Demo</a>
 
 ## Sample Web App Using the Plugin
 
