@@ -45,6 +45,11 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
           decorators: [bindable],
           initializer: null,
           enumerable: true
+        }, {
+          key: 'class',
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
         }], null, _instanceInitializers);
 
         function GridColumnTemplate(grid) {
@@ -57,6 +62,8 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
           _defineDecoratedPropertyDescriptor(this, 'property', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
+
+          _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
           this.grid = grid;
           this.row = {};

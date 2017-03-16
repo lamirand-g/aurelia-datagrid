@@ -46,6 +46,11 @@ var GridColumnTemplate = (function () {
     decorators: [_aureliaTemplating.bindable],
     initializer: null,
     enumerable: true
+  }, {
+    key: 'class',
+    decorators: [_aureliaTemplating.bindable],
+    initializer: null,
+    enumerable: true
   }], null, _instanceInitializers);
 
   function GridColumnTemplate(grid) {
@@ -58,6 +63,8 @@ var GridColumnTemplate = (function () {
     _defineDecoratedPropertyDescriptor(this, 'property', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
+
+    _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
     this.grid = grid;
     this.row = {};

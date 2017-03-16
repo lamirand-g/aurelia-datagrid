@@ -39,6 +39,11 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', '../gri
       decorators: [_aureliaTemplating.bindable],
       initializer: null,
       enumerable: true
+    }, {
+      key: 'class',
+      decorators: [_aureliaTemplating.bindable],
+      initializer: null,
+      enumerable: true
     }], null, _instanceInitializers);
 
     function GridColumnTemplate(grid) {
@@ -51,6 +56,8 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', '../gri
       _defineDecoratedPropertyDescriptor(this, 'property', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
+
+      _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
       this.grid = grid;
       this.row = {};
