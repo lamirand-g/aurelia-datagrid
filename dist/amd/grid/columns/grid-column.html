@@ -1,13 +1,13 @@
 <template>
-    <td if.bind="!isEditing" class="${alignmentClass}" viewModel.bind="self">
+    <div if.bind="!isEditing" class="dtd-table-cell ${alignmentClass}" viewModel.bind="self">
       ${bindingObject[bindingProperty]}
-    </td>
+    </div>
 
-    <td if.bind="isEditing" class="${alignmentClass}">
+    <div if.bind="isEditing" class="dtd-table-cell ${alignmentClass}">
         <form class="${editFormClass}" role="form">
             <div class="${editFieldClass}">
                 <input class="${editInputClass}" type="text" value.bind="bindingObject[bindingProperty]" />
             </div>
         </form>
-    </td>
+    </div>
 </template>

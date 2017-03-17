@@ -1,7 +1,7 @@
 System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid', './grid-column-base'], function (_export) {
   'use strict';
 
-  var inject, bindable, containerless, Grid, gridColumnBase, GridColumnButton;
+  var inject, bindable, Grid, gridColumnBase, GridColumnButton;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -14,7 +14,6 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
       inject = _aureliaDependencyInjection.inject;
     }, function (_aureliaTemplating) {
       bindable = _aureliaTemplating.bindable;
-      containerless = _aureliaTemplating.containerless;
     }, function (_grid) {
       Grid = _grid.Grid;
     }, function (_gridColumnBase) {
@@ -26,17 +25,17 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
         var _instanceInitializers = {};
 
         _createDecoratedClass(GridColumnButton, [{
+          key: 'buttonClick',
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }, {
           key: 'caption',
           decorators: [bindable],
           initializer: null,
           enumerable: true
         }, {
           key: 'class',
-          decorators: [bindable],
-          initializer: null,
-          enumerable: true
-        }, {
-          key: 'buttonClick',
           decorators: [bindable],
           initializer: null,
           enumerable: true
@@ -48,15 +47,23 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
         }], null, _instanceInitializers);
 
         function GridColumnButton(grid) {
+          var _this = this;
+
           _classCallCheck(this, _GridColumnButton);
+
+          _defineDecoratedPropertyDescriptor(this, 'buttonClick', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'caption', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
-          _defineDecoratedPropertyDescriptor(this, 'buttonClick', _instanceInitializers);
-
           _defineDecoratedPropertyDescriptor(this, 'heading', _instanceInitializers);
+
+          this.handleButtonClick = function (event) {
+            if (_this.buttonClick) {
+              _this.buttonClick(event);
+            }
+          };
 
           this.grid = grid;
           Object.assign(this, gridColumnBase);
@@ -66,13 +73,6 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
           key: 'bind',
           value: function bind(bindingContext) {
             this.bindToContext(bindingContext);
-          }
-        }, {
-          key: 'handleButtonClick',
-          value: function handleButtonClick(event) {
-            if (this.buttonClick) {
-              this.buttonClick(event);
-            }
           }
         }, {
           key: 'loadCssFrameworkSettings',
@@ -87,7 +87,6 @@ System.register(['aurelia-dependency-injection', 'aurelia-templating', '../grid'
 
         var _GridColumnButton = GridColumnButton;
         GridColumnButton = inject(Grid)(GridColumnButton) || GridColumnButton;
-        GridColumnButton = containerless(GridColumnButton) || GridColumnButton;
         return GridColumnButton;
       })();
 

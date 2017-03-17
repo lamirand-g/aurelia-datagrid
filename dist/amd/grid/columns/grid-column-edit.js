@@ -189,7 +189,6 @@ define(['exports', 'aurelia-dependency-injection', 'aurelia-templating', '../gri
 
     var _GridColumnEdit = GridColumnEdit;
     GridColumnEdit = (0, _aureliaDependencyInjection.inject)(_grid.Grid)(GridColumnEdit) || GridColumnEdit;
-    GridColumnEdit = (0, _aureliaTemplating.containerless)(GridColumnEdit) || GridColumnEdit;
     return GridColumnEdit;
   })();
 

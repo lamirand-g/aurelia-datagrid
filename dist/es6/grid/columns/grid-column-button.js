@@ -1,14 +1,13 @@
 import { inject } from 'aurelia-dependency-injection';
-import { bindable, containerless } from 'aurelia-templating';
+import { bindable } from 'aurelia-templating';
 import { Grid } from '../grid';
 import gridColumnBase from './grid-column-base';
 
-@containerless
 @inject(Grid)
 export class GridColumnButton {
+  @bindable buttonClick;
   @bindable caption;
   @bindable class;
-  @bindable buttonClick;
   @bindable heading;
 
   constructor(grid) {
@@ -20,7 +19,7 @@ export class GridColumnButton {
     this.bindToContext(bindingContext);
   }
 
-  handleButtonClick(event) {
+  handleButtonClick = (event) => {
     if (this.buttonClick) {
       this.buttonClick(event);
     }

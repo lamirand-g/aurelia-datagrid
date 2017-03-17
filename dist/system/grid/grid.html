@@ -1,42 +1,45 @@
 <template>
-    <table class="${class} ${selectable !== 'false' ? selectableClass : ''} ">
-        <thead>
-            <tr>
-                <th repeat.for="column of columns" class="${column.alignmentClass}">
+    <require from="./css/grid.css"></require>
+    <require from="./css/grid-bootstrap.css" if.bind="cssFramework === 'bootstrap'"></require>
+
+    <div class="${class} ${selectable !== 'false' ? selectableClass : ''} dtd-table">
+        <div class="dtd-table-heading">
+            <div class="dtd-table-row">
+                <div repeat.for="column of columns" class="dtd-table-head ${column.alignmentClass}">
                     ${column.sortable}
                     <span if.bind="column.sortable == undefined">${column.heading}</span>
                     <compose view="./sorting/sorts.html" containerless></compose>
-                </th>
-            </tr>
-            <tr if.bind="hasFilters">
-                <th repeat.for="column of columns">
+                </div>
+            </div>
+            <div class="dtd-table-row" if.bind="hasFilters">
+                <div class="dtd-table-head" repeat.for="column of columns">
                     <compose view="./filtering/filters.html" 
                         if.bind="column.filterable !== null"
                         containerless></compose>
-                </th>
-            </tr>
+                </div>
+            </div>
             
             <template replaceable part="grid-header-template">
             </template>
-        </thead>
+        </div>
 
-        <tbody>
-            <tr repeat.for="row of filteredItems">
+        <div class="dtd-table-body"y>
+            <div class="dtd-table-row" repeat.for="row of filteredItems">
                 <template replaceable part="grid-template"></template>
-            </tr>
-        </tbody>
+            </div>
+        </div>
 
-        <tfoot>
-            <tr>
+        <div class="dtd-table-foot">
+            <div class="dtd-table-row">
                 <template replaceable part="grid-footer-template"></template>
-            </tr>
+            </div>
 
             <!--This is here to ensure the column information gets populated in cases-->
             <!--where there are no items.  Without this, the grid will be completely blank.-->
-            <tr style="display: none;">
+            <div class="dtd-table-row" style="display: none;">
                 <template replaceable part="grid-template">
                 </template>
-            </tr>
-        </tfoot>
-    </table>
+            </div>
+        </div>
+    </div>
 </template>

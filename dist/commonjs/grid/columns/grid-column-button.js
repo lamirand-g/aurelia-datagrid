@@ -27,17 +27,17 @@ var GridColumnButton = (function () {
   var _instanceInitializers = {};
 
   _createDecoratedClass(GridColumnButton, [{
+    key: 'buttonClick',
+    decorators: [_aureliaTemplating.bindable],
+    initializer: null,
+    enumerable: true
+  }, {
     key: 'caption',
     decorators: [_aureliaTemplating.bindable],
     initializer: null,
     enumerable: true
   }, {
     key: 'class',
-    decorators: [_aureliaTemplating.bindable],
-    initializer: null,
-    enumerable: true
-  }, {
-    key: 'buttonClick',
     decorators: [_aureliaTemplating.bindable],
     initializer: null,
     enumerable: true
@@ -49,15 +49,23 @@ var GridColumnButton = (function () {
   }], null, _instanceInitializers);
 
   function GridColumnButton(grid) {
+    var _this = this;
+
     _classCallCheck(this, _GridColumnButton);
+
+    _defineDecoratedPropertyDescriptor(this, 'buttonClick', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'caption', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
-    _defineDecoratedPropertyDescriptor(this, 'buttonClick', _instanceInitializers);
-
     _defineDecoratedPropertyDescriptor(this, 'heading', _instanceInitializers);
+
+    this.handleButtonClick = function (event) {
+      if (_this.buttonClick) {
+        _this.buttonClick(event);
+      }
+    };
 
     this.grid = grid;
     Object.assign(this, _gridColumnBase2['default']);
@@ -67,13 +75,6 @@ var GridColumnButton = (function () {
     key: 'bind',
     value: function bind(bindingContext) {
       this.bindToContext(bindingContext);
-    }
-  }, {
-    key: 'handleButtonClick',
-    value: function handleButtonClick(event) {
-      if (this.buttonClick) {
-        this.buttonClick(event);
-      }
     }
   }, {
     key: 'loadCssFrameworkSettings',
@@ -88,7 +89,6 @@ var GridColumnButton = (function () {
 
   var _GridColumnButton = GridColumnButton;
   GridColumnButton = (0, _aureliaDependencyInjection.inject)(_grid.Grid)(GridColumnButton) || GridColumnButton;
-  GridColumnButton = (0, _aureliaTemplating.containerless)(GridColumnButton) || GridColumnButton;
   return GridColumnButton;
 })();
 

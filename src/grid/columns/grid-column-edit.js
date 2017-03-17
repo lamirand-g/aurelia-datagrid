@@ -1,9 +1,8 @@
 import { inject } from 'aurelia-dependency-injection';
-import { bindable, containerless } from 'aurelia-templating';
+import { bindable } from 'aurelia-templating';
 import { Grid } from '../grid';
 import gridColumnBase from './grid-column-base';
 
-@containerless
 @inject(Grid)
 export class GridColumnEdit {
   @bindable buttonGroupClass;
