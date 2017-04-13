@@ -40,7 +40,7 @@ define(['exports', 'module', 'lodash', './sort-constants'], function (exports, m
       key: 'applySort',
       value: function applySort(data) {
         if (this.sort.direction) {
-          return _2['default'].sortByOrder(data, this.sort.property, this.sort.direction);
+          return _2['default'].orderBy(data, this.sort.property, this.sort.direction);
         }
         return data;
       }

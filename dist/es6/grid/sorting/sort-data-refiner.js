@@ -23,7 +23,7 @@ export default class SortDataRefiner {
 
   applySort(data) {
     if (this.sort.direction) {
-      return _.sortByOrder(data,
+      return _.orderBy(data,
         this.sort.property,
         this.sort.direction);
     }

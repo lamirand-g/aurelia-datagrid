@@ -43,7 +43,7 @@ System.register(['lodash', './sort-constants'], function (_export) {
           key: 'applySort',
           value: function applySort(data) {
             if (this.sort.direction) {
-              return _.sortByOrder(data, this.sort.property, this.sort.direction);
+              return _.orderBy(data, this.sort.property, this.sort.direction);
             }
             return data;
           }

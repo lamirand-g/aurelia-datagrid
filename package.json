@@ -52,7 +52,7 @@
       "aurelia-binding": "npm:aurelia-binding@^1.0.0-beta.1.0.1",
       "aurelia-dependency-injection": "npm:aurelia-dependency-injection@^1.0.0-beta.1",
       "aurelia-templating": "npm:aurelia-templating@^1.0.0-beta.1",
-      "lodash": "npm:lodash@^3.10.1"
+      "lodash": "npm:lodash@>=4.0.0"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",
