@@ -70,6 +70,11 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
           initializer: null,
           enumerable: true
         }, {
+          key: 'class',
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
+        }, {
           key: 'isEditing',
           get: function get() {
             if (this.bindingContext) {
@@ -97,6 +102,8 @@ System.register(['aurelia-binding', 'aurelia-dependency-injection', 'aurelia-tem
           _defineDecoratedPropertyDescriptor(this, 'property', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
+
+          _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
           this.grid = grid;
           this.observerLocator = observerLocator;

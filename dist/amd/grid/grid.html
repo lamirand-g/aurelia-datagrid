@@ -1,6 +1,6 @@
 <template>
     <require from="./css/grid.css"></require>
-    <require from="./css/grid-bootstrap.css" if.bind="cssFramework === 'bootstrap'"></require>
+    <require from="./css/grid-bootstrap.css"></require>
 
     <div class="dtd-${cssFramework} dtd-container">
         <div class="${class} ${selectable !== 'false' ? selectableClass : ''} dtd-table">
@@ -25,7 +25,7 @@
             </div>
 
             <div class="dtd-table-body"y>
-                <div class="dtd-table-row" repeat.for="row of filteredItems">
+                <div class="dtd-table-row ${row.class}" repeat.for="row of filteredItems">
                     <template replaceable part="grid-template"></template>
                 </div>
             </div>

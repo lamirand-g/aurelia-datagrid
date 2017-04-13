@@ -71,6 +71,11 @@ var GridColumn = (function () {
     initializer: null,
     enumerable: true
   }, {
+    key: 'class',
+    decorators: [_aureliaTemplating.bindable],
+    initializer: null,
+    enumerable: true
+  }, {
     key: 'isEditing',
     get: function get() {
       if (this.bindingContext) {
@@ -98,6 +103,8 @@ var GridColumn = (function () {
     _defineDecoratedPropertyDescriptor(this, 'property', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
+
+    _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
     this.grid = grid;
     this.observerLocator = observerLocator;

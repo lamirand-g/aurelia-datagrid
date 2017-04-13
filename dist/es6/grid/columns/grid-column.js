@@ -15,6 +15,7 @@ export class GridColumn {
   @bindable filterable;
   @bindable property;
   @bindable sortable;
+  @bindable class;
 
   get isEditing() {
     if (this.bindingContext) {

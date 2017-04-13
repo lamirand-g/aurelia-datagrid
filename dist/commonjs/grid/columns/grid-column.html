@@ -1,9 +1,9 @@
 <template>
-    <div if.bind="!isEditing" class="dtd-table-cell ${alignmentClass}" viewModel.bind="self">
+    <div if.bind="!isEditing" class="dtd-table-cell ${class} ${alignmentClass}" viewModel.bind="self">
       ${bindingObject[bindingProperty]}
     </div>
 
-    <div if.bind="isEditing" class="dtd-table-cell ${alignmentClass}">
+    <div if.bind="isEditing" class="dtd-table-cell dtd-table-cell-editable ${class} ${alignmentClass}">
         <form class="${editFormClass}" role="form">
             <div class="${editFieldClass}">
                 <input class="${editInputClass}" type="text" value.bind="bindingObject[bindingProperty]" />

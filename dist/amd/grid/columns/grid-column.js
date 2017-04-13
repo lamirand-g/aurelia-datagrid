@@ -62,6 +62,11 @@ define(['exports', 'aurelia-binding', 'aurelia-dependency-injection', 'aurelia-t
       initializer: null,
       enumerable: true
     }, {
+      key: 'class',
+      decorators: [_aureliaTemplating.bindable],
+      initializer: null,
+      enumerable: true
+    }, {
       key: 'isEditing',
       get: function get() {
         if (this.bindingContext) {
@@ -89,6 +94,8 @@ define(['exports', 'aurelia-binding', 'aurelia-dependency-injection', 'aurelia-t
       _defineDecoratedPropertyDescriptor(this, 'property', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
+
+      _defineDecoratedPropertyDescriptor(this, 'class', _instanceInitializers);
 
       this.grid = grid;
       this.observerLocator = observerLocator;
