@@ -16,7 +16,12 @@ export default class SortDataRefiner {
 
   refineData = (data) => {
     return new Promise(resolve => {
-      let sortedData = this.applySort(data);
+      let sortedData = data;
+      if (this.customSort){
+        sortedData = this.customSort(data, this.sort);
+      } else {
+        sortedData = this.applySort(data);
+      }
       resolve(sortedData);
     });
   }

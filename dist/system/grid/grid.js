@@ -153,6 +153,11 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
           decorators: [bindable],
           initializer: null,
           enumerable: true
+        }, {
+          key: 'customSort',
+          decorators: [bindable],
+          initializer: null,
+          enumerable: true
         }], null, _instanceInitializers);
 
         function Grid(repository, element) {
@@ -205,6 +210,8 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
           _defineDecoratedPropertyDescriptor(this, 'sortButtonClass', _instanceInitializers);
 
           _defineDecoratedPropertyDescriptor(this, 'sortDescendingIconClass', _instanceInitializers);
+
+          _defineDecoratedPropertyDescriptor(this, 'customSort', _instanceInitializers);
 
           this.applyAdditionalDataRefining = function (data) {
             return new Promise(function (resolve) {
@@ -265,6 +272,9 @@ System.register(['aurelia-templating', 'aurelia-dependency-injection', './css-fr
             this.dataSource = this.dataSource || bindingContext.items;
             if (!this.dataSource) {
               throw new Error('The data-source is not undefined.');
+            }
+            if (this.customSort) {
+              this.sortDataRefiner.customSort = this.customSort;
             }
 
             this.loadCssConfiguration();

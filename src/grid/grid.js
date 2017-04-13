@@ -34,6 +34,7 @@ export class Grid {
   @bindable sortButtonGroupClass;
   @bindable sortButtonClass;
   @bindable sortDescendingIconClass;
+  @bindable customSort;
 
   constructor(repository, element) {
     this.columns = [];
@@ -87,6 +88,9 @@ export class Grid {
     this.dataSource = this.dataSource || bindingContext.items;
     if (!this.dataSource) {
       throw new Error('The data-source is not undefined.');
+    } 
+    if (this.customSort) {
+      this.sortDataRefiner.customSort = this.customSort;
     }
 
     this.loadCssConfiguration();

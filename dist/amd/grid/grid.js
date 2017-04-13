@@ -148,6 +148,11 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
       decorators: [_aureliaTemplating.bindable],
       initializer: null,
       enumerable: true
+    }, {
+      key: 'customSort',
+      decorators: [_aureliaTemplating.bindable],
+      initializer: null,
+      enumerable: true
     }], null, _instanceInitializers);
 
     function Grid(repository, element) {
@@ -200,6 +205,8 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
       _defineDecoratedPropertyDescriptor(this, 'sortButtonClass', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'sortDescendingIconClass', _instanceInitializers);
+
+      _defineDecoratedPropertyDescriptor(this, 'customSort', _instanceInitializers);
 
       this.applyAdditionalDataRefining = function (data) {
         return new Promise(function (resolve) {
@@ -260,6 +267,9 @@ define(['exports', 'aurelia-templating', 'aurelia-dependency-injection', './css-
         this.dataSource = this.dataSource || bindingContext.items;
         if (!this.dataSource) {
           throw new Error('The data-source is not undefined.');
+        }
+        if (this.customSort) {
+          this.sortDataRefiner.customSort = this.customSort;
         }
 
         this.loadCssConfiguration();

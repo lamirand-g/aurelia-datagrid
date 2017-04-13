@@ -19,7 +19,12 @@ define(['exports', 'module', 'lodash', './sort-constants'], function (exports, m
 
       this.refineData = function (data) {
         return new Promise(function (resolve) {
-          var sortedData = _this.applySort(data);
+          var sortedData = data;
+          if (_this.customSort) {
+            sortedData = _this.customSort(data, _this.sort);
+          } else {
+            sortedData = _this.applySort(data);
+          }
           resolve(sortedData);
         });
       };
