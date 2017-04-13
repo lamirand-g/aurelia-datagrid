@@ -1,6 +1,6 @@
 ﻿<template>
     <require from="./css/grid.css"></require>
-    <require from="./css/grid-bootstrap.css" if.bind="cssFramework === 'bootstrap'"></require>
+    <require from="./css/grid-bootstrap.css"></require>
 
     <div class="dtd-${cssFramework} dtd-container">
         <div class="${class} ${selectable !== 'false' ? selectableClass : ''} dtd-table">
