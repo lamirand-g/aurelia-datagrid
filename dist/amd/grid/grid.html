@@ -2,43 +2,45 @@
     <require from="./css/grid.css"></require>
     <require from="./css/grid-bootstrap.css" if.bind="cssFramework === 'bootstrap'"></require>
 
-    <div class="${class} ${selectable !== 'false' ? selectableClass : ''} dtd-table">
-        <div class="dtd-table-heading">
-            <div class="dtd-table-row">
-                <div repeat.for="column of columns" class="dtd-table-head ${column.alignmentClass}">
-                    ${column.sortable}
-                    <span if.bind="column.sortable == undefined">${column.heading}</span>
-                    <compose view="./sorting/sorts.html" containerless></compose>
+    <div class="dtd-${cssFramework} dtd-container">
+        <div class="${class} ${selectable !== 'false' ? selectableClass : ''} dtd-table">
+            <div class="dtd-table-heading">
+                <div class="dtd-table-row">
+                    <div repeat.for="column of columns" class="dtd-table-head ${column.alignmentClass}">
+                        ${column.sortable}
+                        <span if.bind="column.sortable == undefined">${column.heading}</span>
+                        <compose view="./sorting/sorts.html" containerless></compose>
+                    </div>
                 </div>
-            </div>
-            <div class="dtd-table-row" if.bind="hasFilters">
-                <div class="dtd-table-head" repeat.for="column of columns">
-                    <compose view="./filtering/filters.html" 
-                        if.bind="column.filterable !== null"
-                        containerless></compose>
+                <div class="dtd-table-row" if.bind="hasFilters">
+                    <div class="dtd-table-head" repeat.for="column of columns">
+                        <compose view="./filtering/filters.html" 
+                            if.bind="column.filterable !== null"
+                            containerless></compose>
+                    </div>
                 </div>
-            </div>
-            
-            <template replaceable part="grid-header-template">
-            </template>
-        </div>
-
-        <div class="dtd-table-body"y>
-            <div class="dtd-table-row" repeat.for="row of filteredItems">
-                <template replaceable part="grid-template"></template>
-            </div>
-        </div>
-
-        <div class="dtd-table-foot">
-            <div class="dtd-table-row">
-                <template replaceable part="grid-footer-template"></template>
-            </div>
-
-            <!--This is here to ensure the column information gets populated in cases-->
-            <!--where there are no items.  Without this, the grid will be completely blank.-->
-            <div class="dtd-table-row" style="display: none;">
-                <template replaceable part="grid-template">
+                
+                <template replaceable part="grid-header-template">
                 </template>
+            </div>
+
+            <div class="dtd-table-body"y>
+                <div class="dtd-table-row" repeat.for="row of filteredItems">
+                    <template replaceable part="grid-template"></template>
+                </div>
+            </div>
+
+            <div class="dtd-table-foot">
+                <div class="dtd-table-row">
+                    <template replaceable part="grid-footer-template"></template>
+                </div>
+
+                <!--This is here to ensure the column information gets populated in cases-->
+                <!--where there are no items.  Without this, the grid will be completely blank.-->
+                <div class="dtd-table-row" style="display: none;">
+                    <template replaceable part="grid-template">
+                    </template>
+                </div>
             </div>
         </div>
     </div>

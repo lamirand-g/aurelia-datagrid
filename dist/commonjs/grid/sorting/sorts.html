@@ -1,10 +1,10 @@
 <template>
-  <div if.bind="column.sortable != undefined" class.bind="sortButtonGroupClass" role="group">
-    <a role="button" class="${column.alignment} ${sortButtonClass}" click.delegate="sortDataRefiner.setSort(column.property)">
+  <div if.bind="column.sortable != undefined" class="dtd-table-head-sort ${sortButtonGroupClass}" role="group">
+    <a role="button" class="dtd-table-head-sort-btn ${column.alignment} ${sortButtonClass}" click.delegate="sortDataRefiner.setSort(column.property)">
         ${column.heading}
-        <i class.bind="sortAvailableIconClass" if.bind="sortDataRefiner.sort.property !== column.property || !sortDataRefiner.sort.direction"></i>
-        <i class.bind="sortAscendingIconClass" if.bind="sortDataRefiner.sort.property === column.property && sortDataRefiner.sort.direction === 'asc'"></i>
-        <i class.bind="sortDescendingIconClass" if.bind="sortDataRefiner.sort.property === column.property && sortDataRefiner.sort.direction === 'desc'"></i>
+        <i class="dtd-table-head-sort-icon ${sortAvailableIconClass}" if.bind="sortDataRefiner.sort.property !== column.property || !sortDataRefiner.sort.direction"></i>
+        <i class="dtd-table-head-sort-icon ${sortAscendingIconClass}" if.bind="sortDataRefiner.sort.property === column.property && sortDataRefiner.sort.direction === 'asc'"></i>
+        <i class="dtd-table-head-sort-icon ${sortDescendingIconClass}" if.bind="sortDataRefiner.sort.property === column.property && sortDataRefiner.sort.direction === 'desc'"></i>
     </a>
   </div>
-</template
+</template>
